@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--单个Jedis服务的配置开始-->
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg index="0">
+            <bean class="org.apache.commons.pool2.impl.GenericObjectPoolConfig">
+                <property name="maxTotal" value="${redis.pool.maxTotal}"/>
+                <property name="maxIdle" value="${redis.pool.maxIdle}"/>
+                <property name="minIdle" value="${redis.pool.minIdle}"/>
+                <property name="testOnBorrow" value="${redis.pool.testOnBorrow}"/>
+                <property name="testOnReturn" value="${redis.pool.testOnReturn}"/>
+                <property name="testWhileIdle" value="${redis.pool.testWhileIdle}"/>
+            </bean>
+        </constructor-arg>
+        <constructor-arg index="1" value="${redis.host}"/>
+        <constructor-arg index="2" value="${redis.port}"/>
+        <constructor-arg index="3" value="${redis.timeout}"/>
+        <constructor-arg index="4" value="${redis.password}"/>
+    </bean>
+
+    <bean id="jedisTools" class="com.keqiaokeji.tezizai.common.cache.Jedis.JedisTools">
+        <property name="jedisPool" ref="jedisPool"/>
+    </bean>
+
+
+
+    <!--集群服务-->
+    <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool">
+        <constructor-arg index="0">
+            <!--<bean factory-bean="jedisPoolConfigShared"/>-->
+            <bean class="redis.clients.jedis.JedisPoolConfig">
+                <property name="maxTotal" value="${redis.shared.pool.maxTotal}"/>
+                <property name="maxIdle" value="${redis.shared.pool.maxIdle}"/>
+                <property name="minIdle" value="${redis.shared.pool.minIdle}"/>
+                <property name="testOnBorrow" value="${redis.shared.pool.testOnBorrow}"/>
+                <property name="testOnReturn" value="${redis.shared.pool.testOnReturn}"/>
+                <property name="testWhileIdle" value="${redis.shared.pool.testWhileIdle}"/>
+            </bean>
+        </constructor-arg>
+        <constructor-arg index="1">
+            <list>
+                <bean class="redis.clients.jedis.JedisShardInfo">
+                    <constructor-arg index="0" value="${redis.shared.host1}"/>
+                    <constructor-arg index="1" value="${redis.shared.port1}"/>
+                    <constructor-arg index="2" value="${redis.shared.password1}"/>
+                </bean>
+                <bean class="redis.clients.jedis.JedisShardInfo">
+                    <constructor-arg index="0" value="${redis.shared.host2}"/>
+                    <constructor-arg index="1" value="${redis.shared.port2}"/>
+                    <constructor-arg index="2" value="${redis.shared.password2}"/>
+                </bean>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="jedisSharedTools" class="com.keqiaokeji.tezizai.common.cache.Jedis.JedisSharedTools">
+        <property name="shardedJedisPool" ref="shardedJedisPool"/>
+    </bean>
+
+</beans>

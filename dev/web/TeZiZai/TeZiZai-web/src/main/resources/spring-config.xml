@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <!--资源文件注入开始-->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:spring/*/*.properties</value>
+            </list>
+        </property>
+    </bean>
+    <!--资源文件注入结束-->
+
+
+
+
+    <!--函数级别的事务配置开始-->
+    <!-- 配置事务切面,指定事务管理器 -->
+    <aop:config>
+        <aop:pointcut id="service" expression="execution(* com.keqiaokeji.tezizai.web.uc.service.*ServiceImpl.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="service" order="1"/>
+    </aop:config>
+    <!--配置事务切面的拦截规则-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <!-- 用于配置详细的事务语义 -->
+        <tx:attributes>
+            <!-- 所有以'get'开头的方法是read-only的，不能对数据库做增删改操作 -->
+            <tx:method name="get*" read-only="true"/>
+            <!-- 所有以'sel'开头的方法是read-only的 -->
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="list*" read-only="true"/>
+            <tx:method name="load*" read-only="true"/>
+            <tx:method name="query*" read-only="true"/>
+            <!-- 其他方法使用默认的事务设置 -->
+            <tx:method name="*" rollback-for="java.lang.Exception"/>
+        </tx:attributes>
+    </tx:advice>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!--函数级别的事务配置结束-->
+
+
+
+    <bean class="com.keqiaokeji.tezizai.common.utils.Uploader">
+        <property name="savePath" value="${upload.dir}"/>
+    </bean>
+
+
+</beans>

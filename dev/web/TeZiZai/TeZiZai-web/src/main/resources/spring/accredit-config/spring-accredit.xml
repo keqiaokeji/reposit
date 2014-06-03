@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="accreditCodeCache" class="com.keqiaokeji.tezizai.common.cache.verifycode.AccreditCodeCache">
+        <property name="accreditCodes">
+            <map>
+                <entry key="accredit.code.key.1" value="accredit.code.value.1"/>
+                <entry key="accredit.code.key.2" value="accredit.code.value.2"/>
+                <entry key="accredit.code.key.3" value="accredit.code.value.3"/>
+            </map>
+        </property>
+    </bean>
+</beans>

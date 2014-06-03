@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+
+    <!--解析Annotation注解的配置信息-->
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
+
+
+    <!-- 对包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能,多个包之间用英文逗号隔开 -->
+    <context:component-scan base-package="com.keqiaokeji.tezizai.svc,com.keqiaokeji.tezizai.common">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- 激活@Controller模式，并且指定JSON转换 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="com.keqiaokeji.tezizai.common.utils.FastJsonConverter">
+                <property name="supportedMediaTypes" value="application/json"/>
+                <property name="serializerFeature">
+                    <array>
+                        <value>QuoteFieldNames</value>
+                        <value>WriteNullListAsEmpty</value>
+                    </array>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+
+    <!--视图解析配置开始-->
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver" p:order="1">
+        <!--这里是否忽略掉accept header，默认就是false 因为浏览器的Accept不同 例如     GET /user HTTP/1.1 Accept:application/json-->
+        <property name="ignoreAcceptHeader" value="true"/>
+        <!--如果所有的mediaType都没匹配上，就会使用defaultContentType，没有扩展名时的展现形式-->
+        <property name="defaultContentType" value="text/html"/>
+        <!--这里是是否启用扩展名支持，默认就是true 例如  /user/{userid}.json-->
+        <!--<property name="favorPathExtension" value="false"/>-->
+        <!--这里是是否启用参数支持，默认就是true 例如  /user/{userid}?format=json-->
+        <property name="favorParameter" value="false"/>
+        <!--请求id.xml就得到xml格式的,请求id.json就是json格式的~没有后缀名会根据Accept类型.-->
+        <property name="mediaTypes">
+            <map>
+                <entry key="json" value="application/json"/>
+                <entry key="xml" value="application/xml"/>
+                <entry key="jsp" value="text/html"/>
+                <entry key="do" value="text/html"/>
+                <entry key="html" value="text/html"/>
+            </map>
+        </property>
+
+        <property name="viewResolvers">
+            <list>
+                <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+                <!--默认的视图解析器(默认使用jsp)-->
+                <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+                    <property name="cache" value="true"/>
+                    <property name="contentType" value="text/html;charset=UTF-8"/>
+                    <!--jsp支持JSTL-->
+                    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+                    <!--请求路径的前缀-->
+                    <!--<property name="prefix" value="/view"/>-->
+                    <!--请求路径的后缀-->
+                    <!--<property name="suffix" value=".jsp"/>-->
+                    <property name="requestContextAttribute" value="request"/>
+                </bean>
+            </list>
+        </property>
+        <property name="defaultViews">
+            <list>
+                <bean id="defaultJsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
+            </list>
+        </property>
+    </bean>
+    <!--重定向（即如果当前路径是/ 则重定向到/admin/index）-->
+    <!--<mvc:view-controller path="/" view-name="forward:/admin/index"/>-->
+    <!--视图解析配置结束-->
+
+
+    <!--静态资源过滤配置开始-->
+    <!-- 方案一：静态资源映射 使spring mvc不过滤这些资源 如果不配置则无法访问-->
+    <!--<mvc:resources mapping="/resources/images/**" location="/resources/images/"/>-->
+    <!--<mvc:resources mapping="/resources/css/**" location="/resources/css/"/>-->
+    <!--<mvc:resources mapping="/resources/js/**" location="/resources/js/"/>-->
+    <!--方案二：resources内部的所有资源配置为静态资源-->
+    <!--<mvc:resources mapping="/resources/**" location="/resources/"/>-->
+    <!--方案三：使用默认的Servlet来响应静态文件-->
+    <!--<mvc:default-servlet-handler/>-->
+    <!--静态资源过滤配置结束-->
+
+
+    <!-- 以下为拦截器的配置，将拦截特有的URL请求 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/control/**.do"/>
+            <bean class="com.keqiaokeji.tezizai.svc.interceptor.CheckTokenInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+    <bean class="com.keqiaokeji.tezizai.common.utils.ApplicationContextWrapper"/>
+
+    <!-- 支持上传文件 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+</beans>

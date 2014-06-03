@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="sendAccountInfo" class="com.keqiaokeji.tezizai.common.mail.MailSendAccountInfo">
+        <property name="emailHost" value="${mail.send.account.host}"/>
+        <property name="emailFrom" value="${mail.send.account.from}"/>
+        <property name="emailUserName" value="${mail.send.account.name}"/>
+        <property name="emailPassword" value="${mail.send.account.password}"/>
+    </bean>
+
+    <bean id="mailSendTools" class="com.keqiaokeji.tezizai.common.mail.MailSendTools">
+         <property name="sendAccountInfo" ref="sendAccountInfo"/>
+    </bean>
+
+</beans>

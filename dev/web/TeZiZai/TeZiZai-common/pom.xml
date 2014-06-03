@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>TeZiZai</artifactId>
+        <groupId>com.keqiaokeji.tezizai</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>TeZiZai-common</artifactId>
+    <packaging>jar</packaging>
+    <!--该工程被其它工程引用的时候，版本不能写固定值，需要使用定义的变量-->
+    <version>${com.keqiaokeji.tezizai.common.version}</version>
+
+
+    <name>TeZiZai-common Maven Webapp</name>
+    <url>http://maven.apache.org</url>
+    <dependencies>
+
+    </dependencies>
+
+
+    <build>
+        <finalName>TeZiZai-common</finalName>
+    </build>
+</project>
