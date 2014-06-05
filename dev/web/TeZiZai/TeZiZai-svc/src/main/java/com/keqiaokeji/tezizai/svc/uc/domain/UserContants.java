@@ -12,6 +12,9 @@ public class UserContants {
 
     public static final String STATUS_NORMOR = "STATUS_NORMOR";
     public static final String STATE_FORBIDDEN = "STATE_FORBIDDEN";
+    public static final String STATE_FREEZE = "STATE_FREEZE";
+
+
 
     public static final String SEX_BOG = "SEX_BOG";
     public static final String SEX_GIRL = "SEX_GIRL";

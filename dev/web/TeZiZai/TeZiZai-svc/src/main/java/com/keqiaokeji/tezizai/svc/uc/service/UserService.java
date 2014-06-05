@@ -1,22 +1,26 @@
 package com.keqiaokeji.tezizai.svc.uc.service;
 
-import com.keqiaokeji.tezizai.common.cache.token.TokenCache;
+import com.keqiaokeji.tezizai.common.app.JsonResultContants;
+import com.keqiaokeji.tezizai.common.cache.CacheCtrl;
+import com.keqiaokeji.tezizai.common.cache.token.TokenCtrl;
 import com.keqiaokeji.tezizai.common.character.DesEncrypt;
 import com.keqiaokeji.tezizai.common.character.StringUtils;
 import com.keqiaokeji.tezizai.common.dbmapper.uc.domain.UcUserInfo;
 import com.keqiaokeji.tezizai.common.dbmapper.uc.domain.UcUserInfoExample;
 import com.keqiaokeji.tezizai.common.dbmapper.uc.mapper.UcUserInfoMapper;
+import com.keqiaokeji.tezizai.common.jqgrid.JQGridPage;
 import com.keqiaokeji.tezizai.common.utils.JsonResult;
 import com.keqiaokeji.tezizai.svc.uc.domain.UserContants;
 import com.keqiaokeji.tezizai.svc.uc.domain.UserInfo;
 import com.keqiaokeji.tezizai.svc.uc.mapper.UserInfoMapper;
 import com.keqiaokeji.tezizai.svc.utils.AppContents;
-import com.keqiaokeji.tezizai.svc.utils.JsonResultContants;
 import com.keqiaokeji.tezizai.svc.utils.MailSendUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,13 +30,14 @@ import java.util.List;
 public class UserService {
 
     @Autowired
-    private UcUserInfoMapper ucUserInfoMapper;//程序运行起来之后就没问题了
+    private UcUserInfoMapper ucUserInfoMapper;//该错误提示仅仅在编译器中提示，但不影响程序使用，可以忽略
 
     @Autowired
-    private UserInfoMapper userMapper;
+    private UserInfoMapper userInfoMapper;
+
 
     @Autowired
-    TokenCache tokenCache;
+    CacheCtrl cacheCtrl;
 
     @Autowired
     MailSendUtils mailSendUtils;
@@ -44,14 +49,18 @@ public class UserService {
         UcUserInfo ucUserinfo = login(username, password);
         if (ucUserinfo == null) {
             result = new JsonResult(JsonResultContants.LOGIN_USERNAME_PASSWORD_ERROR, JsonResultContants.LOGIN_USERNAME_PASSWORD_ERROR_MSG);
-        } else if (ucUserinfo.getStatus().equals(JsonResultContants.USER_STATE_FORBIDDEN)) {
+        } else if (ucUserinfo.getStatus().equals(UserContants.STATE_FORBIDDEN)) {
             result = new JsonResult(JsonResultContants.USER_STATE_FORBIDDEN, JsonResultContants.USER_STATE_FORBIDDEN_MSG);
-        } else if (ucUserinfo.getStatus().equals(JsonResultContants.USER_STATE_NORMAL)) {
-            String token = tokenCache.addToken(ucUserinfo.getUserId());
+        } else if (ucUserinfo.getStatus().equals(UserContants.STATE_FREEZE)) {
+            result = new JsonResult(JsonResultContants.USER_STATE_FREEZE, JsonResultContants.USER_STATE_FREEZE_MSG);
+        } else {
+            String token = cacheCtrl.getTokenCtrl().addToken(ucUserinfo);
             result = new JsonResult();
             result.setStatusCode(JsonResultContants.LOGIN_SUCCESS);
             result.setStatusMsg(JsonResultContants.LOGIN_SUCCESS_MSG);
             result.setToken(token);
+            ucUserinfo.setPassword(null);
+            result.setContentToJsonString(ucUserinfo);
         }
         return result;
     }
@@ -131,20 +140,29 @@ public class UserService {
     }
 
 
-    public UcUserInfo getUserInfo(String userId) {
-        return ucUserInfoMapper.selectByPrimaryKey(userId);
-    }
-
-
-    public List<UcUserInfo> getUserInfoList(UcUserInfo ucUserInfo) {
-        UcUserInfoExample example = new UcUserInfoExample();
-        List<UcUserInfo> ucUserInfoList = ucUserInfoMapper.selectByExample(example);
-        return ucUserInfoList;
+    public JQGridPage getUserInfoList(JQGridPage pageJQGrid) {
+        pageJQGrid.initJqGrid();
+        List<UserInfo> userInfoList = userInfoMapper.getUserListJQgrid(pageJQGrid);
+        for (UserInfo user : userInfoList) {
+            user.initUserInfo();
+            user.setPassword(DesEncrypt.decrypt(user.getPassword(), UserContants.PASSWORD_DES));
+        }
+        pageJQGrid.setDataRows(userInfoList);
+        Integer count = userInfoMapper.getUserListCountJQgrid(pageJQGrid);
+        if (count != null) {
+            pageJQGrid.setRecords(count);
+        }
+        return pageJQGrid;
     }
 
 
     public void update(UcUserInfo userInfo) {
-        ucUserInfoMapper.updateByPrimaryKey(userInfo);
+        if (StringUtils.isNotBlank(userInfo.getPassword())) {
+            userInfo.setPassword(DesEncrypt.encrypt(userInfo.getPassword(), UserContants.PASSWORD_DES));
+        }
+        userInfo.setLastModifyTime(new Date().getTime());
+        userInfo.setRecordStatus(AppContents.RECORD_STATUS_UPDATE);
+        ucUserInfoMapper.updateByPrimaryKeySelective(userInfo);
     }
 
 
@@ -155,8 +173,11 @@ public class UserService {
 
     public void add(UcUserInfo userInfo) {
         userInfo.setPassword(DesEncrypt.encrypt(userInfo.getPassword(), UserContants.PASSWORD_DES));
-        userInfo.setStatus(JsonResultContants.USER_STATE_NORMAL);
+        userInfo.setStatus(UserContants.STATUS_NORMOR);
+        userInfo.setRecordStatus(AppContents.RECORD_STATUS_INSERT);
         userInfo.setUserId(StringUtils.getUUID());
+        userInfo.setCreateTime(new Date().getTime());
+        userInfo.setLastModifyTime(new Date().getTime());
         ucUserInfoMapper.insert(userInfo);
     }
 }

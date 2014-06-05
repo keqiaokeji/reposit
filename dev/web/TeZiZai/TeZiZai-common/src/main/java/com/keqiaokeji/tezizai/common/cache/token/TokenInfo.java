@@ -1,5 +1,7 @@
 package com.keqiaokeji.tezizai.common.cache.token;
 
+import com.keqiaokeji.tezizai.common.dbmapper.uc.domain.UcUserInfo;
+
 /**
  * Created with IntelliJ IDEA.
  * User: keqiaokeji
@@ -9,18 +11,18 @@ package com.keqiaokeji.tezizai.common.cache.token;
  */
 public class TokenInfo {
 
-    private String userId;
+    private UcUserInfo ucUserInfo;
 
     private String token;
 
     private Long lastUseTime;
 
-    public String getUserId() {
-        return userId;
+    public UcUserInfo getUcUserInfo() {
+        return ucUserInfo;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUcUserInfo(UcUserInfo ucUserInfo) {
+        this.ucUserInfo = ucUserInfo;
     }
 
     public String getToken() {

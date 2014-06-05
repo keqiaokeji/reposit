@@ -2,9 +2,9 @@ package com.keqiaokeji.tezizai.web.interceptor;
 
 
 import com.alibaba.fastjson.JSON;
-import com.keqiaokeji.tezizai.common.cache.token.TokenCache;
+import com.keqiaokeji.tezizai.common.app.JsonResultContants;
+import com.keqiaokeji.tezizai.common.cache.CacheCtrl;
 import com.keqiaokeji.tezizai.common.utils.JsonResult;
-import com.keqiaokeji.tezizai.web.utils.JsonResultContants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -24,8 +24,7 @@ import java.io.PrintWriter;
 public class CheckTokenInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
-    TokenCache tokenCache;
-
+    CacheCtrl cacheCtrl;
     /**
      * 拦截处理
      *
@@ -42,7 +41,7 @@ public class CheckTokenInterceptor extends HandlerInterceptorAdapter {
         response.setContentType("text/html;charset=UTF-8");
         String token = request.getParameter("token");
         System.out.println("Token 的值为：" + token);
-        if (null == token || !tokenCache.checkTokenTimeOut(token)) {// 未登录或Token过期
+        if (null == token || !cacheCtrl.getTokenCtrl().checkTokenTimeOut(token)) {// 未登录或Token过期
             PrintWriter out = response.getWriter();
             String jsonString = JSON.toJSONString(new JsonResult(JsonResultContants.TOKEN_TIME_OUT, JsonResultContants.TOKEN_TIME_OUT_MSG));
             out.print(jsonString);

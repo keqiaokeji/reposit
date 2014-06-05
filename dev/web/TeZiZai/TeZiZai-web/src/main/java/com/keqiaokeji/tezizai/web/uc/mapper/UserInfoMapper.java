@@ -1,6 +1,6 @@
 package com.keqiaokeji.tezizai.web.uc.mapper;
 
-import com.keqiaokeji.tezizai.common.utils.JQGridPage;
+import com.keqiaokeji.tezizai.common.jqgrid.JQGridPage;
 import com.keqiaokeji.tezizai.web.uc.domain.UserInfo;
 
 import java.util.List;

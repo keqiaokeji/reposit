@@ -16,7 +16,7 @@ jQuery(function ($) {
             $.ajax({
                 type: "get",
                 async: true,//异步，如果等于false 那么就是同步
-                url: app.baseUrl + "/anonymous/uc/loginUserWithVerifyCode.do",
+                url: app.baseUrlSvc + "/anonymous/uc/loginUserWithVerifyCode.do",
                 dataType: "json",
                 data: paramData,
                 success: function (data) {
@@ -43,7 +43,7 @@ jQuery(function ($) {
             app.setTokenToCookie("");
         }
         app.setUserInfoToCookie(content);//将用户信息缓存到cookie中
-        window.location.href = app.baseUrl + "/view/index.jsp";
+        window.location.href = app.baseUrlWeb + "/view/index.jsp";
     }
 
     function checkContent() {
@@ -101,7 +101,7 @@ jQuery(function ($) {
             $.ajax({
                 type: "post",
                 async: true,//异步，如果等于false 那么就是同步
-                url: app.baseUrl + "/anonymous/uc/regUser.do",
+                url: app.baseUrlSvc + "/anonymous/uc/regUser.do",
                 dataType: "json",
                 data: paramData,
                 success: function (data) {
@@ -203,7 +203,7 @@ jQuery(function ($) {
             $.ajax({
                 type: "post",
                 async: true,//异步，如果等于false 那么就是同步
-                url: app.baseUrl + "/anonymous/uc/findPasswordUser.do",
+                url: app.baseUrlSvc + "/anonymous/uc/findPasswordUser.do",
                 dataType: "json",
                 data: paramData,
                 success: function (data) {

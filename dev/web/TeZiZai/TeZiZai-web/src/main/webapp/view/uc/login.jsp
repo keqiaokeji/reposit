@@ -6,49 +6,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <title>用户登录</title>
-    <meta name="keywords" content="用户登录"/>
-    <meta name="description" content="用户登录"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    <!-- basic styles -->
-
-    <link href="<%=path%>/bootstrap/assets/css/bootstrap.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="<%=path%>/bootstrap/assets/css/font-awesome.min.css"/>
-
-    <!--[if IE 7]>
-    <link rel="stylesheet" href="<%=path%>/bootstrap/assets/css/font-awesome-ie7.min.css"/>
-    <![endif]-->
-
-    <!-- page specific plugin styles -->
-
-    <!-- fonts -->
-
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300"/>
-
-    <!-- ace styles -->
-
-    <link rel="stylesheet" href="<%=path%>/bootstrap/assets/css/ace.min.css"/>
-    <link rel="stylesheet" href="<%=path%>/bootstrap/assets/css/ace-rtl.min.css"/>
-
-    <!--[if lte IE 8]>
-    <link rel="stylesheet" href="<%=path%>/bootstrap/assets/css/ace-ie.min.css"/>
-    <![endif]-->
-
-    <!-- inline styles related to this page -->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-
-    <!--[if lt IE 9]>
-    <script src="<%=path%>/bootstrap/assets/js/html5shiv.js"></script>
-    <script src="<%=path%>/bootstrap/assets/js/respond.min.js"></script>
-    <![endif]-->
-
-
-
-    <script src="<%=path%>/resources/js/jquery-1.8.3.min.js"></script>
-    <script src="<%=path%>/resources/js/app.js"></script>
+    <jsp:include page="/view/home/home_head.jsp"/>
 </head>
 
 <body class="login-layout">
@@ -65,7 +24,7 @@
     </h1>
     <h4 class="blue">&copy; 上海易朵信息技术有限公司</h4>
 </div>
-
+  <%--<img src="http://localhost:8082/TeZiZai-svc/anonymous/cache/getVerifyCodeImg.do?codeKey=97224d7fe0014cd6973ad58721f2413a">--%>
 <div class="space-6"></div>
 
 <div class="position-relative">
@@ -339,23 +298,7 @@
 </div>
 <!-- /.main-container -->
 
-<!-- basic scripts -->
-
-<script type="text/javascript">
-    window.jQuery || document.write("<script src='<%=path%>/bootstrap/assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
-</script>
-
-<!-- <![endif]-->
-
-<!--[if IE]>
-<script type="text/javascript">
-    window.jQuery || document.write("<script src='<%=path%>/bootstrap/assets/js/jquery-1.10.2.min.js'>" + "<" + "/script>");
-</script>
-<![endif]-->
-
-<script type="text/javascript">
-    if ("ontouchend" in document) document.write("<script src='<%=path%>/bootstrap/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
-</script>
+<jsp:include page="/view/home/home_compatibility.jsp"/>
 
 <!-- inline scripts related to this page -->
 

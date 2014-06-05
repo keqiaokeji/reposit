@@ -1,22 +1,25 @@
 package com.keqiaokeji.tezizai.web.uc.service;
 
-import com.keqiaokeji.tezizai.common.cache.token.TokenCache;
+import com.keqiaokeji.tezizai.common.app.JsonResultContants;
+import com.keqiaokeji.tezizai.common.cache.CacheCtrl;
+import com.keqiaokeji.tezizai.common.cache.token.TokenCtrl;
 import com.keqiaokeji.tezizai.common.character.DesEncrypt;
 import com.keqiaokeji.tezizai.common.character.StringUtils;
 import com.keqiaokeji.tezizai.common.dbmapper.uc.domain.UcUserInfo;
 import com.keqiaokeji.tezizai.common.dbmapper.uc.domain.UcUserInfoExample;
 import com.keqiaokeji.tezizai.common.dbmapper.uc.mapper.UcUserInfoMapper;
-import com.keqiaokeji.tezizai.common.utils.*;
+import com.keqiaokeji.tezizai.common.jqgrid.JQGridPage;
+import com.keqiaokeji.tezizai.common.utils.JsonResult;
 import com.keqiaokeji.tezizai.web.uc.domain.UserContants;
 import com.keqiaokeji.tezizai.web.uc.domain.UserInfo;
 import com.keqiaokeji.tezizai.web.uc.mapper.UserInfoMapper;
 import com.keqiaokeji.tezizai.web.utils.AppContents;
-import com.keqiaokeji.tezizai.web.utils.JsonResultContants;
 import com.keqiaokeji.tezizai.web.utils.MailSendUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +36,7 @@ public class UserService {
     private UserInfoMapper userInfoMapper;
 
     @Autowired
-    TokenCache tokenCache;
+    CacheCtrl cacheCtrl;
 
     @Autowired
     MailSendUtils mailSendUtils;
@@ -50,7 +53,7 @@ public class UserService {
         } else if (ucUserinfo.getStatus().equals(UserContants.STATE_FREEZE)) {
             result = new JsonResult(JsonResultContants.USER_STATE_FREEZE, JsonResultContants.USER_STATE_FREEZE_MSG);
         } else {
-            String token = tokenCache.addToken(ucUserinfo.getUserId());
+            String token = cacheCtrl.getTokenCtrl().addToken(ucUserinfo);
             result = new JsonResult();
             result.setStatusCode(JsonResultContants.LOGIN_SUCCESS);
             result.setStatusMsg(JsonResultContants.LOGIN_SUCCESS_MSG);

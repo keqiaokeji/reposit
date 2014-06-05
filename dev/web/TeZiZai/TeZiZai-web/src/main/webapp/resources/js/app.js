@@ -1,7 +1,8 @@
 App = function () {//构造函数
     this.tokenKey = "token";
     this.userInfo = "userInfo";
-    this.baseUrl = "http://localhost:8081/TeZiZai-web";
+    this.baseUrlSvc = "http://localhost/TeZiZai-svc";
+    this.baseUrlWeb = "http://localhost/TeZiZai-web";
 
 
 }
@@ -59,7 +60,7 @@ App.prototype = { //定义方法
         $.ajax({
             type: "post",
             async: true,//异步，如果等于false 那么就是同步
-            url: app.baseUrl + "/anonymous/cache/getVerifyCode.do",
+            url: app.baseUrlSvc + "/anonymous/cache/getVerifyCode.do",
             dataType: "json",
             data: paramData,
             success: function (data) {
@@ -87,7 +88,7 @@ App.prototype = { //定义方法
         $.ajax({
             type: "post",
             async: false,//异步，如果等于false 那么就是同步
-            url: app.baseUrl + "/anonymous/cache/checkVerifyCode.do",
+            url: app.baseUrlSvc + "/anonymous/cache/checkVerifyCode.do",
             dataType: "json",
             data: paramData,
             success: function (data) {

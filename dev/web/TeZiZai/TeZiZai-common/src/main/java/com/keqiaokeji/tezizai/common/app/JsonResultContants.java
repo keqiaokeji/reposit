@@ -1,10 +1,13 @@
-package com.keqiaokeji.tezizai.svc.utils;
+package com.keqiaokeji.tezizai.common.app;
 
 /**
  * Created by keqiaokeji on 14-5-19.
  */
 public class JsonResultContants {
 
+
+    public final static String SUCCESS = "SUCCESS";//操作成功
+    public final static String FAIL = "FAIL";//操作失败
 
     public final static String TOKEN_TIME_OUT = "TOKEN_TIME_OUT";
     public final static String TOKEN_TIME_OUT_MSG = "登录信息已经过期，请重新登录！";
@@ -27,8 +30,10 @@ public class JsonResultContants {
     public final static String LOGIN_SUCCESS_MSG = "登录成功！";
 
     public final static String USER_STATE_NORMAL = "USER_STATE_NORMAL";//正常状态
-    public final static String USER_STATE_FORBIDDEN = "USER_STATE_FORBIDDEN";//禁用状态
-    public final static String USER_STATE_FORBIDDEN_MSG = "用户被禁用！";//禁用状态
+    public final static String USER_STATE_FORBIDDEN = "USER_STATE_FORBIDDEN";
+    public final static String USER_STATE_FORBIDDEN_MSG = "用户被禁用！";
+    public final static String USER_STATE_FREEZE = "USER_STATE_FREEZE";
+    public final static String USER_STATE_FREEZE_MSG = "用户被冻结！";
 
     public final static String REG_USERNAME_EXSIT = "REG_USERNAME_EXSIT";
     public final static String REG_USERNAME_EXSIT_MSG = "用户名已经存在！";
