@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.keqiaokeji.tezizai.svc.uc.mapper.CorpInfoMapper">
+    <resultMap id="BaseResultMap" type="com.keqiaokeji.tezizai.svc.uc.domain.CorpInfo">
+        <id column="corp_id" jdbcType="VARCHAR" property="corpId" />
+        <result column="corp_code" jdbcType="VARCHAR" property="corpCode" />
+        <result column="corp_name" jdbcType="VARCHAR" property="corpName" />
+        <result column="status" jdbcType="VARCHAR" property="status" />
+        <result column="record_status" jdbcType="VARCHAR" property="recordStatus" />
+        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+        <result column="create_time" jdbcType="BIGINT" property="createTime" />
+        <result column="last_modify_user_id" jdbcType="VARCHAR" property="lastModifyUserId" />
+        <result column="last_modify_time" jdbcType="BIGINT" property="lastModifyTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        corp_id, corp_code, corp_name, status, record_status, create_user_id, create_time,
+        last_modify_user_id, last_modify_time
+    </sql>
+
+
+    <select id="getCorpListJQgrid" resultMap="BaseResultMap" parameterType="com.keqiaokeji.tezizai.common.jqgrid.JQGridPage">
+        select
+        <include refid="Base_Column_List"/>
+        from uc_corp_info
+        <include refid="jqgrid_filter"/>
+    </select>
+
+
+    <select id="getCorpListCountJQgrid" parameterType="com.keqiaokeji.tezizai.common.jqgrid.JQGridPage"
+            resultType="java.lang.Integer">
+        select count(*) from uc_corp_info
+        <where>
+        <include refid="jqgrid_filter_rules"/>
+        </where>
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <sql id="jqgrid_filter">
+        <where>
+            <include refid="jqgrid_filter_rules"/>
+        </where>
+        order by
+        <choose>
+            <when test="sidx != null and sidx != '' and sord != null and sord != ''">
+                ${sidx} ${sord}
+            </when>
+            <otherwise>
+                last_modify_time desc
+            </otherwise>
+        </choose>
+        <if test="pageFirst != null">
+            limit #{rows}
+        </if>
+        offset #{pageFirst}
+    </sql>
+
+    <sql id="jqgrid_filter_rules">
+        <if test="jqGridFilter != null">
+            1=1
+            <foreach collection="jqGridFilter.rules" item="rule">
+                ${jqGridFilter.groupOp} ${rule.field}
+                <if test="rule.op == 'eq'">
+                    = #{rule.data}
+                </if>
+                <if test="rule.op == 'ne'">
+                    != #{rule.data}
+                </if>
+                <if test="rule.op == 'in'">
+                    <![CDATA[>]]> #{rule.data}
+                </if>
+                <if test="rule.op == 'ni'">
+                    <![CDATA[<]]> #{rule.data}
+                </if>
+                <if test="rule.op == 'cn'">
+                    like CONCAT('%',#{rule.data},'%')
+                </if>
+                <if test="rule.op == 'nc'">
+                    not like CONCAT('%',#{rule.data},'%')
+                </if>
+            </foreach>
+        </if>
+    </sql>
+</mapper>

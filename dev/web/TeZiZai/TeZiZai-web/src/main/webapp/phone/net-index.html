@@ -1,0 +1,211 @@
+
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="keywords" content="点餐系统" />
+    <meta name="description" content="点餐系统" />
+    <title>点餐系统</title>
+    <script type="text/javascript" name="baidu-tc-cerfication" src="../apps.bdimg.com/cloudaapi/lightapp.js#966e3f849a0d64459e97eeb81059f5da"></script> <script type="text/javascript">window.bd && bd._qdc && bd._qdc.init({app_id: '0254b5748d6049bce60ed9fa'});</script>
+    <script type="text/javascript">window.bd && bd._qdc && bd._qdc.init({app_id: '7c8da0082524433bf1c2e057'});</script>
+    <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1; user-scalable=0;" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-app-status-bar-style" content="white" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="copyright" content="Copyright (c) 2007-2014 juooo" />
+    <!--<link rel="stylesheet" type="text/css" href="http://www.lanrenmb.com/wap/304/public/css/style-min.css?v1.2.32">-->
+    <!--<link rel="stylesheet" type="text/css" href="http://www.lanrenmb.com/wap/304/public/css/alert.css?v1.6">-->
+
+    <!--<script src="http://www.lanrenmb.com/wap/304/public/js/jquery-1.7.1.min.js"></script>-->
+    <!--<script src="http://www.lanrenmb.com/wap/304/public/js/TouchSlide.1.1.js"></script>-->
+    <!--<script src="http://www.lanrenmb.com/wap/304/public/js/jquery.lazyload.mini.js"></script>-->
+    <!--<script src="http://www.lanrenmb.com/wap/304/public/js/base.js?v1.2"></script>-->
+    <!--<script src="http://www.lanrenmb.com/wap/304/public/js/juooostatistics.js"></script>-->
+
+    <link rel="stylesheet" type="text/css" href="resources/css/style-min.css?v1.2.32">
+    <link rel="stylesheet" type="text/css" href="resources/css/alert.css?v1.6">
+
+    <script src="resources/js/jquery-1.7.1.min.js"></script>
+    <script src="resources/js/TouchSlide.1.1.js"></script>
+    <script src="resources/js/jquery.lazyload.mini.js"></script>
+    <script src="resources/js/base.js?v1.2"></script>
+    <script src="resources/js/juooostatistics.js"></script>
+
+    <script src="resources/js/jquery.tipswindow-2.2.js"></script>
+</head>
+
+
+
+<body ontouchmove="check_move()">
+<script>
+    function check_move(){
+        if($(".juMenu").hasClass('juMenuPay')) {
+            $(".juMenu").removeClass('juMenuPay');
+        }
+    }
+</script>
+
+<div id="loadingBj"></div>
+<div class="ajaxLoad">
+    <span class="loading"><em class="loading-em"></em></span>
+    <span class="loading-color">努力加载中...</span>
+    <script>
+        $(window).load(function(){
+            if($("#loadingBj") && $(".ajaxLoad")){
+                $("#loadingBj").hide();
+                $(".ajaxLoad").hide();
+            }
+        })
+        $(function() {
+            $(".cate_main img").lazyload({
+                placeholder : "http://www.lanrenmb.com/wap/304/public/image/bank.png",
+                //container : ".tg_coun",
+                effect : "fadeIn"
+            });
+        });
+    </script>
+</div>
+
+<div class="g-hd">
+    <h1 class="sp logo"></h1>
+</div>
+
+
+
+
+<div class="g-mn">
+    <div id="slideBox" class="m-slide">
+        <div class="bd">
+            <ul>
+                <li>
+                    <a href="index.php/ticket.html">
+                        <img   src="http://www.juooo.com/uploads/bntop/20140409150326873.jpg"/>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.php/ticket?sid=13633&city_id=1&venue_id=100">
+                        <img   src="http://www.juooo.com/uploads/bntop/2014050515504920.jpg"/>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)">
+                        <img   src="http://www.juooo.com/uploads/bntop/20140328203152438.jpg"/>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.php/ticket?sid=13214&city_id=1&venue_id=115">
+                        <img   src="http://www.juooo.com/uploads/bntop/20140320172800989.jpg"/>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="hd">
+            <ul></ul>
+        </div>
+    </div>
+
+    <!--广告图片效果-->
+    <script type="text/javascript">
+        TouchSlide({
+            slideCell:"#slideBox",
+            titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+            mainCell:".bd ul",
+            effect:"leftLoop",
+            autoPage:true,//自动分页
+            autoPlay:true //自动播放
+        });
+    </script>
+</div>
+
+
+
+<div class="search_bar">
+    <div class="search_key">
+	      <span class="c">
+	      	<input onfocus="if(value=='请输入菜单名称搜索...') {value=''}" onblur="if (value=='') {value='请输入菜单名称搜索...'}" value="请输入菜单名称搜索..." type="text" class="text" name="word">
+	      </span>
+    </div>
+    <a href="javascript:;" class="search_btn"><i class="icon_txt gs-btn"></i></a>
+    <script>
+        $(function(){
+            $(".search_btn").click(function(){
+                var word = $('input[name="word"]').val();
+                if(word=="请输入菜单名称搜索..." || word==""){
+                    alert("请输入菜单名称搜索...");
+                    return false;
+                }
+                window.location.href=""+"http://www.lanrenmb.com/wap/304/index.php/search/search?word="+escape(word);
+            })
+        })
+    </script>
+
+</div>
+
+
+<nav class="g-nav cf">
+    <ul>
+        <li class="nav01"><a href="list.html"><div class="AppFonts"><IMG SRC="http://www.lanrenmb.com/wap/304/1.PNG"></div>流行音乐</a></li>
+        <li class="nav02"><a href="list.html"><div class="AppFonts"><IMG SRC="http://www.lanrenmb.com/wap/304/2.PNG"></div>古典音乐</a></li>
+        <li class="nav03"><a href="list.html"><div class="AppFonts"><IMG SRC="http://www.lanrenmb.com/wap/304/3.PNG"></div>舞台剧</a></li>
+        <li class="nav04"><a href="list.html"><div class="AppFonts"><IMG SRC="http://www.lanrenmb.com/wap/304/4.PNG"></div>儿童亲子</a></li>
+    </ul>
+</nav>
+<nav class="g-nav cf">
+    <ul>
+        <li class="nav01"><a href="list.html"><div class="AppFonts"><IMG SRC="http://www.lanrenmb.com/wap/304/1.PNG"></div>流行音乐</a></li>
+        <li class="nav02"><a href="list.html"><div class="AppFonts"><IMG SRC="http://www.lanrenmb.com/wap/304/2.PNG"></div>古典音乐</a></li>
+        <li class="nav03"><a href="list.html"><div class="AppFonts"><IMG SRC="http://www.lanrenmb.com/wap/304/3.PNG"></div>舞台剧</a></li>
+        <li class="nav04"><a href="list.html"><div class="AppFonts"><IMG SRC="http://www.lanrenmb.com/wap/304/4.PNG"></div>儿童亲子</a></li>
+    </ul>
+</nav>
+
+
+
+<div class="warp">
+
+<div class="foot-menu">
+    <a href="#" class="myjuo"><i class="sp"></i>我的聚橙</a>
+    <a href="#" class="atte"><i class="sp"></i>关注聚橙</a>
+</div>
+
+<div class="tel"><a href="tel_3A4001858666"><i class="fontIcon fa-phone"></i>电话:400-185-8666</a></div>
+<div class="juMenu">
+    <div class="t">
+        <div class="ju_logo" onclick="check_footer(this)"></div>
+    </div>
+    <div class="juMenu_list">
+        <ul>
+            <li class="nav01"><a href="list.html"><i class="AppFonts">&#xf00e9;</i>最近浏览</a></li>
+            <li class="nav02"><a href="list.html"><i class="ui-iconfont">&#508;</i>我的订单</a>
+        </ul>
+        <ul>
+            <li class="nav03"><a href="#"><i class="ui-iconfont">&#336;</i><span class="txt">首页</span></a></li>
+            <li class="nav04"><a href="#"><i class="ui-iconfont">&#430;</i>返回顶部</a></li>
+        </ul>
+    </div>
+</div>
+
+
+
+<script>
+    /**
+     * 底部
+     * ?param  {[type]} obj [description]
+     * ?return {[type]}     [description]
+     */
+    function check_footer(obj) {
+        if($(".juMenu").hasClass('juMenuPay')) {
+            $(".juMenu").removeClass('juMenuPay');
+        } else {
+            $(".juMenu").addClass('juMenuPay');
+        }
+    }
+</script>
+
+
+</div>
+</body>
+</html>
+

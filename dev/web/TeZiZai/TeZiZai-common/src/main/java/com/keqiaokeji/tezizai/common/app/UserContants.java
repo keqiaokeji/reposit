@@ -1,4 +1,4 @@
-package com.keqiaokeji.tezizai.web.uc.domain;
+package com.keqiaokeji.tezizai.common.app;
 
 /**
  * Created by keqiaokeji on 14-5-25.

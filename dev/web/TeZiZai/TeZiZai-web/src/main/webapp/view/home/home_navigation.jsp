@@ -5,14 +5,17 @@
     final String MENU_HOME_TEXT = "控制台",
             MENU_CALENDAR_TEXT = "日历",
             MENU_GALLERY_TEXT = "相册",
-            MENU_USER_TEXT = "用户管理", MENU_USER_INFO_TEXT = "用户信息", MENU_USER_LIST_TEXT = "用户列表",MENU_CORP_LIST_TEXT = "公司列表",
-            MENU_BUG_TEXT = "Bug管理", MENU_BUG_PROJECTCTRL_TEXT = "项目管理", MENU_BUG_INFOADD_TEXT = "添加Bug信息", MENU_BUG_INFOLIST_TEXT = "我的Bug";
+            MENU_USER_TEXT = "用户管理", MENU_USER_INFO_TEXT = "用户信息", MENU_USER_LIST_TEXT = "用户列表",
+            MENU_CORP_TEXT = "公司管理", MENU_CORP_LIST_TEXT = "公司列表",
+            MENU_MENU_TEXT = "菜单管理", MENU_MENU_TYPE_LIST_TEXT = "菜单分类列表", MENU_MENU_INFO_LIST_TEXT = "菜单列表";
 
     final String MENU_HOME = "menu_home",
             MENU_CALENDAR = "menu_calendar",
             MENU_GALLERY = "menu_gallery",
-            MENU_USER = "menu_user", MENU_USER_INFO = "menu_user_info", MENU_USER_LIST = "menu_user_list", MENU_CORP_LIST = "menu_corp_list",
-            MENU_BUG = "menu_bug", MENU_BUG_PROJECTCTRL = "menu_bug_ProjectCtrl", MENU_BUG_INFOADD = "menu_bug_InfoAdd", MENU_BUG_INFOLIST = "menu_bug_InfoList";
+            MENU_USER = "menu_user", MENU_USER_INFO = "menu_user_info", MENU_USER_LIST = "menu_user_list",
+            MENU_CORP = "menu_corp", MENU_CORP_LIST = "menu_corp_list",
+            MENU_MENU = "menu_menu", MENU_MENU_TYPE_LIST = "menu_menu_type_list", MENU_MENU_INFO_LIST = "menu_menu_info_list";
+
     String currentMenu = MENU_HOME;
     final String CURRENT_MENU_KEY = "currentMenu";
     if (request.getParameter(CURRENT_MENU_KEY) != null) {
@@ -93,6 +96,18 @@
                     </a>
                 </li>
 
+            </ul>
+        </li>
+
+        <li <% if (currentMenu.startsWith(MENU_CORP)) { %>class="active open" <%} %> >
+            <a href="#" class="dropdown-toggle">
+                <i class="icon-list"></i>
+                <span class="menu-text"> <%=MENU_CORP_TEXT%> </span>
+
+                <b class="arrow icon-angle-down"></b>
+            </a>
+
+            <ul class="submenu">
                 <li <% if (currentMenu.equalsIgnoreCase(MENU_CORP_LIST)) { %> class="active" <%} %> >
                     <a href="<%=path%>/view/uc/uc_corp_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_CORP_LIST%>">
                         <i class="icon-double-angle-right"></i>
@@ -104,38 +119,33 @@
             </ul>
         </li>
 
-        <li <% if (currentMenu.startsWith(MENU_BUG)) { %>class="active open" <%} %> >
+        <li <% if (currentMenu.startsWith(MENU_MENU)) { %>class="active open" <%} %> >
             <a href="#" class="dropdown-toggle">
-                <i class="icon-list"></i>
-                <span class="menu-text"> <%=MENU_BUG_TEXT%> </span>
+                <i class="icon-food"></i>
+                <span class="menu-text"> <%=MENU_MENU_TEXT%> </span>
 
                 <b class="arrow icon-angle-down"></b>
             </a>
 
             <ul class="submenu">
-                <li <% if (currentMenu.equalsIgnoreCase(MENU_BUG_PROJECTCTRL)) { %> class="active" <%} %> >
-                    <a href="<%=path%>/view/project/bug_project_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_BUG_PROJECTCTRL%>">
+                <li <% if (currentMenu.equalsIgnoreCase(MENU_MENU_TYPE_LIST)) { %> class="active" <%} %> >
+                    <a href="<%=path%>/view/uc/uc_corp_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_MENU_TYPE_LIST%>">
                         <i class="icon-double-angle-right"></i>
-                        <%=MENU_BUG_PROJECTCTRL_TEXT%>
+                        <%=MENU_MENU_TYPE_LIST_TEXT%>
                     </a>
                 </li>
 
-                <li <% if (currentMenu.equalsIgnoreCase(MENU_BUG_INFOADD)) { %> class="active" <%} %> >
-                    <a href="<%=path%>/view/project/bug_info_add.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_BUG_INFOADD%>">
+                <li <% if (currentMenu.equalsIgnoreCase(MENU_MENU_INFO_LIST)) { %> class="active" <%} %> >
+                    <a href="<%=path%>/view/uc/uc_corp_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_MENU_INFO_LIST%>">
                         <i class="icon-double-angle-right"></i>
-                        <%=MENU_BUG_INFOADD_TEXT%>
+                        <%=MENU_MENU_INFO_LIST_TEXT%>
                     </a>
                 </li>
 
-                <li <% if (currentMenu.equalsIgnoreCase(MENU_BUG_INFOLIST)) { %> class="active" <%} %> >
-                    <a href="<%=path%>/view/project/bug_info_list.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_BUG_INFOLIST%>">
-                        <i class="icon-double-angle-right"></i>
-                        <%=MENU_BUG_INFOLIST_TEXT%>
-                    </a>
-                </li>
 
             </ul>
         </li>
+
 
 
         <li <% if (currentMenu.equalsIgnoreCase(MENU_CALENDAR)) { %> class="active" <%} %> >
@@ -221,24 +231,26 @@
             </li>
             <%} %>
 
-            <% if (currentMenu.equalsIgnoreCase(MENU_BUG_INFOADD)) { %>
-            <li><%=MENU_BUG_TEXT%>
+
+            <% if (currentMenu.equalsIgnoreCase(MENU_CORP_LIST)) { %>
+            <li><%=MENU_USER_TEXT%>
             </li>
-            <li class="active"><%=MENU_BUG_INFOADD_TEXT%>
+            <li class="active"><%=MENU_CORP_LIST_TEXT%>
             </li>
             <%} %>
 
-            <% if (currentMenu.equalsIgnoreCase(MENU_BUG_INFOLIST)) { %>
-            <li><%=MENU_BUG_TEXT%>
+
+            <% if (currentMenu.equalsIgnoreCase(MENU_MENU_TYPE_LIST)) { %>
+            <li><%=MENU_MENU_TEXT%>
             </li>
-            <li class="active"><%=MENU_BUG_INFOLIST_TEXT%>
+            <li class="active"><%=MENU_MENU_TYPE_LIST_TEXT%>
             </li>
             <%} %>
 
-            <% if (currentMenu.equalsIgnoreCase(MENU_BUG_PROJECTCTRL)) { %>
-            <li><%=MENU_BUG_TEXT%>
+            <% if (currentMenu.equalsIgnoreCase(MENU_MENU_INFO_LIST)) { %>
+            <li><%=MENU_MENU_TEXT%>
             </li>
-            <li class="active"><%=MENU_BUG_PROJECTCTRL_TEXT%>
+            <li class="active"><%=MENU_MENU_INFO_LIST_TEXT%>
             </li>
             <%} %>
 
@@ -283,19 +295,20 @@
                 <%=MENU_USER_LIST_TEXT%>
                 <%} %>
 
-                <% if (currentMenu.equalsIgnoreCase(MENU_BUG_INFOADD)) { %>
-                <%=MENU_BUG_INFOADD_TEXT%>
+                <% if (currentMenu.equalsIgnoreCase(MENU_CORP_LIST)) { %>
+                <%=MENU_CORP_LIST_TEXT%>
                 <%} %>
 
-                <% if (currentMenu.equalsIgnoreCase(MENU_BUG_INFOLIST)) { %>
-                <%=MENU_BUG_INFOLIST_TEXT%>
+                <% if (currentMenu.equalsIgnoreCase(MENU_MENU_TYPE_LIST)) { %>
+                <%=MENU_MENU_TYPE_LIST_TEXT%>
                 <%} %>
 
-                <% if (currentMenu.equalsIgnoreCase(MENU_BUG_PROJECTCTRL)) { %>
-                <%=MENU_BUG_PROJECTCTRL_TEXT%>
+                <% if (currentMenu.equalsIgnoreCase(MENU_MENU_INFO_LIST)) { %>
+                <%=MENU_MENU_INFO_LIST_TEXT%>
                 <%} %>
+
             </h1>
         </div>
         <!-- /.page-header -->
-<%--最后的一个编译器异常提示不需要处理，因为该页面属于部分页面，有部分标签需要和引入该页面的父页面做对接，所以暂不需要结束--%>
+        <%--最后的一个编译器异常提示不需要处理，因为该页面属于部分页面，有部分标签需要和引入该页面的父页面做对接，所以暂不需要结束--%>
 

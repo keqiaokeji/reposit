@@ -24,7 +24,6 @@
     </h1>
     <h4 class="blue">&copy; 上海易朵信息技术有限公司</h4>
 </div>
-  <%--<img src="http://localhost:8082/TeZiZai-svc/anonymous/cache/getVerifyCodeImg.do?codeKey=97224d7fe0014cd6973ad58721f2413a">--%>
 <div class="space-6"></div>
 
 <div class="position-relative">
@@ -80,13 +79,11 @@
                             <span class="lbl"> 记住密码</span>
                         </label>
 
-                        <%--<a href="<%=path%>/bootstrap/view/index.jsp">--%>
                         <button id="loginBtn" name="loginBtn" type="button"
                                 class="width-35 pull-right btn btn-sm btn-primary">
                             <i class="icon-key"></i>
                             登录
                         </button>
-                        <%--</a>--%>
                     </div>
 
                     <div class="space-4"></div>

@@ -91,8 +91,8 @@ jQuery(function ($) {
         mtype: "POST",//请求的类型：(“POST” or “GET”)	默认GET
         datatype: "json",//表格可以被接受的数据类型：xml，xmlstring，json，local，function
         jsonReader: {root: "dataRows", id: "userId"},//root:设置记录集的属性名称，id:设置主键的属性名称
-        editurl: "<%=path%>/admin/uc/editUserInfo.do",//定义对form编辑时的url（增删改的时候使用）
-        url: "<%=path%>/admin/uc/getUserList.do",
+        editurl: app.baseUrlSvc + "/admin/uc/editUserInfo.do",//定义对form编辑时的url（增删改的时候使用）
+        url: app.baseUrlSvc + "/admin/uc/getUserList.do",
         rowNum: 10,
         rowList: [10, 20, 30],
         pager: pager_selector,
@@ -252,7 +252,7 @@ jQuery(function ($) {
             }
     );
 
-     function beforeDeleteCallback(e) {
+    function beforeDeleteCallback(e) {
         var form = $(e[0]);
         if (form.data('styled')) return false;
         form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />');
@@ -284,8 +284,6 @@ jQuery(function ($) {
         buttons.eq(0).append('<i class="icon-chevron-left"></i>');
         buttons.eq(1).append('<i class="icon-chevron-right"></i>');
     }
-
-
 
 
 });
