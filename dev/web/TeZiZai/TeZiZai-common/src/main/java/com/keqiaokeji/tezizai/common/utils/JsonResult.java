@@ -1,19 +1,22 @@
 package com.keqiaokeji.tezizai.common.utils;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
- * @author: Ivan Vigoss
- * Date: 13-11-21
- * Time: PM4:58
+ * 服务端返回信息类型
+ * @param <T>
  */
-public class JsonResult {
+public class JsonResult<T> {
 
     private String statusCode;
 
     private String statusMsg;
 
     private String content;
+
+    private List<T> result = new ArrayList<T>();
 
     private String token;
 
@@ -33,16 +36,42 @@ public class JsonResult {
         this.content = content;
     }
 
+    /**
+     * 将结果集封装到集合中
+     * @param obj
+     */
+    public void addResult(T obj) {
+        result.add(obj);
+    }
+
+    /**
+     * 取出集合中的第一个结果集
+     * @return
+     */
+    public T getResultFirst() {
+        if (result.size() > 0) {
+            return result.get(0);
+        } else {
+            return null;
+        }
+    }
+
+
+    public List<T> getResult() {
+        return result;
+    }
+
+    public void setResult(List<T> result) {
+        this.result = result;
+    }
+
     public void setContentToJsonString(Object object) {
         this.content = JsonUtils.toJSONString(object);
     }
 
-    public <T> T getContentObject(Class<T> clazz){
-          return JsonUtils.parseObject(this.content, clazz);
+    public <T> T getContentObject(Class<T> clazz) {
+        return JsonUtils.parseObject(this.content, clazz);
     }
-
-
-
 
 
     public String getStatusCode() {

@@ -1,14 +1,9 @@
-package com.keqiaokeji.tezizai.svc.uc.domain;
+package com.keqiaokeji.tezizai.svc.mc.domain;
 
-import com.keqiaokeji.tezizai.common.dbmapper.uc.domain.UcCorpInfo;
+import com.keqiaokeji.tezizai.common.dbmapper.mc.domain.McMenuTypeInfo;
 import com.keqiaokeji.tezizai.svc.utils.CommonDomain;
 
-/**
- * @author: Ivan Vigoss
- * Date: 14-2-20
- * Time: AM11:11
- */
-public class CorpInfo extends UcCorpInfo implements CommonDomain{
+public class MenuTypeInfo extends McMenuTypeInfo implements CommonDomain {
 
     private String Id;
 

@@ -70,7 +70,8 @@
 <!-- page specific plugin scripts -->
 
 <script src="<%=path%>/bootstrap/assets/js/date-time/bootstrap-datepicker.min.js"></script>
-<script src="<%=path%>/bootstrap/assets/js/jqGrid/jquery.jqGrid.min.js"></script>
+<script src="<%=path%>/bootstrap/assets/js/jqGrid/jquery.jqGrid.js"></script>
+<%--<script src="<%=path%>/bootstrap/assets/js/jqGrid/jquery.jqGrid.min.js"></script>--%>
 <script src="<%=path%>/bootstrap/assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
 
 <!-- ace scripts -->
@@ -86,16 +87,18 @@ jQuery(function ($) {
     var grid_selector = "#grid-table";
     var pager_selector = "#grid-pager";
 
+
     jQuery(grid_selector).jqGrid({
         //direction: "rtl",
         mtype: "POST",//请求的类型：(“POST” or “GET”)	默认GET
         datatype: "json",//表格可以被接受的数据类型：xml，xmlstring，json，local，function
         jsonReader: {root: "dataRows", id: "userId"},//root:设置记录集的属性名称，id:设置主键的属性名称
         editurl: app.baseUrlSvc + "/admin/uc/editUserInfo.do",//定义对form编辑时的url（增删改的时候使用）
-        url: app.baseUrlSvc + "/admin/uc/getUserList.do",
+        url: app.baseUrlSvc + "/admin/uc/getUserInfoList.do",
         rowNum: 10,
         rowList: [10, 20, 30],
         pager: pager_selector,
+
 
         altRows: true,
         caption: "用户信息维护",
@@ -106,16 +109,16 @@ jQuery(function ($) {
             {name: 'myac', index: 'myac', width: 80, fixed: true, sortable: false, resize: false, search: false,
                 formatter: 'actions',
                 formatoptions: {
-                    keys: true,
+                    keys: true,//如果是true则可以通过点击Enter键保存
                     delOptions: {recreateForm: true, beforeShowForm: beforeDeleteCallback}
-                    //editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
+//                    editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
                 }
             },
             {name: 'userId', index: 'userId', hidden: true},
             {name: 'username', index: 'username', width: 100, editable: true, editoptions: {size: "20", maxlength: "30"}},
             {name: 'password', index: 'password', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
             {name: 'email', index: 'email', width: 150, editable: true, editoptions: {size: "20", maxlength: "50"}},
-            {name: 'mobilePhone', index: 'mobile_phone', width: 100, editable: true, editoptions: {size: "20", maxlength: "30"}},
+            {name: 'mobilePhone', index: 'mobile_phone', width: 100, editable: true, editoptions: {size: "11", maxlength: "11"}, editrules: {custom: true, custom_func: mobilePhoneCheck} },
             {name: 'birthdayContent', index: 'birthday', width: 90, editable: true, search: false, sortable: true, type: "date", unformat: EditBirthday},
             {name: 'sex', index: 'sex', width: 70, editable: true, edittype: "checkbox", search: false, editoptions: {value: "帅哥:美女"}, unformat: aceSwitch},
             {name: 'status', index: 'status', width: 90, editable: true, edittype: "select", search: false, formatter: formartStatus, editoptions: {value: "STATUS_NORMOR:正常;STATE_FORBIDDEN:禁用;STATE_FREEZE:冻结"}},
@@ -123,13 +126,12 @@ jQuery(function ($) {
         ],
 
 
-        //toppager: true,
-
+//        toppager: true,
         multiselect: true,
         //multikey: "ctrlKey",
         multiboxonly: true,
 
-        loadComplete: function () {
+        loadComplete: function () {//数据加载完成之后调用
             var table = this;
             setTimeout(function () {
                 appJqgrid.styleCheckbox(table);
@@ -171,10 +173,23 @@ jQuery(function ($) {
         return status;
     }
 
+    //显示值的时候做格式化处理
     function formartCreateTime(cellValue, options, cell) {
         return new Date(cellValue).format("yyyy-MM-dd hh:mm:ss");
     }
 
+    //新增或修改时提交之前进行验证
+    function mobilePhoneCheck(value, colname) {
+//      return [false, "Please enter value between 0 and 20"];
+        return [true, ""];
+    }
+
+    var fn_editSubmit = function (response, postdata) {
+        var json = response.responseText;
+        if(!app.isEmpty(json)){
+            return [false, json];
+        }
+    }
 
     //navButtons
     jQuery(grid_selector).jqGrid('navGrid', pager_selector,
@@ -194,14 +209,16 @@ jQuery(function ($) {
             },
             {
                 //edit record form
-                //closeAfterEdit: true,
+                closeAfterEdit: true,
                 recreateForm: true,
+                afterSubmit: fn_editSubmit,
                 beforeShowForm: function (e) {
                     var form = $(e[0]);
                     form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />');
                     style_edit_form(form);
                 }
-            },
+            }
+            ,
             {
                 //new record form
                 closeAfterAdd: true,

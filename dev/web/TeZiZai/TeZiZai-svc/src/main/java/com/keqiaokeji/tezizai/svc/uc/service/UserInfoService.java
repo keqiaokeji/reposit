@@ -24,8 +24,8 @@ import java.util.List;
 /**
  * 用户操作实现类
  */
-@Service("userService")
-public class UserService {
+@Service("userInfoService")
+public class UserInfoService {
 
     @Autowired
     private UcUserInfoMapper ucUserInfoMapper;//该错误提示仅仅在编译器中提示，但不影响程序使用，可以忽略
@@ -40,7 +40,7 @@ public class UserService {
     @Autowired
     MailSendUtils mailSendUtils;
 
-    Logger logger = Logger.getLogger(UserService.class.getName());
+    Logger logger = Logger.getLogger(UserInfoService.class.getName());
 
     public JsonResult loginUser(String username, String password) {
         JsonResult result = null;
@@ -138,15 +138,15 @@ public class UserService {
     }
 
 
-    public JQGridPage getUserInfoList(JQGridPage pageJQGrid) {
+    public JQGridPage getListByJQgrid(JQGridPage pageJQGrid) {
         pageJQGrid.initJqGrid();
-        List<UserInfo> userInfoList = userInfoMapper.getUserListJQgrid(pageJQGrid);
+        List<UserInfo> userInfoList = userInfoMapper.getListByJQgrid(pageJQGrid);
         for (UserInfo user : userInfoList) {
-            user.initUserInfo();
+            user.init();
             user.setPassword(DesEncrypt.decrypt(user.getPassword(), UserContants.PASSWORD_DES));
         }
         pageJQGrid.setDataRows(userInfoList);
-        Integer count = userInfoMapper.getUserListCountJQgrid(pageJQGrid);
+        Integer count = userInfoMapper.geListCountByJQgrid(pageJQGrid);
         if (count != null) {
             pageJQGrid.setRecords(count);
         }

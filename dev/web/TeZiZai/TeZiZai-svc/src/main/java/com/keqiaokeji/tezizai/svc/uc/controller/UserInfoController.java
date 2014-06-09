@@ -6,21 +6,24 @@ import com.keqiaokeji.tezizai.common.jqgrid.JQGridContants;
 import com.keqiaokeji.tezizai.common.jqgrid.JQGridPage;
 import com.keqiaokeji.tezizai.common.utils.JsonResult;
 import com.keqiaokeji.tezizai.svc.uc.domain.UserInfo;
-import com.keqiaokeji.tezizai.svc.uc.service.UserService;
+import com.keqiaokeji.tezizai.svc.uc.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 
 
 /**
  * 用户管理
  */
 @Controller//声明为控制器（使用Controller将该类标记为spring mvc解析的类，类似Struts中的Action）
-public class UserController {
+public class UserInfoController {
 
     @Autowired
-    UserService userService;
+    UserInfoService userService;
 
     @Autowired
     CacheCtrl cacheCtrl;
@@ -77,26 +80,36 @@ public class UserController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/admin/uc/getUserList")
-    public JQGridPage getUserList(JQGridPage pageJQGrid) {
-        return userService.getUserInfoList(pageJQGrid);
+    @RequestMapping(value = "/admin/uc/getUserInfoList")
+    public JQGridPage getUserInfoList(JQGridPage pageJQGrid) {
+        return userService.getListByJQgrid(pageJQGrid);
     }
 
     @ResponseBody
     @RequestMapping(value = "/admin/uc/editUserInfo")
-    public void editUserInfo(UserInfo userInfo) {
+    public void editUserInfo(UserInfo userInfo, HttpServletResponse response) {
+        String result = null;
         if (userInfo.getOper().equals(JQGridContants.EDIT_OPER_ADD)) {
             userService.add(userInfo);
         } else if (userInfo.getOper().equals(JQGridContants.EDIT_OPER_UPDATE)) {
             userInfo.setUserId(userInfo.getId());
             userService.update(userInfo);
+            result = "用户名已经存在！";
         } else if (userInfo.getOper().equals(JQGridContants.EDIT_OPER_DEL)) {
             String[] ids = userInfo.getId().split(",");
             for (String id : ids) {
                 userService.delete(id);
             }
         }
+        if (result != null) {
+            response.setContentType("text/json; charset=UTF-8");
+            try {
+                PrintWriter out = response.getWriter();
+                out.print(result);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
-
 
 }

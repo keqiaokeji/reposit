@@ -90,7 +90,7 @@
                 </li>
 
                 <li <% if (currentMenu.equalsIgnoreCase(MENU_USER_LIST)) { %> class="active" <%} %> >
-                    <a href="<%=path%>/view/uc/uc_user_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_USER_LIST%>">
+                    <a href="<%=path%>/view/uc/user_info_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_USER_LIST%>">
                         <i class="icon-double-angle-right"></i>
                         <%=MENU_USER_LIST_TEXT%>
                     </a>
@@ -109,7 +109,7 @@
 
             <ul class="submenu">
                 <li <% if (currentMenu.equalsIgnoreCase(MENU_CORP_LIST)) { %> class="active" <%} %> >
-                    <a href="<%=path%>/view/uc/uc_corp_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_CORP_LIST%>">
+                    <a href="<%=path%>/view/uc/corp_info_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_CORP_LIST%>">
                         <i class="icon-double-angle-right"></i>
                         <%=MENU_CORP_LIST_TEXT%>
                     </a>
@@ -129,14 +129,14 @@
 
             <ul class="submenu">
                 <li <% if (currentMenu.equalsIgnoreCase(MENU_MENU_TYPE_LIST)) { %> class="active" <%} %> >
-                    <a href="<%=path%>/view/uc/uc_corp_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_MENU_TYPE_LIST%>">
+                    <a href="<%=path%>/view/uc/corp_info_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_MENU_TYPE_LIST%>">
                         <i class="icon-double-angle-right"></i>
                         <%=MENU_MENU_TYPE_LIST_TEXT%>
                     </a>
                 </li>
 
                 <li <% if (currentMenu.equalsIgnoreCase(MENU_MENU_INFO_LIST)) { %> class="active" <%} %> >
-                    <a href="<%=path%>/view/uc/uc_corp_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_MENU_INFO_LIST%>">
+                    <a href="<%=path%>/view/uc/corp_info_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_MENU_INFO_LIST%>">
                         <i class="icon-double-angle-right"></i>
                         <%=MENU_MENU_INFO_LIST_TEXT%>
                     </a>

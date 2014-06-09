@@ -2,6 +2,7 @@ package com.keqiaokeji.tezizai.svc.uc.domain;
 
 import com.keqiaokeji.tezizai.common.dbmapper.uc.domain.UcUserInfo;
 import com.keqiaokeji.tezizai.common.utils.DateUtil;
+import com.keqiaokeji.tezizai.svc.utils.CommonDomain;
 
 import java.util.Date;
 
@@ -10,7 +11,7 @@ import java.util.Date;
  * Date: 14-2-20
  * Time: AM11:11
  */
-public class UserInfo extends UcUserInfo {
+public class UserInfo extends UcUserInfo implements CommonDomain {
 
     private String Id;
 
@@ -19,7 +20,7 @@ public class UserInfo extends UcUserInfo {
     private String birthdayContent;
 
 
-    public void initUserInfo() {
+    public void init() {
         this.birthdayContent = DateUtil.formatDate(this.getBirthday(), DateUtil.YYYY_MM_DD);
 
     }

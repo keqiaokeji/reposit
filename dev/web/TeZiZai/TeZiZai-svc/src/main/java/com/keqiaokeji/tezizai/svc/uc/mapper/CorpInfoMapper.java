@@ -5,19 +5,13 @@ import com.keqiaokeji.tezizai.svc.uc.domain.CorpInfo;
 
 import java.util.List;
 
-/**
- * @author: Ivan Vigoss
- * Date: 14-2-20
- * Time: AM11:11
- */
-
 
 public interface CorpInfoMapper {
 
 
-    List<CorpInfo> getCorpListJQgrid(JQGridPage jqGridPage);
+    List<CorpInfo> getListByJQgrid(JQGridPage jqGridPage);
 
-    Integer getCorpListCountJQgrid(JQGridPage jqGridPage);
+    Integer getListCountByJQgrid(JQGridPage jqGridPage);
 
 
 

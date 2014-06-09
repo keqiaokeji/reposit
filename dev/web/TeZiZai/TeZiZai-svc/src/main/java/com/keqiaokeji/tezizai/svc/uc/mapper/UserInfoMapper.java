@@ -15,9 +15,9 @@ import java.util.List;
 public interface UserInfoMapper {
 
 
-    List<UserInfo> getUserListJQgrid(JQGridPage jqGridPage);
+    List<UserInfo> getListByJQgrid(JQGridPage jqGridPage);
 
-    Integer getUserListCountJQgrid(JQGridPage jqGridPage);
+    Integer geListCountByJQgrid(JQGridPage jqGridPage);
 
 
 

@@ -17,8 +17,8 @@ import java.util.List;
 /**
  * 用户操作实现类
  */
-@Service("corpService")
-public class CorpService {
+@Service("corpInfoService")
+public class CorpInfoService {
 
     @Autowired
     private UcCorpInfoMapper ucCorpInfoMapper;
@@ -27,16 +27,16 @@ public class CorpService {
     private CorpInfoMapper corpInfoMapper;
 
 
-    Logger logger = Logger.getLogger(CorpService.class.getName());
+    Logger logger = Logger.getLogger(CorpInfoService.class.getName());
 
 
 
 
-    public JQGridPage getCorpInfoList(JQGridPage pageJQGrid) {
+    public JQGridPage getListByJQgrid(JQGridPage pageJQGrid) {
         pageJQGrid.initJqGrid();
-        List<CorpInfo> corpInfoList = corpInfoMapper.getCorpListJQgrid(pageJQGrid);
+        List<CorpInfo> corpInfoList = corpInfoMapper.getListByJQgrid(pageJQGrid);
         pageJQGrid.setDataRows(corpInfoList);
-        Integer count = corpInfoMapper.getCorpListCountJQgrid(pageJQGrid);
+        Integer count = corpInfoMapper.getListCountByJQgrid(pageJQGrid);
         if (count != null) {
             pageJQGrid.setRecords(count);
         }

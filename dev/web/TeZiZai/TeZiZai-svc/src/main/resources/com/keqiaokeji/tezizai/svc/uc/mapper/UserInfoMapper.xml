@@ -37,15 +37,15 @@
     </sql>
 
 
-    <select id="getUserListJQgrid" resultMap="BaseResultMap" parameterType="com.keqiaokeji.tezizai.common.jqgrid.JQGridPage">
+    <select id="getListByJQgrid" resultMap="BaseResultMap" parameterType="com.keqiaokeji.tezizai.common.jqgrid.JQGridPage">
         select
         <include refid="Base_Column_List"/>
-        from uc_user_info uui
+        from uc_user_info
         <include refid="jqgrid_filter"/>
     </select>
 
 
-    <select id="getUserListCountJQgrid" parameterType="com.keqiaokeji.tezizai.common.jqgrid.JQGridPage"
+    <select id="getListCountByJQgrid" parameterType="com.keqiaokeji.tezizai.common.jqgrid.JQGridPage"
             resultType="java.lang.Integer">
         select count(*) from uc_user_info
         <where>

@@ -90,9 +90,9 @@
             //direction: "rtl",
             mtype: "POST",//请求的类型：(“POST” or “GET”)	默认GET
             datatype: "json",//表格可以被接受的数据类型：xml，xmlstring，json，local，function
-            jsonReader: {root: "dataRows", id: "corpId"},//root:设置记录集的属性名称，id:设置主键的属性名称
-            editurl: app.baseUrlSvc + "/root/uc/editCorpInfo.do",//定义对form编辑时的url（增删改的时候使用）
-            url: app.baseUrlSvc + "/root/uc/getCorpList.do",
+            jsonReader: {root: "dataRows", id: "menuId"},//root:设置记录集的属性名称，id:设置主键的属性名称
+            editurl: app.baseUrlSvc + "/root/mc/editMenuInfo.do",//定义对form编辑时的url（增删改的时候使用）
+            url: app.baseUrlSvc + "/root/mc/getMenuList.do",
             rowNum: 10,
             rowList: [10, 20, 30],
             pager: pager_selector,
@@ -111,9 +111,12 @@
                         //editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
                     }
                 },
-                {name: 'corpId', index: 'corp_id', hidden: true},
-                {name: 'corpName', index: 'corp_name', width: 300, editable: true, editoptions: {size: "20", maxlength: "30"}},
-                {name: 'corpCode', index: 'corp_code', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
+                {name: 'corpId', index: 'menu_id', hidden: true},
+                {name: 'corpName', index: 'menu_name', width: 300, editable: true, editoptions: {size: "20", maxlength: "30"}},
+                {name: 'corpCode', index: 'price_real', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
+                {name: 'corpCode', index: 'price_favorable', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
+                {name: 'corpCode', index: 'picture', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
+                {name: 'corpCode', index: 'menu_type_id', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
                 {name: 'status', index: 'status', width: 90, editable: true, edittype: "select", search: false, formatter: formartStatus, editoptions: {value: "STATUS_NORMOR:正常;STATE_FORBIDDEN:禁用;STATE_FREEZE:冻结"}},
                 {name: 'createTime', index: 'create_time', width: 110, editable: false, search: false, type: "date", sorttype: "date", formatter: formartCreateTime}
             ],

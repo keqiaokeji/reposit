@@ -1,46 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.keqiaokeji.tezizai.svc.uc.mapper.CorpInfoMapper">
-    <resultMap id="BaseResultMap" type="com.keqiaokeji.tezizai.svc.uc.domain.CorpInfo">
-        <id column="corp_id" jdbcType="VARCHAR" property="corpId" />
-        <result column="corp_code" jdbcType="VARCHAR" property="corpCode" />
-        <result column="corp_name" jdbcType="VARCHAR" property="corpName" />
-        <result column="status" jdbcType="VARCHAR" property="status" />
-        <result column="record_status" jdbcType="VARCHAR" property="recordStatus" />
-        <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
-        <result column="create_time" jdbcType="BIGINT" property="createTime" />
-        <result column="last_modify_user_id" jdbcType="VARCHAR" property="lastModifyUserId" />
-        <result column="last_modify_time" jdbcType="BIGINT" property="lastModifyTime" />
+<mapper namespace="com.keqiaokeji.tezizai.svc.mc.mapper.MenuTypeInfoMapper">
+    <resultMap id="BaseResultMap" type="com.keqiaokeji.tezizai.svc.mc.domain.MenuTypeInfo">
+        <id column="menu_type_id" property="menuTypeId" jdbcType="VARCHAR"/>
+        <result column="menu_type_name" property="menuTypeName" jdbcType="VARCHAR"/>
+        <result column="menu_type_order" property="menuTypeOrder" jdbcType="INTEGER"/>
+        <result column="corp_id" property="corpId" jdbcType="VARCHAR"/>
+        <result column="record_status" property="recordStatus" jdbcType="VARCHAR"/>
+        <result column="create_user_id" property="createUserId" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="BIGINT"/>
+        <result column="last_modify_user_id" property="lastModifyUserId" jdbcType="VARCHAR"/>
+        <result column="last_modify_time" property="lastModifyTime" jdbcType="BIGINT"/>
     </resultMap>
     <sql id="Base_Column_List">
-        corp_id, corp_code, corp_name, status, record_status, create_user_id, create_time,
-        last_modify_user_id, last_modify_time
+       menu_type_id, menu_type_name, menu_type_order, corp_id, record_status, create_user_id,
+    create_time, last_modify_user_id, last_modify_time
     </sql>
 
 
-    <select id="getListByJQgrid" resultMap="BaseResultMap" parameterType="com.keqiaokeji.tezizai.common.jqgrid.JQGridPage">
+    <select id="getListByJQgrid" resultMap="BaseResultMap"
+            parameterType="com.keqiaokeji.tezizai.common.jqgrid.JQGridPage">
         select
         <include refid="Base_Column_List"/>
-        from uc_corp_info
+        from mc_menu_type_info
         <include refid="jqgrid_filter"/>
     </select>
 
 
     <select id="getListCountByJQgrid" parameterType="com.keqiaokeji.tezizai.common.jqgrid.JQGridPage"
             resultType="java.lang.Integer">
-        select count(*) from uc_corp_info
+        select count(*) from mc_menu_type_info
         <where>
-        <include refid="jqgrid_filter_rules"/>
+            <include refid="jqgrid_filter_rules"/>
         </where>
     </select>
-
-
-
-
-
-
-
-
 
 
 

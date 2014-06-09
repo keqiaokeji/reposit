@@ -3,7 +3,7 @@ package com.keqiaokeji.tezizai.svc.uc.controller;
 import com.keqiaokeji.tezizai.common.jqgrid.JQGridContants;
 import com.keqiaokeji.tezizai.common.jqgrid.JQGridPage;
 import com.keqiaokeji.tezizai.svc.uc.domain.CorpInfo;
-import com.keqiaokeji.tezizai.svc.uc.service.CorpService;
+import com.keqiaokeji.tezizai.svc.uc.service.CorpInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * 公司管理
  */
 @Controller
-public class CorpController {
+public class CorpInfoController {
 
     @Autowired
-    CorpService corpService;
+    CorpInfoService corpService;
 
     @ResponseBody
-    @RequestMapping(value = "/root/uc/getCorpList")
-    public JQGridPage getCorpList(JQGridPage pageJQGrid) {
-        return corpService.getCorpInfoList(pageJQGrid);
+    @RequestMapping(value = "/root/uc/getCorpInfoList")
+    public JQGridPage getCorpInfoList(JQGridPage pageJQGrid) {
+        return corpService.getListByJQgrid(pageJQGrid);
     }
 
     @ResponseBody
