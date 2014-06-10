@@ -129,14 +129,14 @@
 
             <ul class="submenu">
                 <li <% if (currentMenu.equalsIgnoreCase(MENU_MENU_TYPE_LIST)) { %> class="active" <%} %> >
-                    <a href="<%=path%>/view/uc/corp_info_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_MENU_TYPE_LIST%>">
+                    <a href="<%=path%>/view/mc/menu_type_info_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_MENU_TYPE_LIST%>">
                         <i class="icon-double-angle-right"></i>
                         <%=MENU_MENU_TYPE_LIST_TEXT%>
                     </a>
                 </li>
 
                 <li <% if (currentMenu.equalsIgnoreCase(MENU_MENU_INFO_LIST)) { %> class="active" <%} %> >
-                    <a href="<%=path%>/view/uc/corp_info_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_MENU_INFO_LIST%>">
+                    <a href="<%=path%>/view/mc/menu_info_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_MENU_INFO_LIST%>">
                         <i class="icon-double-angle-right"></i>
                         <%=MENU_MENU_INFO_LIST_TEXT%>
                     </a>

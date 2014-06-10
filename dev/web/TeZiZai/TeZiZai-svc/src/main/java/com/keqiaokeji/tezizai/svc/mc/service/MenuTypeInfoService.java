@@ -1,5 +1,6 @@
 package com.keqiaokeji.tezizai.svc.mc.service;
 
+import com.keqiaokeji.tezizai.common.cache.CacheCtrl;
 import com.keqiaokeji.tezizai.common.character.StringUtils;
 import com.keqiaokeji.tezizai.common.dbmapper.mc.domain.McMenuTypeInfo;
 import com.keqiaokeji.tezizai.common.dbmapper.mc.mapper.McMenuTypeInfoMapper;
@@ -25,6 +26,9 @@ public class MenuTypeInfoService {
 
     @Autowired
     private MenuTypeInfoMapper menuTypeInfoMapper;
+
+    @Autowired
+    CacheCtrl cacheCtrl;
 
 
     Logger logger = Logger.getLogger(MenuTypeInfoService.class.getName());
@@ -61,6 +65,8 @@ public class MenuTypeInfoService {
         menuTypeInfo.setMenuTypeId(StringUtils.getUUID());
         menuTypeInfo.setCreateTime(new Date().getTime());
         menuTypeInfo.setLastModifyTime(new Date().getTime());
+//        menuTypeInfo.setCorpId(cacheCtrl.getTokenCtrl().getUcUserInfo("").getCorpId());
+        menuTypeInfo.setCorpId("keqiaokeji");
         mcMenuTypeInfoMapper.insert(menuTypeInfo);
     }
 }

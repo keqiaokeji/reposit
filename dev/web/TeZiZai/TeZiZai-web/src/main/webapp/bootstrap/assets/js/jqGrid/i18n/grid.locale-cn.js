@@ -37,7 +37,7 @@
 //                { oper: 'nc', text: 'does not contain'}
 //            ],
             odata: [
-                { oper: 'cn', text: '包含1'},
+                { oper: 'cn', text: '包含'},
                 { oper: 'eq', text: '等于'},
                 { oper: 'in', text: '大于'},
                 { oper: 'ni', text: '小于'},

@@ -146,7 +146,7 @@ public class UserInfoService {
             user.setPassword(DesEncrypt.decrypt(user.getPassword(), UserContants.PASSWORD_DES));
         }
         pageJQGrid.setDataRows(userInfoList);
-        Integer count = userInfoMapper.geListCountByJQgrid(pageJQGrid);
+        Integer count = userInfoMapper.getListCountByJQgrid(pageJQGrid);
         if (count != null) {
             pageJQGrid.setRecords(count);
         }

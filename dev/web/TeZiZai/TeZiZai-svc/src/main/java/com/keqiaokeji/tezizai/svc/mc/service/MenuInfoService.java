@@ -61,6 +61,7 @@ public class MenuInfoService {
         menuInfo.setMenuId(StringUtils.getUUID());
         menuInfo.setCreateTime(new Date().getTime());
         menuInfo.setLastModifyTime(new Date().getTime());
+        menuInfo.setCorpId("keqiaokeji");
         mcMenuInfoMapper.insert(menuInfo);
     }
 }

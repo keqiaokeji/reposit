@@ -17,7 +17,7 @@ public interface UserInfoMapper {
 
     List<UserInfo> getListByJQgrid(JQGridPage jqGridPage);
 
-    Integer geListCountByJQgrid(JQGridPage jqGridPage);
+    Integer getListCountByJQgrid(JQGridPage jqGridPage);
 
 
 

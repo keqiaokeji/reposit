@@ -20,13 +20,13 @@ public class MenuInfoController {
     MenuInfoService menuInfoService;
 
     @ResponseBody
-    @RequestMapping(value = "/root/uc/getMenuList")
-    public JQGridPage getMenuList(JQGridPage pageJQGrid) {
+    @RequestMapping(value = "/admin/mc/getMenuInfoList")
+    public JQGridPage getMenuInfoList(JQGridPage pageJQGrid) {
         return menuInfoService.getListByJQgrid(pageJQGrid);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/root/uc/editMenuInfo")
+    @RequestMapping(value = "/admin/mc/editMenuInfo")
     public void editMenuInfo(MenuInfo menuInfoInfo) {
         if (menuInfoInfo.getOper().equals(JQGridContants.EDIT_OPER_ADD)) {
             menuInfoService.add(menuInfoInfo);

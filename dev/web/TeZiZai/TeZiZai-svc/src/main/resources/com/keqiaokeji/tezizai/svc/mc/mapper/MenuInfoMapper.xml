@@ -6,8 +6,10 @@
         <result column="menu_name" property="menuName" jdbcType="VARCHAR"/>
         <result column="price_real" property="priceReal" jdbcType="INTEGER"/>
         <result column="price_favorable" property="priceFavorable" jdbcType="INTEGER"/>
-        <result column="picture" property="picture" jdbcType="VARCHAR"/>
+        <result column="picture_url" property="pictureUrl" jdbcType="VARCHAR"/>
         <result column="menu_type_id" property="menuTypeId" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="menu_order" property="menuOrder" jdbcType="INTEGER"/>
         <result column="corp_id" property="corpId" jdbcType="VARCHAR"/>
         <result column="record_status" property="recordStatus" jdbcType="VARCHAR"/>
         <result column="create_user_id" property="createUserId" jdbcType="VARCHAR"/>
@@ -16,8 +18,9 @@
         <result column="last_modify_time" property="lastModifyTime" jdbcType="BIGINT"/>
     </resultMap>
     <sql id="Base_Column_List">
-        menu_id, menu_name, price_real, price_favorable, picture, menu_type_id, corp_id,
-    record_status, create_user_id, create_time, last_modify_user_id, last_modify_time
+        menu_id, menu_name, price_real, price_favorable, picture_url, menu_type_id, status,
+        menu_order, corp_id, record_status, create_user_id, create_time, last_modify_user_id,
+        last_modify_time
     </sql>
 
 
@@ -37,13 +40,6 @@
             <include refid="jqgrid_filter_rules"/>
         </where>
     </select>
-
-
-
-
-
-
-
 
 
     <sql id="jqgrid_filter">

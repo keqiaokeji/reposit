@@ -20,13 +20,13 @@ public class MenuTypeInfoController {
     MenuTypeInfoService menuTypeInfoService;
 
     @ResponseBody
-    @RequestMapping(value = "/root/uc/getMenuTypeInfoList")
+    @RequestMapping(value = "/admin/mc/getMenuTypeInfoList")
     public JQGridPage getMenuTypeInfoList(JQGridPage pageJQGrid) {
         return menuTypeInfoService.getListByJQgrid(pageJQGrid);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/root/uc/editMenuTypeInfo")
+    @RequestMapping(value = "/admin/mc/editMenuTypeInfo")
     public void editMenuTypeInfo(MenuTypeInfo menuTypeInfo) {
         if (menuTypeInfo.getOper().equals(JQGridContants.EDIT_OPER_ADD)) {
             menuTypeInfoService.add(menuTypeInfo);
