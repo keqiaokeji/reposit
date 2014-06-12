@@ -90,9 +90,9 @@
             //direction: "rtl",
             mtype: "POST",//请求的类型：(“POST” or “GET”)	默认GET
             datatype: "json",//表格可以被接受的数据类型：xml，xmlstring，json，local，function
-            jsonReader: {root: "dataRows", id: "menuTypeId"},//root:设置记录集的属性名称，id:设置主键的属性名称
-            editurl: app.baseUrlSvc + "/admin/mc/editMenuTypeInfo.do?token=" + app.getTokenByCookie(),//定义对form编辑时的url（增删改的时候使用）
-            url: app.baseUrlSvc + "/admin/mc/getMenuTypeInfoList.do?token=" + app.getTokenByCookie(),
+            jsonReader: {root: "dataRows", id: "menuId"},//root:设置记录集的属性名称，id:设置主键的属性名称
+            editurl: app.baseUrlSvc + "/admin/mc/editMenuInfo.do?token=" + app.getTokenByCookie(),//定义对form编辑时的url（增删改的时候使用）
+            url: app.baseUrlSvc + "/admin/mc/getMenuInfoList.do?token=" + app.getTokenByCookie(),
             rowNum: 10,
             rowList: [10, 20, 30],
             pager: pager_selector,
@@ -101,7 +101,7 @@
             caption: "用户信息维护",
             viewrecords: true,
             height: 392,
-            colNames: ['操作', 'ID', '菜单类型名称', '菜单序号', '新增日期'],
+            colNames: ['操作', 'ID', '图片', '菜名', '实际价格', '优惠价格', '所属类型','顺序', '状态', '新增日期'],
             colModel: [
                 {name: 'myac', index: 'myac', width: 80, fixed: true, sortable: false, resize: false, search: false,
                     formatter: 'actions',
@@ -111,9 +111,15 @@
                         //editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
                     }
                 },
-                {name: 'menuTypeId', index: 'menu_type_id', hidden: true},
-                {name: 'menuTypeName', index: 'menu_type_name', width: 300, editable: true, editoptions: {size: "20", maxlength: "30"}},
-                {name: 'menuTypeOrder', index: 'menu_type_order', width: 100, editable: true, type: "integer", sortable: true, search: false, editoptions: {size: "20", maxlength: "30"}},
+                {name: 'menuId', index: 'menu_id', hidden: true},
+                {name: 'pictureUrl', index: 'picture_url', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
+                {name: 'menuName', index: 'menu_name', width: 300, editable: true, editoptions: {size: "20", maxlength: "30"}},
+                {name: 'priceReal', index: 'price_real', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
+                {name: 'priceFavorable', index: 'price_favorable', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
+//                {name: 'menuTypeId', index: 'menu_type_id', width: 100, editable: true, sortable: false, search: false, edittype: "select", editoptions: {value: "豫菜:豫菜;川菜:川菜"}},
+                {name: 'menuTypeId', index: 'menu_type_id', width: 100, editable: true, sortable: false, search: false},
+                {name: 'menuOrder', index: 'menu_order', width: 100, editable: true,type: "integer", sortable: true, search: false}, editoptions: {size: "20", maxlength: "30"}},
+                {name: 'status', index: 'status', width: 90, editable: true, search: false, edittype: "select", formatter: formartStatus, editoptions: {value: "STATUS_NORMOR:正常;STATE_FORBIDDEN:禁用"}},
                 {name: 'createTime', index: 'create_time', width: 110, editable: false, search: false, type: "date", sorttype: "date", formatter: formartCreateTime}
             ],
 
@@ -136,6 +142,17 @@
             autowidth: true
         });
 
+        function formartStatus(cellValue, options, cell) {
+            var status = "未知";
+            if (cellValue == "STATUS_NORMOR" || cellValue == "正常") {
+                status = "正常";
+            } else if (cellValue == "STATE_FORBIDDEN" || cellValue == "禁用") {
+                status = "禁用";
+            } else if (cellValue == "STATE_FREEZE" || cellValue == "冻结") {
+                status = "冻结";
+            }
+            return status;
+        }
 
         function formartCreateTime(cellValue, options, cell) {
             return new Date(cellValue).format("yyyy-MM-dd hh:mm:ss");

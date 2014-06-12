@@ -1,13 +1,19 @@
 package com.keqiaokeji.tezizai.svc.mc.controller;
 
+import com.keqiaokeji.tezizai.common.app.JsonResultContants;
+import com.keqiaokeji.tezizai.common.character.StringUtils;
+import com.keqiaokeji.tezizai.common.dbmapper.mc.domain.McMenuTypeInfo;
 import com.keqiaokeji.tezizai.common.jqgrid.JQGridContants;
 import com.keqiaokeji.tezizai.common.jqgrid.JQGridPage;
+import com.keqiaokeji.tezizai.common.utils.JsonResult;
 import com.keqiaokeji.tezizai.svc.mc.domain.MenuTypeInfo;
 import com.keqiaokeji.tezizai.svc.mc.service.MenuTypeInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 
 /**
@@ -23,6 +29,26 @@ public class MenuTypeInfoController {
     @RequestMapping(value = "/admin/mc/getMenuTypeInfoList")
     public JQGridPage getMenuTypeInfoList(JQGridPage pageJQGrid) {
         return menuTypeInfoService.getListByJQgrid(pageJQGrid);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/user/mc/getMenuType")
+    public JsonResult getMenuType() {
+        JsonResult result = null;
+        List<McMenuTypeInfo> list = menuTypeInfoService.getMenuTypeInfo();
+        if (list != null) {
+            StringBuilder types = new StringBuilder();
+            for (McMenuTypeInfo type : list) {
+                types.append(type.getMenuTypeName());
+                types.append(":");
+                types.append(type.getMenuTypeName());
+            }
+            if(StringUtils.isNotEmpty(types.toString()))
+            result = new JsonResult(JsonResultContants.SUCCESS, "菜单类型获取成功", types.toString());
+        } else {
+            result = new JsonResult(JsonResultContants.FAIL, "暂无菜单信息");
+        }
+        return result;
     }
 
     @ResponseBody

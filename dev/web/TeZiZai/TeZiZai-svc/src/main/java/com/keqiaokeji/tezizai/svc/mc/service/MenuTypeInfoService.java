@@ -3,11 +3,13 @@ package com.keqiaokeji.tezizai.svc.mc.service;
 import com.keqiaokeji.tezizai.common.cache.CacheCtrl;
 import com.keqiaokeji.tezizai.common.character.StringUtils;
 import com.keqiaokeji.tezizai.common.dbmapper.mc.domain.McMenuTypeInfo;
+import com.keqiaokeji.tezizai.common.dbmapper.mc.domain.McMenuTypeInfoExample;
 import com.keqiaokeji.tezizai.common.dbmapper.mc.mapper.McMenuTypeInfoMapper;
 import com.keqiaokeji.tezizai.common.jqgrid.JQGridPage;
 import com.keqiaokeji.tezizai.svc.mc.domain.MenuTypeInfo;
 import com.keqiaokeji.tezizai.svc.mc.mapper.MenuTypeInfoMapper;
-import com.keqiaokeji.tezizai.svc.utils.AppContents;
+import com.keqiaokeji.tezizai.svc.utils.AppContants;
+import com.keqiaokeji.tezizai.svc.utils.AppContexts;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +36,12 @@ public class MenuTypeInfoService {
     Logger logger = Logger.getLogger(MenuTypeInfoService.class.getName());
 
 
-
+    public List<McMenuTypeInfo> getMenuTypeInfo() {
+        McMenuTypeInfoExample example = new McMenuTypeInfoExample();
+        example.createCriteria().andCorpIdEqualTo(AppContexts.getCorpId());
+        example.setOrderByClause("menu_type_order ASC");
+        return mcMenuTypeInfoMapper.selectByExample(example);
+    }
 
     public JQGridPage getListByJQgrid(JQGridPage pageJQGrid) {
         pageJQGrid.initJqGrid();
@@ -50,7 +57,8 @@ public class MenuTypeInfoService {
 
     public void update(McMenuTypeInfo menuTypeInfo) {
         menuTypeInfo.setLastModifyTime(new Date().getTime());
-        menuTypeInfo.setRecordStatus(AppContents.RECORD_STATUS_UPDATE);
+        menuTypeInfo.setRecordStatus(AppContants.RECORD_STATUS_UPDATE);
+        menuTypeInfo.setLastModifyUserId(AppContexts.getUserId());
         mcMenuTypeInfoMapper.updateByPrimaryKeySelective(menuTypeInfo);
     }
 
@@ -61,12 +69,12 @@ public class MenuTypeInfoService {
 
 
     public void add(McMenuTypeInfo menuTypeInfo) {
-        menuTypeInfo.setRecordStatus(AppContents.RECORD_STATUS_INSERT);
+        menuTypeInfo.setRecordStatus(AppContants.RECORD_STATUS_INSERT);
         menuTypeInfo.setMenuTypeId(StringUtils.getUUID());
         menuTypeInfo.setCreateTime(new Date().getTime());
         menuTypeInfo.setLastModifyTime(new Date().getTime());
-//        menuTypeInfo.setCorpId(cacheCtrl.getTokenCtrl().getUcUserInfo("").getCorpId());
-        menuTypeInfo.setCorpId("keqiaokeji");
+        menuTypeInfo.setCorpId(AppContexts.getCorpId());
+        menuTypeInfo.setCreateUserId(AppContexts.getUserId());
         mcMenuTypeInfoMapper.insert(menuTypeInfo);
     }
 }

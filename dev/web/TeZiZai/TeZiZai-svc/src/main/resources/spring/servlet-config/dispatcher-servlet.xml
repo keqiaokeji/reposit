@@ -99,7 +99,9 @@
     <!-- 以下为拦截器的配置，将拦截特有的URL请求 -->
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/control/**.do"/>
+            <!--<mvc:mapping path="/TeZiZai-svc/root/**"/>-->
+            <!--<mvc:mapping path="/TeZiZai-svc/admin/**"/>-->
+            <mvc:mapping path="/admin/**"/>
             <bean class="com.keqiaokeji.tezizai.svc.interceptor.CheckTokenInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>

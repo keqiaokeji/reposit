@@ -1,7 +1,6 @@
 package com.keqiaokeji.tezizai.svc.uc.service;
 
 import com.keqiaokeji.tezizai.common.app.JsonResultContants;
-import com.keqiaokeji.tezizai.common.app.UserContants;
 import com.keqiaokeji.tezizai.common.cache.CacheCtrl;
 import com.keqiaokeji.tezizai.common.character.DesEncrypt;
 import com.keqiaokeji.tezizai.common.character.StringUtils;
@@ -12,7 +11,8 @@ import com.keqiaokeji.tezizai.common.jqgrid.JQGridPage;
 import com.keqiaokeji.tezizai.common.utils.JsonResult;
 import com.keqiaokeji.tezizai.svc.uc.domain.UserInfo;
 import com.keqiaokeji.tezizai.svc.uc.mapper.UserInfoMapper;
-import com.keqiaokeji.tezizai.svc.utils.AppContents;
+import com.keqiaokeji.tezizai.svc.utils.AppContants;
+import com.keqiaokeji.tezizai.svc.utils.AppContexts;
 import com.keqiaokeji.tezizai.svc.utils.MailSendUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,14 +47,14 @@ public class UserInfoService {
         UcUserInfo ucUserinfo = login(username, password);
         if (ucUserinfo == null) {
             result = new JsonResult(JsonResultContants.LOGIN_USERNAME_PASSWORD_ERROR, JsonResultContants.LOGIN_USERNAME_PASSWORD_ERROR_MSG);
-        } else if (ucUserinfo.getStatus().equals(UserContants.STATE_FORBIDDEN)) {
+        } else if (ucUserinfo.getStatus().equals(AppContants.STATE_FORBIDDEN)) {
             result = new JsonResult(JsonResultContants.USER_STATE_FORBIDDEN, JsonResultContants.USER_STATE_FORBIDDEN_MSG);
-        } else if (ucUserinfo.getStatus().equals(UserContants.STATE_FREEZE)) {
+        } else if (ucUserinfo.getStatus().equals(AppContants.STATE_FREEZE)) {
             result = new JsonResult(JsonResultContants.USER_STATE_FREEZE, JsonResultContants.USER_STATE_FREEZE_MSG);
         } else {
             String token = cacheCtrl.getTokenCtrl().addToken(ucUserinfo);
             result = new JsonResult();
-            result.setStatusCode(JsonResultContants.LOGIN_SUCCESS);
+            result.setStatusCode(JsonResultContants.SUCCESS);
             result.setStatusMsg(JsonResultContants.LOGIN_SUCCESS_MSG);
             result.setToken(token);
             ucUserinfo.setPassword(null);
@@ -66,7 +66,7 @@ public class UserInfoService {
     public UcUserInfo login(String username, String password) {
         UcUserInfo ucUserInfo = null;
         UcUserInfoExample example = new UcUserInfoExample();
-        example.createCriteria().andUsernameEqualTo(username).andPasswordEqualTo(DesEncrypt.encrypt(password, UserContants.PASSWORD_DES));
+        example.createCriteria().andUsernameEqualTo(username).andPasswordEqualTo(DesEncrypt.encrypt(password, AppContants.PASSWORD_DES));
         List<UcUserInfo> ucUserInfos = ucUserInfoMapper.selectByExample(example);
         if (ucUserInfos != null && ucUserInfos.size() > 0) {
             ucUserInfo = ucUserInfos.get(0);
@@ -86,7 +86,7 @@ public class UserInfoService {
             }
         } else {
             add(userInfo);
-            result = new JsonResult(JsonResultContants.REG_SUCCESS, JsonResultContants.REG_SUCCESS_MSG);
+            result = new JsonResult(JsonResultContants.SUCCESS, JsonResultContants.REG_SUCCESS_MSG);
         }
         return result;
 
@@ -110,13 +110,13 @@ public class UserInfoService {
         JsonResult result = null;
         UcUserInfo userCheck = findPasswordCheck(email);
         if (userCheck != null) {
-            String password = DesEncrypt.decrypt(userCheck.getPassword(), UserContants.PASSWORD_DES);
+            String password = DesEncrypt.decrypt(userCheck.getPassword(), AppContants.PASSWORD_DES);
             try {
                 mailSendUtils.sendFindPasswordMail(email, password);
-                result = new JsonResult(JsonResultContants.FIND_PASSWORD_SUCCESS, JsonResultContants.FIND_PASSWORD_SUCCESS_MSG);
+                result = new JsonResult(JsonResultContants.SUCCESS, JsonResultContants.FIND_PASSWORD_SUCCESS_MSG);
             } catch (Exception e) {
                 logger.error(e);
-                result = new JsonResult(JsonResultContants.FIND_PASSWORD_FAIL, JsonResultContants.FIND_PASSWORD_FAIL_MSG);
+                result = new JsonResult(JsonResultContants.FAIL, JsonResultContants.FIND_PASSWORD_FAIL_MSG);
             }
         } else {
             result = new JsonResult(JsonResultContants.FIND_PASSWORD_EMAIL_NOT_EXSIT, JsonResultContants.FIND_PASSWORD_EMAIL_NOT_EXSIT_MSG);
@@ -143,7 +143,7 @@ public class UserInfoService {
         List<UserInfo> userInfoList = userInfoMapper.getListByJQgrid(pageJQGrid);
         for (UserInfo user : userInfoList) {
             user.init();
-            user.setPassword(DesEncrypt.decrypt(user.getPassword(), UserContants.PASSWORD_DES));
+            user.setPassword(DesEncrypt.decrypt(user.getPassword(), AppContants.PASSWORD_DES));
         }
         pageJQGrid.setDataRows(userInfoList);
         Integer count = userInfoMapper.getListCountByJQgrid(pageJQGrid);
@@ -156,10 +156,11 @@ public class UserInfoService {
 
     public void update(UcUserInfo userInfo) {
         if (StringUtils.isNotBlank(userInfo.getPassword())) {
-            userInfo.setPassword(DesEncrypt.encrypt(userInfo.getPassword(), UserContants.PASSWORD_DES));
+            userInfo.setPassword(DesEncrypt.encrypt(userInfo.getPassword(), AppContants.PASSWORD_DES));
         }
         userInfo.setLastModifyTime(new Date().getTime());
-        userInfo.setRecordStatus(AppContents.RECORD_STATUS_UPDATE);
+        userInfo.setRecordStatus(AppContants.RECORD_STATUS_UPDATE);
+        userInfo.setLastModifyUserId(AppContexts.getUserId());
         ucUserInfoMapper.updateByPrimaryKeySelective(userInfo);
     }
 
@@ -170,12 +171,15 @@ public class UserInfoService {
 
 
     public void add(UcUserInfo userInfo) {
-        userInfo.setPassword(DesEncrypt.encrypt(userInfo.getPassword(), UserContants.PASSWORD_DES));
-        userInfo.setStatus(UserContants.STATUS_NORMOR);
-        userInfo.setRecordStatus(AppContents.RECORD_STATUS_INSERT);
+        userInfo.setPassword(DesEncrypt.encrypt(userInfo.getPassword(), AppContants.PASSWORD_DES));
+        userInfo.setStatus(AppContants.STATUS_NORMOR);
+        userInfo.setRecordStatus(AppContants.RECORD_STATUS_INSERT);
         userInfo.setUserId(StringUtils.getUUID());
         userInfo.setCreateTime(new Date().getTime());
         userInfo.setLastModifyTime(new Date().getTime());
+        userInfo.setCorpId(AppContexts.getCorpId());
+        userInfo.setCreateUserId(AppContexts.getUserId());
+        userInfo.setRoles(AppContexts.getSubordinateRoles());
         ucUserInfoMapper.insert(userInfo);
     }
 }

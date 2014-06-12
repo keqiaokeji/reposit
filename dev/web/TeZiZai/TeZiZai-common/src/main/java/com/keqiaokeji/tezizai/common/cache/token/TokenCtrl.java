@@ -17,14 +17,14 @@ public interface TokenCtrl {
     public String addToken(UcUserInfo ucUserInfo);
 
     /**
-     * 验证Token是否过期
-     * 如果为过期则继续使用并修改最后使用时间为当前时间
-     * 如果过去则移除该Token值
+     * 验证Token是否过期及初始化当前线程的缓存信息
+     * 如果未过期则初始化当前线程的用户信息
+     * 如果过期则移除该Token值
      *
      * @param token Token字符串
      * @return true：未过期，false：过期
      */
-    public boolean checkTokenTimeOut(String token);
+    public boolean checkTokenTimeOutAndInitThreadLocal(String token);
 
     /**
      * 根据Token获得用户信息
@@ -33,5 +33,12 @@ public interface TokenCtrl {
      * @return 用户信息或null
      */
     public UcUserInfo getUcUserInfo(String token);
+
+    /**
+     * 取出当前用户的用户信息（通过当前线程中的token获取）
+     *
+     * @return 用户信息
+     */
+    public UcUserInfo getCurrentUcUserInfo();
 
 }

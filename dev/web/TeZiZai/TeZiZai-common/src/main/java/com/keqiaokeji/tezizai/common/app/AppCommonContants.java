@@ -1,13 +1,23 @@
-package com.keqiaokeji.tezizai.common.utils;
+package com.keqiaokeji.tezizai.common.app;
+
+import com.keqiaokeji.tezizai.common.utils.CommonContants;
 
 /**
  * Created by keqiaokeji on 14-5-23.
  */
-public class CommonContants {
+public class AppCommonContants extends CommonContants{
 
-    public static final String RECORD_STATUS_INSERT = "INSERT";//新增记录
-    public static final String RECORD_STATUS_UPDATE = "UPDATE";//修改记录
-    public static final String RECORD_STATUS_DELETE = "DELETE";//删除记录
+
+    /**
+     * 对密码进行DES加密时使用的密钥
+     */
+    public static final String PASSWORD_DES = "3423fwewefwf";
+
+    public static final String STATUS_NORMOR = "STATUS_NORMOR";
+    public static final String STATE_FORBIDDEN = "STATE_FORBIDDEN";
+    public static final String STATE_FREEZE = "STATE_FREEZE";
+
+
 
     public static final String TOKEN_KEY = "TOKEN";//Token的键
     public static final String CORP_ID_KEY = "CORP_ID";//公司ID的键

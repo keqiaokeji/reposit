@@ -1,8 +1,10 @@
 package com.keqiaokeji.tezizai.common.cache.token;
 
+import com.keqiaokeji.tezizai.common.app.AppCommonContexts;
 import com.keqiaokeji.tezizai.common.cache.Jedis.JedisTools;
 import com.keqiaokeji.tezizai.common.character.StringUtils;
 import com.keqiaokeji.tezizai.common.dbmapper.uc.domain.UcUserInfo;
+import com.keqiaokeji.tezizai.common.utils.CommonContants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +31,17 @@ public class TokenRedisCache implements TokenCtrl{
         return token;
     }
 
-    public boolean checkTokenTimeOut(String token) {
+    public boolean checkTokenTimeOutAndInitThreadLocal(String token) {
         return jedisTools.exitsAndSetTimeout(getJedisToken(token), TIMEOUT);
     }
 
     public UcUserInfo getUcUserInfo(String token){
         return jedisTools.getObject(getJedisToken(token), UcUserInfo.class);
+    }
+
+    public UcUserInfo getCurrentUcUserInfo(){
+        String token = getJedisToken(AppCommonContexts.getThreadLocalMapValue(CommonContants.TOKEN_KEY));
+        return getUcUserInfo(token);
     }
 
     private String getJedisToken(String token) {

@@ -91,8 +91,8 @@
             mtype: "POST",//请求的类型：(“POST” or “GET”)	默认GET
             datatype: "json",//表格可以被接受的数据类型：xml，xmlstring，json，local，function
             jsonReader: {root: "dataRows", id: "corpId"},//root:设置记录集的属性名称，id:设置主键的属性名称
-            editurl: app.baseUrlSvc + "/root/uc/editCorpInfo.do",//定义对form编辑时的url（增删改的时候使用）
-            url: app.baseUrlSvc + "/root/uc/getCorpInfoList.do",
+            editurl: app.baseUrlSvc + "/root/uc/editCorpInfo.do?token=" + app.getTokenByCookie(),//定义对form编辑时的url（增删改的时候使用）
+            url: app.baseUrlSvc + "/root/uc/getCorpInfoList.do?token=" + app.getTokenByCookie(),
             rowNum: 10,
             rowList: [10, 20, 30],
             pager: pager_selector,

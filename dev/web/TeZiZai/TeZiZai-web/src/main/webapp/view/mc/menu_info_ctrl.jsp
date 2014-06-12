@@ -85,61 +85,165 @@
     jQuery(function ($) {
         var grid_selector = "#grid-table";
         var pager_selector = "#grid-pager";
+        $.ajax({
+            type: "post",
+            async: true,//异步，如果等于false 那么就是同步
+            url: app.baseUrlSvc + "/user/mc/getMenuType.do",
+            dataType: "json",
+            data: paramData,
+            success: function (data) {
+                if (data != null) {
+                    if (data.statusCode == "LOGIN_SUCCESS") {
+                        loginSuccess(data);
+                    }else{
 
-        jQuery(grid_selector).jqGrid({
-            //direction: "rtl",
-            mtype: "POST",//请求的类型：(“POST” or “GET”)	默认GET
-            datatype: "json",//表格可以被接受的数据类型：xml，xmlstring，json，local，function
-            jsonReader: {root: "dataRows", id: "menuId"},//root:设置记录集的属性名称，id:设置主键的属性名称
-            editurl: app.baseUrlSvc + "/admin/mc/editMenuInfo.do",//定义对form编辑时的url（增删改的时候使用）
-            url: app.baseUrlSvc + "/admin/mc/getMenuInfoList.do",
-            rowNum: 10,
-            rowList: [10, 20, 30],
-            pager: pager_selector,
-
-            altRows: true,
-            caption: "用户信息维护",
-            viewrecords: true,
-            height: 392,
-            colNames: ['操作', 'ID', '图片', '菜名', '实际价格', '优惠价格', '所属类型','顺序', '状态', '新增日期'],
-            colModel: [
-                {name: 'myac', index: 'myac', width: 80, fixed: true, sortable: false, resize: false, search: false,
-                    formatter: 'actions',
-                    formatoptions: {
-                        keys: true,
-                        delOptions: {recreateForm: true, beforeShowForm: beforeDeleteCallback}
-                        //editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
                     }
-                },
-                {name: 'menuId', index: 'menu_id', hidden: true},
-                {name: 'pictureUrl', index: 'picture_url', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
-                {name: 'menuName', index: 'menu_name', width: 300, editable: true, editoptions: {size: "20", maxlength: "30"}},
-                {name: 'priceReal', index: 'price_real', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
-                {name: 'priceFavorable', index: 'price_favorable', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
-                {name: 'menuTypeId', index: 'menu_type_id', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
-                {name: 'menuOrder', index: 'menu_order', width: 100, editable: true,type: "integer", sortable: true, search: false, editoptions: {size: "20", maxlength: "30"}},
-                {name: 'status', index: 'status', width: 90, editable: true, edittype: "select", search: false, formatter: formartStatus, editoptions: {value: "STATUS_NORMOR:正常;STATE_FORBIDDEN:禁用"}},
-                {name: 'createTime', index: 'create_time', width: 110, editable: false, search: false, type: "date", sorttype: "date", formatter: formartCreateTime}
-            ],
 
-
-            //toppager: true,
-
-            multiselect: true,
-            //multikey: "ctrlKey",
-            multiboxonly: true,
-
-            loadComplete: function () {
-                var table = this;
-                setTimeout(function () {
-                    appJqgrid.styleCheckbox(table);
-                    appJqgrid.updateActionIcons(table);
-                    appJqgrid.updatePagerIcons(table);
-                    appJqgrid.enableTooltips(table);
-                }, 0);
+                    showWarnMsg(data.statusMsg);
+                    app.changeVerifyCode(codeKeyLoginId, codeImgLoginId);
+                }
             },
-            autowidth: true
+            error: function (data) {
+                showWarnMsg("请求服务器出错！");
+            }
         });
+
+
+        initJQGrid("豫菜:豫菜;川菜:川菜");
+
+        function initJQGrid(menuType) {
+            jQuery(grid_selector).jqGrid({
+                //direction: "rtl",
+                mtype: "POST",//请求的类型：(“POST” or “GET”)	默认GET
+                datatype: "json",//表格可以被接受的数据类型：xml，xmlstring，json，local，function
+                jsonReader: {root: "dataRows", id: "menuId"},//root:设置记录集的属性名称，id:设置主键的属性名称
+                editurl: app.baseUrlSvc + "/admin/mc/editMenuInfo.do?token=" + app.getTokenByCookie(),//定义对form编辑时的url（增删改的时候使用）
+                url: app.baseUrlSvc + "/admin/mc/getMenuInfoList.do?token=" + app.getTokenByCookie(),
+                rowNum: 10,
+                rowList: [10, 20, 30],
+                pager: pager_selector,
+
+                altRows: true,
+                caption: "用户信息维护",
+                viewrecords: true,
+                height: 392,
+                colNames: ['操作', 'ID', '图片', '菜名', '实际价格', '优惠价格', '所属类型', '顺序', '状态', '新增日期'],
+                colModel: [
+                    {name: 'myac', index: 'myac', width: 80, fixed: true, sortable: false, resize: false, search: false,
+                        formatter: 'actions',
+                        formatoptions: {
+                            keys: true,
+                            delOptions: {recreateForm: true, beforeShowForm: beforeDeleteCallback}
+                            //editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
+                        }
+                    },
+                    {name: 'menuId', index: 'menu_id', hidden: true},
+                    {name: 'pictureUrl', index: 'picture_url', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
+                    {name: 'menuName', index: 'menu_name', width: 300, editable: true, editoptions: {size: "20", maxlength: "30"}},
+                    {name: 'priceReal', index: 'price_real', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
+                    {name: 'priceFavorable', index: 'price_favorable', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
+                    {name: 'menuTypeId', index: 'menu_type_id', width: 100, editable: true, sortable: false, search: false, edittype: "select", editoptions: {value: menuType}},
+                    {name: 'menuOrder', index: 'menu_order', width: 100, editable: true, type: "integer", sortable: true, search: false, editoptions: {size: "20", maxlength: "30"}},
+                    {name: 'status', index: 'status', width: 90, editable: true, search: false, formatter: formartStatus, edittype: "select", editoptions: {value: "STATUS_NORMOR:正常;STATE_FORBIDDEN:禁用"}},
+                    {name: 'createTime', index: 'create_time', width: 110, editable: false, search: false, type: "date", sorttype: "date", formatter: formartCreateTime}
+                ],
+
+
+                //toppager: true,
+
+                multiselect: true,
+                //multikey: "ctrlKey",
+                multiboxonly: true,
+
+                loadComplete: function () {
+                    var table = this;
+                    setTimeout(function () {
+                        appJqgrid.styleCheckbox(table);
+                        appJqgrid.updateActionIcons(table);
+                        appJqgrid.updatePagerIcons(table);
+                        appJqgrid.enableTooltips(table);
+                    }, 0);
+                },
+                autowidth: true
+            });
+
+
+            //navButtons
+            jQuery(grid_selector).jqGrid('navGrid', pager_selector,
+                    { 	//navbar options
+                        edit: true,
+                        editicon: 'icon-pencil blue',
+                        add: true,
+                        addicon: 'icon-plus-sign purple',
+                        del: true,
+                        delicon: 'icon-trash red',
+                        search: true,
+                        searchicon: 'icon-search orange',
+                        refresh: true,
+                        refreshicon: 'icon-refresh green',
+                        view: true,
+                        viewicon: 'icon-zoom-in grey'
+                    },
+                    {
+                        //edit record form
+                        //closeAfterEdit: true,
+                        recreateForm: true,
+                        beforeShowForm: function (e) {
+                            var form = $(e[0]);
+                            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />');
+                            style_edit_form(form);
+                        }
+                    },
+                    {
+                        //new record form
+                        closeAfterAdd: true,
+                        recreateForm: true,
+                        viewPagerButtons: false,
+                        beforeShowForm: function (e) {
+                            var form = $(e[0]);
+                            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />');
+                            style_edit_form(form);
+                        }
+                    },
+                    {
+                        //delete record form
+                        recreateForm: true,
+                        beforeShowForm: function (e) {
+                            var form = $(e[0]);
+                            if (form.data('styled')) return false;
+
+                            form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />');
+                            appJqgrid.style_delete_form(form);
+
+                            form.data('styled', true);
+                        },
+                        onClick: function (e) {
+                            alert(1);
+                        }
+                    },
+                    {
+                        //search form
+                        recreateForm: true,
+                        afterShowSearch: function (e) {
+                            var form = $(e[0]);
+                            form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />');
+                            appJqgrid.style_search_form(form);
+                        },
+                        afterRedraw: function () {
+                            appJqgrid.style_search_filters($(this));
+                        },
+                        multipleSearch: true
+                    },
+                    {
+                        //view record form
+                        recreateForm: true,
+                        beforeShowForm: function (e) {
+                            var form = $(e[0]);
+                            form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />');
+                        }
+                    }
+            );
+        }
 
         function formartStatus(cellValue, options, cell) {
             var status = "未知";
@@ -157,82 +261,6 @@
             return new Date(cellValue).format("yyyy-MM-dd hh:mm:ss");
         }
 
-
-        //navButtons
-        jQuery(grid_selector).jqGrid('navGrid', pager_selector,
-                { 	//navbar options
-                    edit: true,
-                    editicon: 'icon-pencil blue',
-                    add: true,
-                    addicon: 'icon-plus-sign purple',
-                    del: true,
-                    delicon: 'icon-trash red',
-                    search: true,
-                    searchicon: 'icon-search orange',
-                    refresh: true,
-                    refreshicon: 'icon-refresh green',
-                    view: true,
-                    viewicon: 'icon-zoom-in grey'
-                },
-                {
-                    //edit record form
-                    //closeAfterEdit: true,
-                    recreateForm: true,
-                    beforeShowForm: function (e) {
-                        var form = $(e[0]);
-                        form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />');
-                        style_edit_form(form);
-                    }
-                },
-                {
-                    //new record form
-                    closeAfterAdd: true,
-                    recreateForm: true,
-                    viewPagerButtons: false,
-                    beforeShowForm: function (e) {
-                        var form = $(e[0]);
-                        form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />');
-                        style_edit_form(form);
-                    }
-                },
-                {
-                    //delete record form
-                    recreateForm: true,
-                    beforeShowForm: function (e) {
-                        var form = $(e[0]);
-                        if (form.data('styled')) return false;
-
-                        form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />');
-                        appJqgrid.style_delete_form(form);
-
-                        form.data('styled', true);
-                    },
-                    onClick: function (e) {
-                        alert(1);
-                    }
-                },
-                {
-                    //search form
-                    recreateForm: true,
-                    afterShowSearch: function (e) {
-                        var form = $(e[0]);
-                        form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />');
-                        appJqgrid.style_search_form(form);
-                    },
-                    afterRedraw: function () {
-                        appJqgrid.style_search_filters($(this));
-                    },
-                    multipleSearch: true
-                },
-                {
-                    //view record form
-                    recreateForm: true,
-                    beforeShowForm: function (e) {
-                        var form = $(e[0]);
-                        form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />');
-                    }
-                }
-        );
 
         function beforeDeleteCallback(e) {
             var form = $(e[0]);

@@ -9,6 +9,7 @@ jQuery(function ($) {
         app.changeVerifyCode(codeKeyLoginId, codeImgLoginId);
     });
 
+
     $('#loginBtn').on('click', function () {
         if (checkContent() == "SUCCESS") {
             var paramData = {"username": $(usernameId).val(), "password": $(passwordId).val(),
@@ -21,8 +22,8 @@ jQuery(function ($) {
                 data: paramData,
                 success: function (data) {
                     if (data != null) {
-                        if (data.statusCode == "LOGIN_SUCCESS") {
-                            loginSuccess(data.content, data.token);
+                        if (data.statusCode == "SUCCESS") {
+                            loginSuccess(data);
                         }
                         showWarnMsg(data.statusMsg);
                         app.changeVerifyCode(codeKeyLoginId, codeImgLoginId);
@@ -36,13 +37,14 @@ jQuery(function ($) {
 
     });
 
-    function loginSuccess(content, takenValue) {
-        if ($("#remberPassword").attr("checked") == "checked") {
-            app.setTokenToCookie(takenValue);//如果是记住密码，则将Token信息存入cookie中
-        }else{
-            app.setTokenToCookie("");
-        }
-        app.setUserInfoToCookie(content);//将用户信息缓存到cookie中
+    function loginSuccess(data) {
+//        if ($("#remberPassword").attr("checked") == "checked") {
+//            app.setTokenToCookie(takenValue);//如果是记住密码，则将Token信息存入cookie中
+//        }else{
+//            app.setTokenToCookie("");
+//        }
+        app.setTokenToCookie(data.token);//如果是记住密码，则将Token信息存入cookie中
+        app.setUserInfoToCookie(data.content);//将用户信息缓存到cookie中
         window.location.href = app.baseUrlWeb + "/view/index.jsp";
     }
 
@@ -106,7 +108,7 @@ jQuery(function ($) {
                 data: paramData,
                 success: function (data) {
                     if (data != null) {
-                        if (data.statusCode == "REG_SUCCESS") {
+                        if (data.statusCode == "SUCCESS") {
                             regSuccess();
                         }
                         showWarnMsg(data.statusMsg);
@@ -208,7 +210,7 @@ jQuery(function ($) {
                 data: paramData,
                 success: function (data) {
                     if (data != null) {
-                        if (data.statusCode == "FIND_PASSWORD_SUCCESS") {
+                        if (data.statusCode == "SUCCESS") {
                             findPasswordSuccess();
                         }
                         showWarnMsg(data.statusMsg);

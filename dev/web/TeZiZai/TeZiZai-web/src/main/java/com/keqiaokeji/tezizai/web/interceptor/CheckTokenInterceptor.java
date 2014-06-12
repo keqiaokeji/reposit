@@ -41,7 +41,7 @@ public class CheckTokenInterceptor extends HandlerInterceptorAdapter {
         response.setContentType("text/html;charset=UTF-8");
         String token = request.getParameter("token");
         System.out.println("Token 的值为：" + token);
-        if (null == token || !cacheCtrl.getTokenCtrl().checkTokenTimeOut(token)) {// 未登录或Token过期
+        if (null == token || !cacheCtrl.getTokenCtrl().checkTokenTimeOutAndInitThreadLocal(token)) {// 未登录或Token过期
             PrintWriter out = response.getWriter();
             String jsonString = JSON.toJSONString(new JsonResult(JsonResultContants.TOKEN_TIME_OUT, JsonResultContants.TOKEN_TIME_OUT_MSG));
             out.print(jsonString);

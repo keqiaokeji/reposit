@@ -264,7 +264,7 @@
         <li class="divider"></li>
 
         <li>
-            <a href="<%=path%>/view/uc/login.jsp">
+            <a href="<%=path%>/index.jsp">
                 <i class="icon-off"></i>
                 退出
             </a>

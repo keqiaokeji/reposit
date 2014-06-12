@@ -3,6 +3,7 @@ package com.keqiaokeji.tezizai.common.cache;
 import com.keqiaokeji.tezizai.common.cache.token.TokenCtrl;
 import com.keqiaokeji.tezizai.common.cache.verifycode.AccreditCodeCache;
 import com.keqiaokeji.tezizai.common.cache.verifycode.VerifyCodeCache;
+import com.keqiaokeji.tezizai.common.dbmapper.uc.domain.UcUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import javax.annotation.Resource;
 public class CacheCtrl {
 
 
-    @Resource(name ="tokenLocalCache")
+    @Resource(name = "tokenLocalCache")
     private TokenCtrl tokenCtrl;
 
     @Autowired
@@ -49,4 +50,14 @@ public class CacheCtrl {
     public void setAccreditCodeCache(AccreditCodeCache accreditCodeCache) {
         this.accreditCodeCache = accreditCodeCache;
     }
+
+    /**
+     * 获得当前用户的用户信息
+     *
+     * @return 当前用户的用户信息
+     */
+    public UcUserInfo getCurrentUcUserInfo() {
+        return tokenCtrl.getCurrentUcUserInfo();
+    }
+
 }

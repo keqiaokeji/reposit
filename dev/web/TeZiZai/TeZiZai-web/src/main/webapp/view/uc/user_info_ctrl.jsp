@@ -93,8 +93,8 @@ jQuery(function ($) {
         mtype: "POST",//请求的类型：(“POST” or “GET”)	默认GET
         datatype: "json",//表格可以被接受的数据类型：xml，xmlstring，json，local，function
         jsonReader: {root: "dataRows", id: "userId"},//root:设置记录集的属性名称，id:设置主键的属性名称
-        editurl: app.baseUrlSvc + "/admin/uc/editUserInfo.do",//定义对form编辑时的url（增删改的时候使用）
-        url: app.baseUrlSvc + "/admin/uc/getUserInfoList.do",
+        editurl: app.baseUrlSvc + "/admin/uc/editUserInfo.do?token=" + app.getTokenByCookie(),//定义对form编辑时的url（增删改的时候使用）
+        url: app.baseUrlSvc + "/admin/uc/getUserInfoList.do?token=" + app.getTokenByCookie(),
         rowNum: 10,
         rowList: [10, 20, 30],
         pager: pager_selector,
@@ -186,7 +186,7 @@ jQuery(function ($) {
 
     var fn_editSubmit = function (response, postdata) {
         var json = response.responseText;
-        if(!app.isEmpty(json)){
+        if (!app.isEmpty(json)) {
             return [false, json];
         }
     }

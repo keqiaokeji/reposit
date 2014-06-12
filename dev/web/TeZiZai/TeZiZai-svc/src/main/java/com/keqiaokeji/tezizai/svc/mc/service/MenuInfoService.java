@@ -1,15 +1,18 @@
 package com.keqiaokeji.tezizai.svc.mc.service;
 
+import com.keqiaokeji.tezizai.common.cache.CacheCtrl;
 import com.keqiaokeji.tezizai.common.character.StringUtils;
 import com.keqiaokeji.tezizai.common.dbmapper.mc.domain.McMenuInfo;
 import com.keqiaokeji.tezizai.common.dbmapper.mc.mapper.McMenuInfoMapper;
 import com.keqiaokeji.tezizai.common.jqgrid.JQGridPage;
 import com.keqiaokeji.tezizai.svc.mc.domain.MenuInfo;
 import com.keqiaokeji.tezizai.svc.mc.mapper.MenuInfoMapper;
-import com.keqiaokeji.tezizai.svc.utils.AppContents;
+import com.keqiaokeji.tezizai.svc.utils.AppContants;
+import com.keqiaokeji.tezizai.svc.utils.AppContexts;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.awt.AppContext;
 
 import java.util.Date;
 import java.util.List;
@@ -25,6 +28,9 @@ public class MenuInfoService {
 
     @Autowired
     private MenuInfoMapper menuInfoMapper;
+
+    @Autowired
+    CacheCtrl cacheCtrl;
 
 
     Logger logger = Logger.getLogger(MenuInfoService.class.getName());
@@ -46,7 +52,8 @@ public class MenuInfoService {
 
     public void update(McMenuInfo menuInfo) {
         menuInfo.setLastModifyTime(new Date().getTime());
-        menuInfo.setRecordStatus(AppContents.RECORD_STATUS_UPDATE);
+        menuInfo.setRecordStatus(AppContants.RECORD_STATUS_UPDATE);
+        menuInfo.setLastModifyUserId(AppContexts.getUserId());
         mcMenuInfoMapper.updateByPrimaryKeySelective(menuInfo);
     }
 
@@ -57,11 +64,12 @@ public class MenuInfoService {
 
 
     public void add(McMenuInfo menuInfo) {
-        menuInfo.setRecordStatus(AppContents.RECORD_STATUS_INSERT);
+        menuInfo.setRecordStatus(AppContants.RECORD_STATUS_INSERT);
         menuInfo.setMenuId(StringUtils.getUUID());
         menuInfo.setCreateTime(new Date().getTime());
         menuInfo.setLastModifyTime(new Date().getTime());
-        menuInfo.setCorpId("keqiaokeji");
+        menuInfo.setCorpId(AppContexts.getCorpId());
+        menuInfo.setCreateUserId(AppContexts.getUserId());
         mcMenuInfoMapper.insert(menuInfo);
     }
 }
