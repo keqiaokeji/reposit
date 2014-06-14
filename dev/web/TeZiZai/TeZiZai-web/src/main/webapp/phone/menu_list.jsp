@@ -1,0 +1,582 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+<%
+    String path = request.getContextPath();
+%>
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="keywords" content="菜单列表"/>
+    <meta name="description" content="菜单详情"/>
+    <title>菜单列表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-app-status-bar-style" content="white"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="copyright" content="Copyright (c) 2007-2014 juooo"/>
+
+    <link rel="stylesheet" type="text/css" href="resources/css/style-min.css?v1.2.32">
+    <link rel="stylesheet" type="text/css" href="resources/css/alert.css?v1.6">
+
+    <script src="resources/js/jquery-1.7.1.min.js"></script>
+    <script src="resources/js/TouchSlide.1.1.js"></script>
+    <script src="resources/js/jquery.lazyload.mini.js"></script>
+    <script src="resources/js/base.js?v1.2"></script>
+    <script src="resources/js/juooostatistics.js"></script>
+    <script src="resources/js/jquery.tipswindow-2.2.js"></script>
+
+    <script>
+        $(window).load(function () {
+            if ($("#loadingBj") && $(".ajaxLoad")) {
+                $("#loadingBj").hide();
+                $(".ajaxLoad").hide();
+            }
+        });
+
+        $(function () {
+            $(".cate_main img").lazyload({
+                placeholder: "resources/img/bank.png",
+                //container : ".tg_coun",
+                effect: "fadeIn"
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#popupDialog-city").click(function () {
+                $.tipsWindow({
+                    ___content: "id:popupDialog-screen-city",
+                    //___width:"600",
+                    //___height:"300",
+                    ___drag: "___boxTitle",
+                    ___closeID: "c2",
+                    ___showbg: true
+                })
+            });
+
+            $("#popupDialog-type").click(function () {
+                $.tipsWindow({
+                    ___content: "id:popupDialog-screen-type",
+                    //___width:"600",
+                    //___height:"300",
+                    ___drag: "___boxTitle",
+                    ___closeID: "c3",
+                    ___showbg: true
+                })
+            });
+
+            $("#popupDialog-time").click(function () {
+                $.tipsWindow({
+                    ___content: "id:popupDialog-screen-time",
+                    //___width:"600",
+                    //___height:"300",
+                    ___drag: "___boxTitle",
+                    ___closeID: "c4",
+                    ___showbg: true
+                })
+            });
+        });
+    </script>
+
+    <script>
+        $(function () {
+            var navH = $(".list_tab").offset().top;
+            $(window).scroll(function () {
+                var scroH = $(this).scrollTop();
+                if (scroH >= navH) {
+                    $(".list_tab").css({"position": "fixed", "width": "100%", "top": 0, "left": "0"});
+                } else if (scroH < navH) {
+                    $(".list_tab").css({"position": "static"});
+                }
+                //console.log(scroH==navH);
+            });
+        });
+    </script>
+</head>
+<body ontouchmove="check_move()">
+<script>
+    function check_move() {
+        if ($(".juMenu").hasClass('juMenuPay')) {
+            $(".juMenu").removeClass('juMenuPay');
+        }
+    }
+</script>
+<div id="loadingBj"></div>
+<div class="ajaxLoad">
+    <span class="loading"><em class="loading-em"></em></span>
+    <span class="loading-color">努力加载中...</span>
+</div>
+<div class="g-hd">
+    <div class="l">
+        <div class="br1">
+            <a href="index.html" class="btn_back">返回</a>
+        </div>
+    </div>
+    <h1 class="sp logo">聚橙网触屏版</h1>
+
+    <div class="city"><a href="#"><i class="AppFonts">&#xf014a;</i>全国</a></div>
+</div>
+
+<div class="list_tab"><!--<div class="list_tab fixed"> -->
+    <a href="javascript:void(0)" class="tab1" id="popupDialog-city">全国</a>
+    <a href="javascript:void(0)" class="tab2" id="popupDialog-type">流行音乐</a>
+    <a href="javascript:void(0)" class="tab3" id="popupDialog-time">全部时间</a>
+</div>
+<div class="warp pt17">
+
+<div class="cate_main ">
+    <dl class="item cf" onclick="window.location.href='#'">
+        <h2>[深圳]费玉清2014深圳演唱会</h2>
+        <dt><a href="ticket.html">
+            <img src="resources/img/20140219095900692.jpg">
+        </a>
+        <div class="ico_zhu">
+            <div class="ui-iconfont ico_caidai">&#61472;</div>
+            <span class="txt">主<br>办</span>
+        </div>
+        </dt>
+        <dd><i class="ico ico_time">时间：</i><span class="time">2014.05.24</span></dd>
+        <dd><i class="ico ico_cost">场馆：</i>
+            <span class="time">华润深圳湾体育中心＂春茧＂体育馆</span></dd>
+        <dd><i class="ico ico_cost">价格：</i>
+            <span class="cost">140-1680元</span></dd>
+        <dd>
+            <span class="ico_tag">售票中</span>
+            <span class="ico_tag yu">选座</span>
+        </dd>
+    </dl>
+
+    <dl class="item cf" onclick="window.location.href='#'">
+        <h2>[深圳]罗素红Russian Red《Fuertevent</h2>
+        <dt><a href="ticket.html">
+            <img src="resources/img/20140513155248785.jpg">
+        </a>
+        <div class="ico_zhu">
+            <div class="ui-iconfont ico_caidai">&#61472;</div>
+            <span class="txt">主<br>办</span>
+        </div>
+        </dt>
+        <dd><i class="ico ico_time">时间：</i><span class="time">2014.06.07</span></dd>
+        <dd><i class="ico ico_cost">场馆：</i>
+            <span class="time">聚橙网</span></dd>
+        <dd><i class="ico ico_cost">价格：</i>
+            <span class="cost">80-80元</span></dd>
+        <dd>
+            <span class="ico_tag">售票中</span>
+        </dd>
+    </dl>
+
+    <dl class="item cf" onclick="window.location.href='#'">
+        <h2>[深圳]CD碟-罗素红Russian Red《Agent </h2>
+        <dt><a href="ticket.html">
+            <img src="resources/img/20140513155605850.jpg">
+        </a>
+        <div class="ico_zhu">
+            <div class="ui-iconfont ico_caidai">&#61472;</div>
+            <span class="txt">主<br>办</span>
+        </div>
+        </dt>
+        <dd><i class="ico ico_time">时间：</i><span class="time">2014.06.07</span></dd>
+        <dd><i class="ico ico_cost">场馆：</i>
+            <span class="time">聚橙网</span></dd>
+        <dd><i class="ico ico_cost">价格：</i>
+            <span class="cost">80-80元</span></dd>
+        <dd>
+            <span class="ico_tag">售票中</span>
+        </dd>
+    </dl>
+
+    <dl class="item cf" onclick="window.location.href='#'">
+        <h2>[深圳]民谣小女巫—罗素红《库伯探员》2014中国巡演</h2>
+        <dt><a href="ticket.html">
+            <img src="resources/img/2014032714050816.jpg">
+        </a>
+        <div class="ico_zhu">
+            <div class="ui-iconfont ico_caidai">&#61472;</div>
+            <span class="txt">主<br>办</span>
+        </div>
+        </dt>
+        <dd><i class="ico ico_time">时间：</i><span class="time">2014.06.08</span></dd>
+        <dd><i class="ico ico_cost">场馆：</i>
+            <span class="time">深圳音乐厅</span></dd>
+        <dd><i class="ico ico_cost">价格：</i>
+            <span class="cost">100-380元</span></dd>
+        <dd>
+            <span class="ico_tag">售票中</span>
+        </dd>
+    </dl>
+
+    <dl class="item cf" onclick="window.location.href='#'">
+        <h2>[上海]罗素红Russian Red《Fuertevent</h2>
+        <dt><a href="ticket.html">
+            <img src="resources/img/2014032714050816.jpg">
+        </a>
+        <div class="ico_zhu">
+            <div class="ui-iconfont ico_caidai">&#61472;</div>
+            <span class="txt">主<br>办</span>
+        </div>
+        </dt>
+        <dd><i class="ico ico_time">时间：</i><span class="time">2014.06.09</span></dd>
+        <dd><i class="ico ico_cost">场馆：</i>
+            <span class="time">聚橙网</span></dd>
+        <dd><i class="ico ico_cost">价格：</i>
+            <span class="cost">80-80元</span></dd>
+        <dd>
+            <span class="ico_tag">售票中</span>
+        </dd>
+    </dl>
+
+    <dl class="item cf" onclick="window.location.href='#'">
+        <h2>[上海]CD碟-罗素红Russian Red《Agent </h2>
+        <dt><a href="ticket.html">
+            <img src="resources/img/2014032714050816.jpg">
+        </a>
+        <div class="ico_zhu">
+            <div class="ui-iconfont ico_caidai">&#61472;</div>
+            <span class="txt">主<br>办</span>
+        </div>
+        </dt>
+        <dd><i class="ico ico_time">时间：</i><span class="time">2014.06.09</span></dd>
+        <dd><i class="ico ico_cost">场馆：</i>
+            <span class="time">聚橙网</span></dd>
+        <dd><i class="ico ico_cost">价格：</i>
+            <span class="cost">80-80元</span></dd>
+        <dd>
+            <span class="ico_tag">售票中</span>
+        </dd>
+    </dl>
+</div>
+
+<div class="loadMore" data_id="1"><!--i></i-->点击加载更多</div>
+
+<div data-role="popup" id="popupDialog-screen-city" style="display:none;">
+    <div class="pop-list" id="pop_list_city">
+        <div class="title">
+            <h2>选择分类</h2>
+            <a href="javascript:;" id="c2" class="close">关闭</a>
+        </div>
+        <div class="content">
+            <ul class="panel_sb">
+                <li class="sbon" onclick="setcity(0)">
+                    <div class="txt" onclick="setcity(0)">全部城市</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div data-role="popup" id="popupDialog-screen-type" style="display:none;">
+    <div class="pop-list" id="pop_list_types">
+        <div class="title">
+            <h2>选择分类</h2>
+            <a href="javascript:;" id="c3" class="close">关闭</a>
+        </div>
+        <div class="content">
+            <ul class="panel_sb">
+                <li class="" onclick="settypes(0)">
+                    <div class="txt" onclick="settypes(0)">全部</div>
+                </li>
+                <li class="sbon" onclick="settypes(35)">
+                    <div class="txt">流行音乐</div>
+                </li>
+                <li class="" onclick="settypes(36)">
+                    <div class="txt">古典音乐</div>
+                </li>
+                <li class="" onclick="settypes(37)">
+                    <div class="txt">舞台剧</div>
+                </li>
+                <li class="" onclick="settypes(38)">
+                    <div class="txt">儿童亲子</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div data-role="popup" id="popupDialog-screen-time" style="display:none;">
+    <div class="pop-list" id="pop_list_times">
+        <div class="title">
+            <h2>选择分类</h2>
+            <a href="javascript:;" id="c4" class="close">关闭</a>
+        </div>
+        <div class="content">
+            <ul class="panel_sb">
+                <li class="sbon" onclick="settime(0)">
+                    <div class="txt" onclick="settimes(0)">全部</div>
+                </li>
+                <li class="" onclick="settimes(2)">
+                    <div class="txt">明天</div>
+                </li>
+                <li class="" onclick="settimes(1)">
+                    <div class="txt">周末</div>
+                </li>
+                <li class="" onclick="settimes(3)">
+                    <div class="txt">一周内</div>
+                </li>
+                <li class="" onclick="settimes(4)">
+                    <div class="txt">一个月内</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!---
+
+//公共底部begin
+
+-->
+
+<div class="foot-menu">
+    <a href="User/login" class="myjuo"><i class="sp"></i>我的聚橙</a>
+    <a href="Index/follow" class="atte"><i class="sp"></i>关注聚橙</a>
+</div>
+<div class="tel"><a href="tel_3A4001858666"><i class="fontIcon fa-phone"></i>客服:400-185-8666</a></div>
+<div class="juMenu">
+    <div class="t">
+        <div class="ju_logo" onclick="check_footer(this)"></div>
+    </div>
+    <div class="juSearch">
+        <input class="text" onfocus="if(value=='请输入演出、艺人、场馆名称') {value=''}"
+               onblur="if (value=='') {value='请输入演出、艺人、场馆名称'}" value="请输入演出、艺人、场馆名称" type="text">
+        <a href="javascript:;" class="btn"><i class="icon_txt s_btnIco"></i></a>
+    </div>
+    <div class="juMenu_list">
+        <ul>
+            <li class="nav01"><a href="ticket/history"><i class="AppFonts">&#xf00e9;</i>最近浏览</a></li>
+            <li class="nav02"><a href="user/login?flag=_2Findex.php_2Fmember_2Fmyorder"><i class="ui-iconfont">
+                &#508;</i>我的订单</a>
+        </ul>
+        <ul>
+            <li class="nav03"><a href="index/index"><i class="ui-iconfont">&#336;</i><span class="txt">首页</span></a>
+            </li>
+            <li class="nav04"><a href="#"><i class="ui-iconfont">&#430;</i>返回顶部</a></li>
+        </ul>
+    </div>
+</div>
+
+
+<script>
+    /**
+     * 底部
+     * ?param  {[type]} obj [description]
+     * ?return {[type]}     [description]
+     */
+    function check_footer(obj) {
+        if ($(".juMenu").hasClass('juMenuPay')) {
+            $(".juMenu").removeClass('juMenuPay');
+        } else {
+            $(".juMenu").addClass('juMenuPay');
+        }
+    }
+</script>
+
+</div>
+
+<script src="<%=path%>/resources/js/app.js"></script>
+
+<script>
+
+    $(function () {
+        $(".loadMore").bind("click", function () {
+            check_more(this);
+        });
+    });
+
+
+    var menuTypeList;//菜单类型列表
+    initMenuType();
+    function initMenuType() {
+        $.ajax({
+            type: "post",
+            async: true,//异步，如果等于false 那么就是同步
+            url: app.baseUrlSvc + "/user/mc/getMenuType.do?token=" + app.getTokenByCookie(),
+            dataType: "json",
+            data: "",
+            success: function (data) {
+                if (data != null) {
+                    if (data.statusCode == app.SUCCESS) {
+                        getMenutypeSuccess(data);
+                    } else {
+                        alert("获得菜单信息失败！");
+                    }
+                }
+            },
+            error: function (data) {
+                alert("请求服务器出错！");
+            }
+        });
+    }
+
+    function getMenutypeSuccess(data) {
+        if (data.result.length > 0) {
+            menuTypeList = data.result[0];
+        } else {
+            alert("暂无菜单信息！");
+        }
+    }
+
+    function formartMenuType(menuTypeId) {
+        var type = "未知";
+        for (var i = 0; i < menuTypeList.length; i++) {
+            var menuType = menuTypeList[i];
+            if (menuTypeId == menuType.menuTypeId || menuTypeId == menuType.menuTypeName) {
+                type = menuType.menuTypeName;
+                break;
+            }
+        }
+        return type;
+    }
+
+
+    /**
+     * 加载更多
+     * ?param  {[type]} obj [description]
+     * ?return {[type]}     [description]
+     */
+    var page = 1;
+    var cid = 35;
+    var city_id = 0;
+    var time = 0;
+    function check_more(obj) {
+        var flag = $(obj).attr('data_id');
+        //alert(flag)
+        if (flag == 1) {
+            $.ajax({
+                type: 'post',
+                url: app.baseUrlSvc + "/admin/mc/getMenuInfoList.do?token=" + app.getTokenByCookie(),
+                data: "page=" + page + "&cid=" + cid + "&city_id=" + city_id + "&time=" + time,
+                dataType: 'json',
+                error: function () {
+                    alert("请稍后再试！");
+                },
+                beforeSend: function () {
+                    $(obj).html("<i></i>点击加载更多");
+                    $(obj).unbind("click");
+                },
+                success: function (data) {
+                    var html = "";
+                    for (var i = 0; i < data.dataRows.length; i++) {
+                        var menuInfo = data.dataRows[i];
+                        html = html + "<dl class=\"item cf\" onclick=\"window.location.href='#'\">"
+                                + "<h2>[" + formartMenuType(menuInfo.menuTypeId) + "]" + menuInfo.menuName + " </h2>"
+                                + "<dt><a href=\"ticket.html\"><img src=\"resources/img/2014032714050816.jpg\"></a>"
+                                + "<div class=\"ico_zhu\"><div class=\"ui-iconfont ico_caidai\">&#61472;</div>"
+                                + "<span class=\"txt\">主<br>办</span></div></dt>"
+                                + "<dd><i class=\"ico ico_time\">优惠价格：</i><span class=\"price_favorable\">" + menuInfo.priceFavorable + "</span></dd>"
+                                + "<dd><i class=\"ico ico_cost\"><del>实际价格：</del></i>"
+                                + "<span class=\"price_real\"><del>" + menuInfo.priceReal + "</span></del></dd>"
+                                + "<dd><i class=\"ico ico_cost\">份数：</i>"
+                                + "<span class=\"cost\">" + 1 + "</span></dd>"
+                                + "<dd>"
+                                + "<span class=\"ico_tag\">取消-</span>"
+                                + "<span class=\"ico_tag yu\">选则+</span>"
+                                + "</dd></dl>";
+                    }
+
+                    if (html != "") {
+                        $(".cate_main").append(html);
+                        $("img.c").lazyload({
+                            placeholder: "resources/img/bank.png",
+                            effect: "fadeIn"
+                        });
+                        page++;
+                    } else {
+                        $(obj).attr("data_id", 0);
+                        $(obj).html("已加载全部");
+                    }
+                },
+                complete: function () {
+                    $(".loadMore").bind("click", function () {
+                        check_more(this);
+                    });
+                    if ($(obj).attr("data_id") == 1) {
+                        $(obj).html("点击加载更多");
+                    }
+                }
+            });
+        }
+    }
+
+
+    function open_city() {
+        $("#mask_city").css('display', '');
+        $("#pop_list_city").css({"-webkit-transform": "translateY(0)", "-webkit-transition": 'none', "transition": "none", "-webkit-transition": ' all 0.5s ease', "transition": 'all 0.5s ease'});
+    }
+
+
+    function check_close_city() {
+//        $("#city").slideUp("slow");
+        $("#mask_city").css('display', 'none');
+        $("#pop_list_city").css({"-webkit-transform": "translateY(-500px)", "-webkit-transition": 'none', "transition": "none", "-webkit-transition": ' all 0.5s ease', "transition": 'all 0.5s ease'});
+    }
+
+
+    function open_types() {
+//        $("#types").slideDown("slow");
+        $("#mask_types").css('display', '');
+        $("#pop_list_types").css({"-webkit-transform": "translateY(0)", "-webkit-transition": 'none', "transition": "none", "-webkit-transition": ' all 0.5s ease', "transition": 'all 0.5s ease'});
+    }
+
+    function check_close_types() {
+        $("#mask_types").css('display', 'none');
+        $("#pop_list_types").css({"-webkit-transform": "translateY(-500px)", "-webkit-transition": 'none', "transition": "none", "-webkit-transition": ' all 0.5s ease', "transition": 'all 0.5s ease'});
+    }
+
+
+    function open_times() {
+        $("#mask_times").css('display', '');
+        $("#pop_list_times").css({"-webkit-transform": "translateY(0)", "-webkit-transition": 'none', "transition": "none", "-webkit-transition": ' all 0.5s ease', "transition": 'all 0.5s ease'});
+    }
+
+
+    function check_close_times() {
+        $("#mask_times").css('display', 'none');
+        $("#pop_list_times").css({"-webkit-transform": "translateY(-500px)", "-webkit-transition": 'none', "transition": "none", "-webkit-transition": ' all 0.5s ease', "transition": 'all 0.5s ease'});
+    }
+
+
+    function setcity(id) {
+        $.ajax({
+            type: 'post',
+            url: "list.html",
+            data: 'cid=' + id,
+            dataType: 'json',
+            success: function (msg) {
+                if (msg) {
+                    window.location.reload();
+                }
+            }
+        })
+    }
+
+
+    var time = 0;
+    var cid = 35;
+    function settypes(id) {
+        if (time) {
+            window.location.href = "menu_list.jsp";
+        } else {
+            window.location.href = "menu_list.jsp";
+        }
+    }
+
+    function settimes(id) {
+        if (cid) {
+            window.location.href = "menu_list.jsp";
+        } else {
+            window.location.href = "menu_list.jsp";
+        }
+    }
+</script>
+</body>
+</html>
+

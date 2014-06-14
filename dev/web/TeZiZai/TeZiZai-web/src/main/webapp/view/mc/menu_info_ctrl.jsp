@@ -95,7 +95,7 @@ jQuery(function ($) {
         success: function (data) {
             if (data != null) {
                 if (data.statusCode == app.SUCCESS) {
-                    getMetySuccess(data);
+                    getMenutypeSuccess(data);
                 } else {
                     alert("获得菜单信息失败！");
                 }
@@ -107,7 +107,7 @@ jQuery(function ($) {
     });
 
 
-    function getMetySuccess(data) {
+    function getMenutypeSuccess(data) {
         if (data.result.length > 0) {
             menuTypeList = data.result[0];
             var menuTypeContent = "";
@@ -277,6 +277,7 @@ jQuery(function ($) {
             var menuType = menuTypeList[i];
             if(cellValue == menuType.menuTypeId || cellValue ==menuType.menuTypeName){
                 type = menuType.menuTypeName;
+                break;
             }
         }
         return type;
