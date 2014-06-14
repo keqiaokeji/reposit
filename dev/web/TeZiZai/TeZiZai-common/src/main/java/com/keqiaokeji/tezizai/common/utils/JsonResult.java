@@ -1,5 +1,7 @@
 package com.keqiaokeji.tezizai.common.utils;
 
+import com.keqiaokeji.tezizai.common.app.AppCommonContexts;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,12 +30,21 @@ public class JsonResult<T> {
     public JsonResult(String statusCode, String statusMsg) {
         this.statusCode = statusCode;
         this.statusMsg = statusMsg;
+        this.token = AppCommonContexts.getToken();
     }
 
     public JsonResult(String statusCode, String statusMsg, String content) {
         this.statusCode = statusCode;
         this.statusMsg = statusMsg;
         this.content = content;
+        this.token = AppCommonContexts.getToken();
+    }
+
+    public JsonResult(String statusCode, String statusMsg, T obj) {
+        this.statusCode = statusCode;
+        this.statusMsg = statusMsg;
+        this.result.add(obj);
+        this.token = AppCommonContexts.getToken();
     }
 
     /**

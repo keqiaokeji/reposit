@@ -32,7 +32,7 @@ public class UserController {
         if (cacheCtrl.getVerifyCodeCache().checkVerifyCode(codeKey, codeContent)) {//验证码正确
             result = userService.loginUser(username, password);
         } else {
-            result = new JsonResult(JsonResultContants.VERIFY_CODE_FAIL, JsonResultContants.VERIFY_CODE_FAIL_MSG);
+            result = new JsonResult(JsonResultContants.FAIL, JsonResultContants.VERIFY_CODE_FAIL_MSG);
         }
         return result;
     }
@@ -45,7 +45,7 @@ public class UserController {
         if (cacheCtrl.getAccreditCodeCache().checkAccreditCode(accreditCode)) {
             result = userService.loginUser(username, password);
         } else {
-            result = new JsonResult(JsonResultContants.ACCREDIt_CODE_FAIL, JsonResultContants.ACCREDIt_CODE_FAIL_MSG);
+            result = new JsonResult(JsonResultContants.FAIL, JsonResultContants.ACCREDIt_CODE_FAIL_MSG);
         }
         return result;
     }
@@ -57,7 +57,7 @@ public class UserController {
         if (cacheCtrl.getVerifyCodeCache().checkVerifyCode(codeKey, codeContent)) {//验证码正确
             result = userService.regUser(userInfo);
         } else {
-            result = new JsonResult(JsonResultContants.VERIFY_CODE_FAIL, JsonResultContants.VERIFY_CODE_FAIL_MSG);
+            result = new JsonResult(JsonResultContants.FAIL, JsonResultContants.VERIFY_CODE_FAIL_MSG);
         }
         return result;
     }
@@ -69,7 +69,7 @@ public class UserController {
         if (cacheCtrl.getVerifyCodeCache().checkVerifyCode(codeKey, codeContent)) {//验证码正确
             result = userService.findPasswordUser(email);
         } else {
-            result = new JsonResult(JsonResultContants.VERIFY_CODE_FAIL, JsonResultContants.VERIFY_CODE_FAIL_MSG);
+            result = new JsonResult(JsonResultContants.FAIL, JsonResultContants.VERIFY_CODE_FAIL_MSG);
         }
         return result;
     }

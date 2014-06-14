@@ -1,7 +1,6 @@
 package com.keqiaokeji.tezizai.svc.mc.controller;
 
 import com.keqiaokeji.tezizai.common.app.JsonResultContants;
-import com.keqiaokeji.tezizai.common.character.StringUtils;
 import com.keqiaokeji.tezizai.common.dbmapper.mc.domain.McMenuTypeInfo;
 import com.keqiaokeji.tezizai.common.jqgrid.JQGridContants;
 import com.keqiaokeji.tezizai.common.jqgrid.JQGridPage;
@@ -34,20 +33,8 @@ public class MenuTypeInfoController {
     @ResponseBody
     @RequestMapping(value = "/user/mc/getMenuType")
     public JsonResult getMenuType() {
-        JsonResult result = null;
         List<McMenuTypeInfo> list = menuTypeInfoService.getMenuTypeInfo();
-        if (list != null) {
-            StringBuilder types = new StringBuilder();
-            for (McMenuTypeInfo type : list) {
-                types.append(type.getMenuTypeName());
-                types.append(":");
-                types.append(type.getMenuTypeName());
-            }
-            if(StringUtils.isNotEmpty(types.toString()))
-            result = new JsonResult(JsonResultContants.SUCCESS, "菜单类型获取成功", types.toString());
-        } else {
-            result = new JsonResult(JsonResultContants.FAIL, "暂无菜单信息");
-        }
+        JsonResult result = new JsonResult(JsonResultContants.SUCCESS, "菜单类型获取成功", list);
         return result;
     }
 

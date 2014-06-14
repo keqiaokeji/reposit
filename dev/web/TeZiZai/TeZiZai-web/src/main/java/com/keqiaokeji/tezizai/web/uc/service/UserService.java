@@ -1,7 +1,6 @@
 package com.keqiaokeji.tezizai.web.uc.service;
 
 import com.keqiaokeji.tezizai.common.app.JsonResultContants;
-import com.keqiaokeji.tezizai.common.app.UserContants;
 import com.keqiaokeji.tezizai.common.cache.CacheCtrl;
 import com.keqiaokeji.tezizai.common.character.DesEncrypt;
 import com.keqiaokeji.tezizai.common.character.StringUtils;
@@ -12,7 +11,7 @@ import com.keqiaokeji.tezizai.common.jqgrid.JQGridPage;
 import com.keqiaokeji.tezizai.common.utils.JsonResult;
 import com.keqiaokeji.tezizai.web.uc.domain.UserInfo;
 import com.keqiaokeji.tezizai.web.uc.mapper.UserInfoMapper;
-import com.keqiaokeji.tezizai.web.utils.AppContents;
+import com.keqiaokeji.tezizai.web.utils.AppContants;
 import com.keqiaokeji.tezizai.web.utils.MailSendUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,14 +45,14 @@ public class UserService {
         UcUserInfo ucUserinfo = login(username, password);
         if (ucUserinfo == null) {
             result = new JsonResult(JsonResultContants.LOGIN_USERNAME_PASSWORD_ERROR, JsonResultContants.LOGIN_USERNAME_PASSWORD_ERROR_MSG);
-        } else if (ucUserinfo.getStatus().equals(UserContants.STATE_FORBIDDEN)) {
+        } else if (ucUserinfo.getStatus().equals(AppContants.STATE_FORBIDDEN)) {
             result = new JsonResult(JsonResultContants.USER_STATE_FORBIDDEN, JsonResultContants.USER_STATE_FORBIDDEN_MSG);
-        } else if (ucUserinfo.getStatus().equals(UserContants.STATE_FREEZE)) {
+        } else if (ucUserinfo.getStatus().equals(AppContants.STATE_FREEZE)) {
             result = new JsonResult(JsonResultContants.USER_STATE_FREEZE, JsonResultContants.USER_STATE_FREEZE_MSG);
         } else {
             String token = cacheCtrl.getTokenCtrl().addToken(ucUserinfo);
             result = new JsonResult();
-            result.setStatusCode(JsonResultContants.LOGIN_SUCCESS);
+            result.setStatusCode(JsonResultContants.SUCCESS);
             result.setStatusMsg(JsonResultContants.LOGIN_SUCCESS_MSG);
             result.setToken(token);
             ucUserinfo.setPassword(null);
@@ -65,7 +64,7 @@ public class UserService {
     public UcUserInfo login(String username, String password) {
         UcUserInfo ucUserInfo = null;
         UcUserInfoExample example = new UcUserInfoExample();
-        example.createCriteria().andUsernameEqualTo(username).andPasswordEqualTo(DesEncrypt.encrypt(password, UserContants.PASSWORD_DES));
+        example.createCriteria().andUsernameEqualTo(username).andPasswordEqualTo(DesEncrypt.encrypt(password, AppContants.PASSWORD_DES));
         List<UcUserInfo> ucUserInfos = ucUserInfoMapper.selectByExample(example);
         if (ucUserInfos != null && ucUserInfos.size() > 0) {
             ucUserInfo = ucUserInfos.get(0);
@@ -85,7 +84,7 @@ public class UserService {
             }
         } else {
             add(userInfo);
-            result = new JsonResult(JsonResultContants.REG_SUCCESS, JsonResultContants.REG_SUCCESS_MSG);
+            result = new JsonResult(JsonResultContants.SUCCESS, JsonResultContants.REG_SUCCESS_MSG);
         }
         return result;
 
@@ -109,13 +108,13 @@ public class UserService {
         JsonResult result = null;
         UcUserInfo userCheck = findPasswordCheck(email);
         if (userCheck != null) {
-            String password = DesEncrypt.decrypt(userCheck.getPassword(), UserContants.PASSWORD_DES);
+            String password = DesEncrypt.decrypt(userCheck.getPassword(), AppContants.PASSWORD_DES);
             try {
                 mailSendUtils.sendFindPasswordMail(email, password);
-                result = new JsonResult(JsonResultContants.FIND_PASSWORD_SUCCESS, JsonResultContants.FIND_PASSWORD_SUCCESS_MSG);
+                result = new JsonResult(JsonResultContants.SUCCESS, JsonResultContants.FIND_PASSWORD_SUCCESS_MSG);
             } catch (Exception e) {
                 logger.error(e);
-                result = new JsonResult(JsonResultContants.FIND_PASSWORD_FAIL, JsonResultContants.FIND_PASSWORD_FAIL_MSG);
+                result = new JsonResult(JsonResultContants.FAIL, JsonResultContants.FIND_PASSWORD_FAIL_MSG);
             }
         } else {
             result = new JsonResult(JsonResultContants.FIND_PASSWORD_EMAIL_NOT_EXSIT, JsonResultContants.FIND_PASSWORD_EMAIL_NOT_EXSIT_MSG);
@@ -142,7 +141,7 @@ public class UserService {
         List<UserInfo> userInfoList = userInfoMapper.getUserListJQgrid(pageJQGrid);
         for (UserInfo user : userInfoList) {
             user.initUserInfo();
-            user.setPassword(DesEncrypt.decrypt(user.getPassword(), UserContants.PASSWORD_DES));
+            user.setPassword(DesEncrypt.decrypt(user.getPassword(), AppContants.PASSWORD_DES));
         }
         pageJQGrid.setDataRows(userInfoList);
         Integer count = userInfoMapper.getUserListCountJQgrid(pageJQGrid);
@@ -155,10 +154,10 @@ public class UserService {
 
     public void update(UcUserInfo userInfo) {
         if (StringUtils.isNotBlank(userInfo.getPassword())) {
-            userInfo.setPassword(DesEncrypt.encrypt(userInfo.getPassword(), UserContants.PASSWORD_DES));
+            userInfo.setPassword(DesEncrypt.encrypt(userInfo.getPassword(), AppContants.PASSWORD_DES));
         }
         userInfo.setLastModifyTime(new Date().getTime());
-        userInfo.setRecordStatus(AppContents.RECORD_STATUS_UPDATE);
+        userInfo.setRecordStatus(AppContants.RECORD_STATUS_UPDATE);
         ucUserInfoMapper.updateByPrimaryKeySelective(userInfo);
     }
 
@@ -169,9 +168,9 @@ public class UserService {
 
 
     public void add(UcUserInfo userInfo) {
-        userInfo.setPassword(DesEncrypt.encrypt(userInfo.getPassword(), UserContants.PASSWORD_DES));
-        userInfo.setStatus(UserContants.STATUS_NORMOR);
-        userInfo.setRecordStatus(AppContents.RECORD_STATUS_INSERT);
+        userInfo.setPassword(DesEncrypt.encrypt(userInfo.getPassword(), AppContants.PASSWORD_DES));
+        userInfo.setStatus(AppContants.STATUS_NORMOR);
+        userInfo.setRecordStatus(AppContants.RECORD_STATUS_INSERT);
         userInfo.setUserId(StringUtils.getUUID());
         userInfo.setCreateTime(new Date().getTime());
         userInfo.setLastModifyTime(new Date().getTime());

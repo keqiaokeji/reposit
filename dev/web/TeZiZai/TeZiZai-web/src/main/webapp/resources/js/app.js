@@ -7,6 +7,9 @@ App = function () {//构造函数
     this.userInfo;//记录挡墙用户的用户信息
 
 
+    this.SUCCESS = "SUCCESS";
+    this.FAIL = "FAIL";
+
 }
 
 App.prototype = { //定义方法
