@@ -102,7 +102,7 @@ jQuery(function ($) {
             }
         },
         error: function (data) {
-            alert("请求服务器出错！");
+            alert("请求服务器出错，请重新登录！");
         }
     });
 
@@ -152,11 +152,11 @@ jQuery(function ($) {
                     }
                 },
                 {name: 'menuId', index: 'menu_id', hidden: true},
-                {name: 'pictureUrl', index: 'picture_url', width: 100, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
-                {name: 'menuName', index: 'menu_name', width: 300, editable: true, editoptions: {size: "20", maxlength: "30"}},
-                {name: 'priceReal', index: 'price_real', width: 60, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
-                {name: 'priceFavorable', index: 'price_favorable', width: 60, editable: true, sortable: false, search: false, editoptions: {size: "20", maxlength: "30"}},
-                {name: 'menuTypeId', index: 'menu_type_id', width: 100, editable: true, sortable: false, search: false, formatter: formartMenuType,edittype: "select", editoptions: {value: menuType}},
+                {name: 'pictureUrl', index: 'picture_url', width: 100, editable: true, sortable: false, search: false, formatter: alarmFormatter, edittype: "file", unformat: editPictureId, editoptions: {size: "5", maxlength: "100"}},
+                {name: 'menuName', index: 'menu_name', width: 300, editable: true, sortable: true, editoptions: {size: "20", maxlength: "30"}},
+                {name: 'priceReal', index: 'price_real', width: 60, editable: true, sortable: true, search: false, editoptions: {size: "20", maxlength: "30"}},
+                {name: 'priceFavorable', index: 'price_favorable', width: 60, editable: true, sortable: true, search: false, editoptions: {size: "20", maxlength: "30"}},
+                {name: 'menuTypeId', index: 'menu_type_id', width: 100, editable: true, sortable: true, search: false, formatter: formartMenuType, edittype: "select", editoptions: {value: menuType}},
                 {name: 'menuOrder', index: 'menu_order', width: 40, editable: true, type: "integer", sortable: true, search: false, editoptions: {size: "20", maxlength: "30"}},
                 {name: 'status', index: 'status', width: 70, editable: true, search: false, formatter: formartStatus, edittype: "select", editoptions: {value: "STATUS_NORMOR:正常;STATE_FORBIDDEN:禁用"}},
                 {name: 'createTime', index: 'create_time', width: 110, editable: false, search: false, type: "date", sorttype: "date", formatter: formartCreateTime}
@@ -259,6 +259,28 @@ jQuery(function ($) {
         );
     }
 
+    //enable datepicker
+    function editPictureId(cellvalue, options, cell) {
+        alert(111 + options);
+        setTimeout(function () {
+
+            var pictureIdText = $(cell).find('input[name=pictureUrl]');
+//                    .datepicker({type: 'file', autoclose: false});
+            alert(pictureIdText.html);
+            alert(pictureIdText.attr("type"));
+            pictureIdText.attr("type", "file");
+
+        }, 0);
+    }
+
+    function alarmFormatter(cellvalue, options, rowdata) {
+        if (cellvalue != "0")
+            return '<img width="83px" height="92px" src="http://localhost/TeZiZai-web/phone/resources/img/20140219095900692.jpg"  />';
+        else
+            return '<img width="83px" height="92px" src="http://localhost/TeZiZai-web/phone/resources/img/20140219095900692.jpg" />';
+    }
+
+
     function formartStatus(cellValue, options, cell) {
         var status = "未知";
         if (cellValue == "STATUS_NORMOR" || cellValue == "正常") {
@@ -275,14 +297,13 @@ jQuery(function ($) {
         var type = "未知";
         for (var i = 0; i < menuTypeList.length; i++) {
             var menuType = menuTypeList[i];
-            if(cellValue == menuType.menuTypeId || cellValue ==menuType.menuTypeName){
+            if (cellValue == menuType.menuTypeId || cellValue == menuType.menuTypeName) {
                 type = menuType.menuTypeName;
                 break;
             }
         }
         return type;
     }
-
 
 
     function formartCreateTime(cellValue, options, cell) {
@@ -305,6 +326,8 @@ jQuery(function ($) {
     }
 
     function style_edit_form(form) {
+//        alert(form.find('input[name=pictureUrl]').text);
+//        form.find('input[name=pictureUrl]').datepicker({format: 'file', autoclose: true});
         //update buttons classes
         var buttons = form.next().find('.EditButton .fm-button');
         buttons.addClass('btn btn-sm').find('[class*="-icon"]').remove();//ui-icon, s-icon

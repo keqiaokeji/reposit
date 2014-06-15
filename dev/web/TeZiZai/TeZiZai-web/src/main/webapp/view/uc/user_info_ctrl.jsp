@@ -8,10 +8,6 @@
 <head>
     <jsp:include page="/view/home/home_head.jsp"/>
 
-    <%--<link rel="stylesheet" href="<%=path%>/bootstrap/assets/css/jquery-ui-1.10.3.full.min.css"/>--%>
-    <%--<link rel="stylesheet" href="<%=path%>/bootstrap/assets/css/datepicker.css"/>--%>
-    <%--<link rel="stylesheet" href="<%=path%>/bootstrap/assets/css/ui.jqgrid.css"/>--%>
-
 </head>
 
 <body>
@@ -73,11 +69,6 @@
 <script src="<%=path%>/bootstrap/assets/js/jqGrid/jquery.jqGrid.js"></script>
 <%--<script src="<%=path%>/bootstrap/assets/js/jqGrid/jquery.jqGrid.min.js"></script>--%>
 <script src="<%=path%>/bootstrap/assets/js/jqGrid/i18n/grid.locale-cn.js"></script>
-
-<!-- ace scripts -->
-
-<script src="<%=path%>/bootstrap/assets/js/ace-elements.min.js"></script>
-<script src="<%=path%>/bootstrap/assets/js/ace.min.js"></script>
 
 <!-- inline scripts related to this page -->
 

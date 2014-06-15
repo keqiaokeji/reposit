@@ -53,8 +53,12 @@
 
 
 
+<!-- my scripts -->
 <script src="<%=path%>/resources/js/jquery-1.8.3.min.js"></script>
 <script src="<%=path%>/resources/js/app.js"></script>
 
+<!-- ace scripts -->
+<script src="<%=path%>/bootstrap/assets/js/ace-elements.min.js"></script>
+<script src="<%=path%>/bootstrap/assets/js/ace.min.js"></script>
 
 

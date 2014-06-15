@@ -344,11 +344,6 @@
 <script src="<%=path%>/bootstrap/assets/js/x-editable/ace-editable.min.js"></script>
 <script src="<%=path%>/bootstrap/assets/js/jquery.maskedinput.min.js"></script>
 
-<!-- ace scripts -->
-
-<script src="<%=path%>/bootstrap/assets/js/ace-elements.min.js"></script>
-<script src="<%=path%>/bootstrap/assets/js/ace.min.js"></script>
-
 <!-- inline scripts related to this page -->
 
 <script type="text/javascript">

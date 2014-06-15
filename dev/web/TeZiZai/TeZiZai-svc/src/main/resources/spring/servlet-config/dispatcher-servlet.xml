@@ -101,7 +101,9 @@
         <mvc:interceptor>
             <!--<mvc:mapping path="/TeZiZai-svc/root/**"/>-->
             <!--<mvc:mapping path="/TeZiZai-svc/admin/**"/>-->
+            <mvc:mapping path="/root/**"/>
             <mvc:mapping path="/admin/**"/>
+            <mvc:mapping path="/user/**"/>
             <bean class="com.keqiaokeji.tezizai.svc.interceptor.CheckTokenInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>

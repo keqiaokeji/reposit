@@ -475,7 +475,7 @@
                                 + "<dd><i class=\"ico ico_cost\"><del>实际价格：</del></i>"
                                 + "<span class=\"price_real\"><del>" + menuInfo.priceReal + "</span></del></dd>"
                                 + "<dd><i class=\"ico ico_cost\">份数：</i>"
-                                + "<span class=\"cost\">" + 1 + "</span></dd>"
+                                + "<span class=\"cost\">" + 1 + "</span>份</dd>"
                                 + "<dd>"
                                 + "<span class=\"ico_tag\">取消-</span>"
                                 + "<span class=\"ico_tag yu\">选则+</span>"
