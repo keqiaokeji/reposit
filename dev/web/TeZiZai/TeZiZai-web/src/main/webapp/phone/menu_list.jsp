@@ -20,6 +20,7 @@
     <meta name="copyright" content="Copyright (c) 2007-2014 juooo"/>
 
     <link rel="stylesheet" type="text/css" href="resources/css/style-min.css?v1.2.32">
+    <link rel="stylesheet" type="text/css" href="resources/css/style-menu.css">
     <link rel="stylesheet" type="text/css" href="resources/css/alert.css?v1.6">
 
     <script src="resources/js/jquery-1.7.1.min.js"></script>
@@ -123,9 +124,8 @@
 </div>
 
 <div class="list_tab"><!--<div class="list_tab fixed"> -->
-    <a href="javascript:void(0)" class="tab1" id="popupDialog-city">全国</a>
-    <a href="javascript:void(0)" class="tab2" id="popupDialog-type">流行音乐</a>
-    <a href="javascript:void(0)" class="tab3" id="popupDialog-time">全部时间</a>
+    <a href="javascript:void(0)" class="tab2" id="popupDialog-type">菜单类型</a>
+    <a href="javascript:void(0)" class="tab3" id="popupDialog-time">菜单排序</a>
 </div>
 <div class="warp pt17">
 
@@ -158,50 +158,35 @@
         <%--</dl>--%>
 
         <%--<dl class='item cf' onclick=''>--%>
-        <%--<h2>[荤菜]手撕包菜</h2>--%>
-        <%--<dt>--%>
-        <%--<a href='ticket.html'><img src='<%=path%>/phone/resources/img/20140219095900692.jpg'></a>--%>
-        <%--<div class='ico_zhu'>--%>
-        <%--<div class='ui-iconfont ico_caidai'>&#61472;</div>--%>
-        <%--<span class='txt'>主<br>办</span>--%>
-        <%--</div>--%>
-        <%--</dt>--%>
-        <%--<dd><i class='ico ico_time'>优惠价格：</i><span class='price_favorable'>15元</span>--%>
-        <%--<span class='sail_num'>销售总量：125份</span></dd>--%>
-        <%--<dd>--%>
-        <%--<i class='ico ico_cost'>--%>
-        <%--<del>实际价格：</del>--%>
-        <%--</i>--%>
-        <%--<span class='price_real'><del>18</del></span>--%>
-        <%--<span class='sail_num'>评价：******</span></dd>--%>
-        <%--<dd><i class='ico ico_cost'>数量：</i>--%>
-        <%--<span class='cost'>1份</span></dd>--%>
-        <%--<dd>--%>
-        <%--<span class='ico_tag'>取消-</span>--%>
-        <%--<span class='ico_tag yu'>选择+</span>--%>
-        <%--<span class='ico_tag yu'>查看评论</span>--%>
-        <%--</dd>--%>
+            <%--<h2>[荤菜]手撕包菜</h2>--%>
+            <%--<dt>--%>
+                <%--<a href='ticket.html'><img src='<%=path%>/phone/resources/img/20140219095900692.jpg'></a>--%>
+            <%--<div class='ico_zhu'>--%>
+                <%--<div class='ui-iconfont ico_caidai'>&#61472;</div>--%>
+                <%--<span class='txt'>主<br>办</span>--%>
+            <%--</div>--%>
+            <%--</dt>--%>
+            <%--<dd><i class='ico ico_time'>优惠价格：</i><span class='price_favorable'>15元</span>--%>
+                <%--<span class='sail_num'>销售总量：125份</span></dd>--%>
+            <%--<dd>--%>
+                <%--<i class='ico ico_cost'>--%>
+                    <%--<del>实际价格：</del>--%>
+                <%--</i>--%>
+                <%--<span class='price_real'><del>18</del></span>--%>
+                <%--<span class='sail_num'>评价：******</span></dd>--%>
+            <%--<dd><i class='ico ico_cost'>数量：</i>--%>
+                <%--<span class='cost'>1份</span></dd>--%>
+            <%--<dd>--%>
+                <%--<span class='button'>取消-</span>--%>
+                <%--<span class='button select_button'>选择+</span>--%>
+                <%--<span class='button select_button'>备注</span>--%>
+            <%--</dd>--%>
         <%--</dl>--%>
 
     </div>
 
     <div class="loadMore" data_id="1">点击加载更多</div>
 
-    <div data-role="popup" id="popupDialog-screen-city" style="display:none;">
-        <div class="pop-list" id="pop_list_city">
-            <div class="title">
-                <h2>选择分类</h2>
-                <a href="javascript:;" id="c2" class="close">关闭</a>
-            </div>
-            <div class="content">
-                <ul class="panel_sb">
-                    <li class="sbon" onclick="setcity(0)">
-                        <div class="txt" onclick="setcity(0)">全部城市</div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
 
 
     <div data-role="popup" id="popupDialog-screen-type" style="display:none;">
@@ -212,20 +197,17 @@
             </div>
             <div class="content">
                 <ul class="panel_sb">
+                    <li class="sbon" onclick="settypes(0)">
+                        <div class="txt" onclick="settimes(0)">全部</div>
+                    </li>
                     <li class="" onclick="settypes(0)">
-                        <div class="txt" onclick="settypes(0)">全部</div>
+                        <div class="txt" onclick="settypes(0)">豫菜</div>
                     </li>
                     <li class="sbon" onclick="settypes(35)">
-                        <div class="txt">流行音乐</div>
+                        <div class="txt">湘菜</div>
                     </li>
                     <li class="" onclick="settypes(36)">
-                        <div class="txt">古典音乐</div>
-                    </li>
-                    <li class="" onclick="settypes(37)">
-                        <div class="txt">舞台剧</div>
-                    </li>
-                    <li class="" onclick="settypes(38)">
-                        <div class="txt">儿童亲子</div>
+                        <div class="txt">饮料</div>
                     </li>
                 </ul>
             </div>
@@ -236,25 +218,22 @@
     <div data-role="popup" id="popupDialog-screen-time" style="display:none;">
         <div class="pop-list" id="pop_list_times">
             <div class="title">
-                <h2>选择分类</h2>
+                <h2>选择排序字段</h2>
                 <a href="javascript:;" id="c4" class="close">关闭</a>
             </div>
             <div class="content">
                 <ul class="panel_sb">
                     <li class="sbon" onclick="settime(0)">
-                        <div class="txt" onclick="settimes(0)">全部</div>
+                        <div class="txt" onclick="settimes(0)">不排序</div>
                     </li>
                     <li class="" onclick="settimes(2)">
-                        <div class="txt">明天</div>
+                        <div class="txt">按名称</div>
                     </li>
                     <li class="" onclick="settimes(1)">
-                        <div class="txt">周末</div>
+                        <div class="txt">按类型</div>
                     </li>
                     <li class="" onclick="settimes(3)">
-                        <div class="txt">一周内</div>
-                    </li>
-                    <li class="" onclick="settimes(4)">
-                        <div class="txt">一个月内</div>
+                        <div class="txt">按价格</div>
                     </li>
                 </ul>
             </div>
@@ -275,7 +254,8 @@
     <div class="tel"><a href="tel_3A4001858666"><i class="fontIcon fa-phone"></i>客服:400-185-8666</a></div>
     <div class="juMenu">
         <div class="t">
-            <div class="ju_logo" onclick="check_footer(this)"></div>
+            <div class="menuBottomLogo" onclick="check_footer(this)"><span id="totalMenuNum"
+                                                                           class="totalMenuNum">0</span></div>
         </div>
         <div class="juSearch">
             <input class="text" onfocus="if(value=='请输入演出、艺人、场馆名称') {value=''}"
@@ -412,28 +392,28 @@ function loadMenuInfo(obj) {
                 var menuInfo = data.dataRows[i];
 
                 html = html + "<dl class='item cf' onclick=''>"
-                        + "           <h2>[" + formartMenuType(menuInfo.menuTypeId) + "]" + menuInfo.menuName + "</h2>"
+                        + "           <h2>[" + formartMenuType(menuInfo.menuTypeId) + "]<span id='menu_name_" + menuInfo.menuId + "'>" + menuInfo.menuName + "</h2>"
                         + "   <dt>                           "
-                        + "  <a href='ticket.html'><img src='<%=path%>/phone/resources/img/20140219095900692.jpg'></a>"
+                        + "  <a href='ticket.html'><img src='<%=path%>/phone/resources/img/menu_picture1.jpg'></a>"
                         + "  <div class='ico_zhu'>                                                                    "
                         + "          <div class='ui-iconfont ico_caidai'>&#61472;</div>                               "
                         + "  <span class='txt'>主<br>办</span>                                                         "
                         + "  </div>                                                                                   "
                         + "  </dt>                                                                                    "
-                        + "  <dd><i class='ico ico_time'>优惠价格：</i><span class='price_favorable'>" + menuInfo.priceFavorable + "</span>        "
+                        + "  <dd><i class='ico ico_time'>优惠价格：</i><span id='price_favorable_'" + menuInfo.menuId + " class='price_favorable'>" + menuInfo.priceFavorable + "</span>        "
                         + "  <span class='sail_num'>销售总量：125份</span></dd>                                         "
                         + "  <dd>                                                                                     "
                         + "  <i class='ico ico_cost'>                                                                 "
                         + "          <del>实际价格：</del>                                                             "
                         + "  </i>                                                                                     "
-                        + "  <span class='price_real'><del>" + menuInfo.priceReal + "</del></span>                                            "
+                        + "  <span class='price_real'><del><span id='price_real_" + menuInfo.menuId + "'>" + menuInfo.priceReal + "</span></del></span>                                            "
                         + "  <span class='sail_num'>评价：******</span></dd>                                           "
                         + "  <dd><i class='ico ico_cost'>数量：</i>                                                    "
-                        + "  <span class='cost'>1份</span></dd>                                                       "
+                        + "  <span id='menu_num_" + menuInfo.menuId + "' class='cost'>0</span>份</dd>                                                       "
                         + "  <dd>                                                                                     "
-                        + "  <span class='ico_tag'>取消-</span>                                                       "
-                        + "  <span class='ico_tag yu'>选择+</span>                                                    "
-                        + "  <span class='ico_tag yu'>查看评论</span>                                                  "
+                        + "  <span class='button' onclick='decreaseMenuNum(\"" + menuInfo.menuId + "\")'>取消-</span>                                                       "
+                        + "  <span class='button select_button' onclick='addMenuNum(\"" + menuInfo.menuId + "\")'>选择+</span>                                                    "
+                        + "  <span class='button'>备注</span>                                                  "
                         + "  </dd>                                                                                    "
                         + "  </dl>                                                                                    ";
 
@@ -460,6 +440,29 @@ function loadMenuInfo(obj) {
             }
         }
     });
+}
+
+
+function addMenuNum(menuId) {
+    var oldMenuNum = parseInt($("#menu_num_" + menuId).text());
+    $("#menu_num_" + menuId).text(oldMenuNum + 1);
+    updateTotoleMenuNum(1);
+
+}
+
+
+function decreaseMenuNum(menuId) {
+    var oldMenuNum = parseInt($("#menu_num_" + menuId).text());
+    if (oldMenuNum > 0) {
+        $("#menu_num_" + menuId).text(oldMenuNum - 1);
+        updateTotoleMenuNum(-1);
+    }
+}
+
+
+function updateTotoleMenuNum(num) {
+    var oldTotleNum = parseInt($("#totalMenuNum").text());
+    $("#totalMenuNum").text(oldTotleNum + num);
 }
 
 
