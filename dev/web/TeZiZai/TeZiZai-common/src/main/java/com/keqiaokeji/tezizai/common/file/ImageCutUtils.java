@@ -1,4 +1,6 @@
-package com.keqiaokeji.tezizai.common.utils;
+package com.keqiaokeji.tezizai.common.file;
+
+import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -14,7 +16,8 @@ import java.util.Iterator;
 /**
  * 图片剪辑处理
  */
-public class ImgCutUtils {
+@Service("imgCutUtils")
+public class ImageCutUtils {
 
 
     /**
@@ -27,7 +30,7 @@ public class ImgCutUtils {
      * @param width         压缩后的宽度
      * @param height        压缩后的高度
      */
-    public static void compressWithCut(String sourceImgPath, String saveImgPath, String formatName, int width, int height) throws Exception {
+    public void compressWithCut(String sourceImgPath, String saveImgPath, String formatName, int width, int height) throws Exception {
         BufferedImage bufferedImage = ImageIO.read(new File(sourceImgPath));
         int imgWidth = bufferedImage.getWidth();
         int imgHeight = bufferedImage.getHeight();
@@ -57,7 +60,7 @@ public class ImgCutUtils {
      * @param saveImgPath   缩放之后的保存路径
      * @param zoomValue     缩放比例值（整数为放大，负数为缩小）
      */
-    public static void zoom(String sourceImgPath, String saveImgPath, float zoomValue) throws Exception {
+    public void zoom(String sourceImgPath, String saveImgPath, float zoomValue) throws Exception {
         BufferedImage bufferedImage = ImageIO.read(new File(sourceImgPath)); // 读入文件
         int width = bufferedImage.getWidth();
         int height = bufferedImage.getHeight();
@@ -82,7 +85,7 @@ public class ImgCutUtils {
      * @param height        缩放之后的高度
      * @throws Exception
      */
-    public static void zoom(String sourceImgPath, String saveImgPath, int width, int height) throws Exception {
+    public void zoom(String sourceImgPath, String saveImgPath, int width, int height) throws Exception {
         BufferedImage bufferedImage = ImageIO.read(new File(sourceImgPath));
         BufferedImage compressBufferedImage = zoom(bufferedImage, width, height);
         ImageIO.write(compressBufferedImage, getFormatName(sourceImgPath), new File(saveImgPath));
@@ -98,7 +101,7 @@ public class ImgCutUtils {
      * @param useWhiteBg    是否使用白色作为图片背景色
      * @throws Exception
      */
-    public static void zoom(String sourceImgPath, String saveImgPath, int width, int height, boolean useWhiteBg) throws Exception {
+    public void zoom(String sourceImgPath, String saveImgPath, int width, int height, boolean useWhiteBg) throws Exception {
         double ratio = 0.0; // 缩放比例
         BufferedImage bufferedImage = ImageIO.read(new File(sourceImgPath));
         Image image = bufferedImage.getScaledInstance(width, height, bufferedImage.SCALE_SMOOTH);
@@ -139,7 +142,7 @@ public class ImgCutUtils {
      * @param height        剪切的高度
      * @throws Exception
      */
-    public static void cut(String sourceImgPath, String saveImgPath, int x, int y, int width, int height) throws Exception {
+    public void cut(String sourceImgPath, String saveImgPath, int x, int y, int width, int height) throws Exception {
         BufferedImage bufferedImage = ImageIO.read(new File(sourceImgPath));
         BufferedImage bufferedImageCut = cut(bufferedImage, x, y, width, height);
         ImageIO.write(bufferedImageCut, getFormatName(sourceImgPath), new File(saveImgPath));
@@ -153,7 +156,7 @@ public class ImgCutUtils {
      * @param formatName    转换的格式（如JPEG，PNG，GIF等）
      * @throws Exception
      */
-    public static void convert(String sourceImgPath, String saveImgPath, String formatName) throws Exception {
+    public void convert(String sourceImgPath, String saveImgPath, String formatName) throws Exception {
         File file = new File(sourceImgPath);
         file.canRead();
         file.canWrite();
@@ -167,7 +170,7 @@ public class ImgCutUtils {
      * @param sourceImgPath 被转换的图片
      * @param saveImgPath   转换之后保存路径
      */
-    public static void gray(String sourceImgPath, String saveImgPath) throws Exception {
+    public void gray(String sourceImgPath, String saveImgPath) throws Exception {
         BufferedImage bufferedImage = ImageIO.read(new File(sourceImgPath));
         ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
         ColorConvertOp colorConvertOp = new ColorConvertOp(colorSpace, null);
@@ -190,7 +193,7 @@ public class ImgCutUtils {
      * @param y             Y坐标
      * @param alpha         透明度：alpha 必须是范围 [0.0, 1.0] 之内（包含边界值）的一个浮点数字
      */
-    public static void watermarkWithText(String sourceImgPath, String saveImgPath, String text, String fontName,
+    public void watermarkWithText(String sourceImgPath, String saveImgPath, String text, String fontName,
                                          int fontStyle, Color color, int fontSize, int x, int y, float alpha) throws Exception {
         File img = new File(sourceImgPath);
         Image src = ImageIO.read(img);
@@ -218,7 +221,7 @@ public class ImgCutUtils {
      * @param y                Y坐标， 默认在中间
      * @param alpha            透明度：alpha 必须是范围 [0.0, 1.0] 之内（包含边界值）的一个浮点数字
      */
-    public static void watermarkWithImg(String sourceImgPath, String saveImgPath, String watermarkImgPath, int x, int y, float alpha) throws Exception {
+    public void watermarkWithImg(String sourceImgPath, String saveImgPath, String watermarkImgPath, int x, int y, float alpha) throws Exception {
         Image image = ImageIO.read(new File(sourceImgPath));
         int width = image.getWidth(null);
         int height = image.getHeight(null);
@@ -238,7 +241,7 @@ public class ImgCutUtils {
 
 
 
-    private static int getContentLength(String content) {
+    private int getContentLength(String content) {
         int length = 0;
         for (int i = 0; i < content.length(); i++) {
             if (new String(content.charAt(i) + "").getBytes().length > 1) {
@@ -251,7 +254,7 @@ public class ImgCutUtils {
     }
 
 
-    private static BufferedImage cut(BufferedImage bufferedImage, int x, int y, int width, int height) throws Exception {
+    private BufferedImage cut(BufferedImage bufferedImage, int x, int y, int width, int height) throws Exception {
         int imgWidth = bufferedImage.getWidth();
         int imgHeight = bufferedImage.getHeight();
         Image image = bufferedImage.getScaledInstance(imgWidth, imgHeight, Image.SCALE_DEFAULT);
@@ -265,7 +268,7 @@ public class ImgCutUtils {
     }
 
 
-    private static BufferedImage zoom(BufferedImage bufferedImage, int width, int height) throws Exception {
+    private BufferedImage zoom(BufferedImage bufferedImage, int width, int height) throws Exception {
         Image image = bufferedImage.getScaledInstance(width, height, Image.SCALE_DEFAULT);
         BufferedImage compressBufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics graphics = compressBufferedImage.getGraphics();
@@ -274,7 +277,7 @@ public class ImgCutUtils {
         return compressBufferedImage;
     }
 
-    private static String getFormatName(String fileName) throws Exception {
+    private String getFormatName(String fileName) throws Exception {
         String formatName;
         ImageInputStream iis = ImageIO.createImageInputStream(new File(fileName));
         Iterator<ImageReader> iter = ImageIO.getImageReaders(iis);
@@ -284,7 +287,7 @@ public class ImgCutUtils {
         return formatName;
     }
 
-    public static void main(String[] args) throws Exception {
+    public void main(String[] args) throws Exception {
         String sourceImgPath = "/Users/keqiaokeji/Desktop/img/1.jpg";
 //        compressWithCut(sourceImgPath, "/Users/keqiaokeji/Desktop/img/compressWithCut.png", "png", 100, 100);//将图片压缩到指定的宽高，并转换为指定的格式
         System.out.println(getFormatName(sourceImgPath));

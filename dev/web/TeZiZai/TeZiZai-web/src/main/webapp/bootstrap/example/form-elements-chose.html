@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>下拉选择组件</title>
+
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../assets/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="../assets/css/chosen.css"/>
+    <link rel="stylesheet" href="../assets/css/ace.min.css"/>
+</head>
+
+<body>
+
+
+<div>
+    <label for="form-field-select-3">Chosen</label>
+
+    <br/>
+
+    <select class="width-80 chosen-select" id="form-field-select-3" data-placeholder="Choose a Country...">
+        <option value="">&nbsp;</option>
+        <option value="AL">Alabama</option>
+        <option value="AK">Alaska</option>
+        <option value="AZ" selected>Arizona</option>
+        <option value="AR">Arkansas</option>
+        <option value="CA">California</option>
+        <option value="CO">Colorado</option>
+        <option value="CT">Connecticut</option>
+        <option value="DE">Delaware</option>
+        <option value="FL">Florida</option>
+        <option value="GA">Georgia</option>
+        <option value="HI">Hawaii</option>
+        <option value="ID">Idaho</option>
+        <option value="IL">Illinois</option>
+        <option value="IN">Indiana</option>
+        <option value="IA">Iowa</option>
+        <option value="KS">Kansas</option>
+        <option value="KY">Kentucky</option>
+        <option value="LA">Louisiana</option>
+        <option value="ME">Maine</option>
+        <option value="MD">Maryland</option>
+        <option value="MA">Massachusetts</option>
+        <option value="MI">Michigan</option>
+    </select>
+
+</div>
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='../assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+</script>
+<script src="../assets/js/chosen.jquery.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(function ($) {
+
+
+        $(".chosen-select").chosen();
+
+
+    });
+</script>
+</body>
+</html>

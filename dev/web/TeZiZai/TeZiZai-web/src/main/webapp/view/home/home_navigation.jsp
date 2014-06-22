@@ -7,14 +7,14 @@
             MENU_GALLERY_TEXT = "相册",
             MENU_USER_TEXT = "用户管理", MENU_USER_INFO_TEXT = "用户信息", MENU_USER_LIST_TEXT = "用户列表",
             MENU_CORP_TEXT = "公司管理", MENU_CORP_LIST_TEXT = "公司列表",
-            MENU_MENU_TEXT = "菜单管理", MENU_MENU_TYPE_CTRL_TEXT = "菜单分类管理", MENU_MENU_INFO_EDIT_TEXT = "新增菜单", MENU_MENU_INFO_LIST_TEXT = "菜单列表";
+            MENU_MENU_TEXT = "菜单管理", MENU_MENU_TYPE_CTRL_TEXT = "菜单分类管理", MENU_MENU_TABLE_CTRL_TEXT = "餐桌管理", MENU_MENU_INFO_EDIT_TEXT = "新增菜单", MENU_MENU_INFO_LIST_TEXT = "菜单列表";
 
     final String MENU_HOME = "menu_home",
             MENU_CALENDAR = "menu_calendar",
             MENU_GALLERY = "menu_gallery",
             MENU_USER = "menu_user", MENU_USER_INFO = "menu_user_info", MENU_USER_LIST = "menu_user_list",
             MENU_CORP = "menu_corp", MENU_CORP_LIST = "menu_corp_list",
-            MENU_MENU = "menu_menu", MENU_MENU_TYPE_CTRL = "menu_menu_type_list", MENU_MENU_INFO_EDIT = "menu_menu_info_edit", MENU_MENU_INFO_LIST = "menu_menu_info_list";
+            MENU_MENU = "menu_menu", MENU_MENU_TYPE_CTRL = "menu_menu_type_list", MENU_MENU_TABLE_CTRL = "menu_menu_table_list", MENU_MENU_INFO_EDIT = "menu_menu_info_edit", MENU_MENU_INFO_LIST = "menu_menu_info_list";
 
     String currentMenu = MENU_HOME;
     final String CURRENT_MENU_KEY = "currentMenu";
@@ -132,6 +132,13 @@
                     <a href="<%=path%>/view/mc/menu_type_info_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_MENU_TYPE_CTRL%>">
                         <i class="icon-double-angle-right"></i>
                         <%=MENU_MENU_TYPE_CTRL_TEXT%>
+                    </a>
+                </li>
+
+                <li <% if (currentMenu.equalsIgnoreCase(MENU_MENU_TABLE_CTRL)) { %> class="active" <%} %> >
+                    <a href="<%=path%>/view/mc/menu_table_info_ctrl.jsp?<%=CURRENT_MENU_KEY%>=<%=MENU_MENU_TABLE_CTRL%>">
+                        <i class="icon-double-angle-right"></i>
+                        <%=MENU_MENU_TABLE_CTRL_TEXT%>
                     </a>
                 </li>
 
@@ -254,6 +261,13 @@
             </li>
             <%} %>
 
+            <% if (currentMenu.equalsIgnoreCase(MENU_MENU_TABLE_CTRL)) { %>
+            <li><%=MENU_MENU_TEXT%>
+            </li>
+            <li class="active"><%=MENU_MENU_TABLE_CTRL_TEXT%>
+            </li>
+            <%} %>
+
             <% if (currentMenu.equalsIgnoreCase(MENU_MENU_INFO_EDIT)) { %>
             <li><%=MENU_MENU_TEXT%>
             </li>
@@ -315,6 +329,10 @@
 
                 <% if (currentMenu.equalsIgnoreCase(MENU_MENU_TYPE_CTRL)) { %>
                 <%=MENU_MENU_TYPE_CTRL_TEXT%>
+                <%} %>
+
+                <% if (currentMenu.equalsIgnoreCase(MENU_MENU_TABLE_CTRL)) { %>
+                <%=MENU_MENU_TABLE_CTRL_TEXT%>
                 <%} %>
 
                 <% if (currentMenu.equalsIgnoreCase(MENU_MENU_INFO_EDIT)) { %>

@@ -54,7 +54,7 @@
 
 <div class="space"></div>
 
-<form class="form-horizontal">
+<form  action="http://localhost/TeZiZai-web/upload.do" enctype="multipart/form-data" method="post" class="form-horizontal">
 <div class="tabbable">
 <ul class="nav nav-tabs padding-16">
     <li class="active">

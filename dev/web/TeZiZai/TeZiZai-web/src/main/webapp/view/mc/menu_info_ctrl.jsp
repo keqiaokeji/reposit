@@ -89,7 +89,7 @@ jQuery(function ($) {
     $.ajax({
         type: "post",
         async: true,//异步，如果等于false 那么就是同步
-        url: app.baseUrlSvc + "/user/mc/getMenuType.do?token=" + app.getTokenByCookie(),
+        url: app.baseUrlSvc + "/user/mc/getMenuTypeList.do?token=" + app.getTokenByCookie(),
         dataType: "json",
         data: "",
         success: function (data) {
@@ -131,8 +131,8 @@ jQuery(function ($) {
             mtype: "POST",//请求的类型：(“POST” or “GET”)	默认GET
             datatype: "json",//表格可以被接受的数据类型：xml，xmlstring，json，local，function
             jsonReader: {root: "dataRows", id: "menuId"},//root:设置记录集的属性名称，id:设置主键的属性名称
-            editurl: app.baseUrlSvc + "/admin/mc/editMenuInfo.do?token=" + app.getTokenByCookie(),//定义对form编辑时的url（增删改的时候使用）
-            url: app.baseUrlSvc + "/admin/mc/getMenuInfoList.do?token=" + app.getTokenByCookie(),
+            editurl: app.baseUrlSvc + "/user/mc/editMenuInfo.do?token=" + app.getTokenByCookie(),//定义对form编辑时的url（增删改的时候使用）
+            url: app.baseUrlSvc + "/user/mc/getMenuInfoList.do?token=" + app.getTokenByCookie(),
             rowNum: 10,
             rowList: [10, 20, 30],
             pager: pager_selector,

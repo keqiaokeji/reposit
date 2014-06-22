@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.keqiaokeji.tezizai.svc.mc.mapper.MenuInfoMapper">
-    <resultMap id="BaseResultMap" type="com.keqiaokeji.tezizai.svc.mc.domain.MenuInfo">
-        <id column="menu_id" property="menuId" jdbcType="VARCHAR" />
-        <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
-        <result column="price_real" property="priceReal" jdbcType="INTEGER" />
-        <result column="price_favorable" property="priceFavorable" jdbcType="INTEGER" />
-        <result column="picture_id" property="pictureId" jdbcType="VARCHAR" />
-        <result column="menu_type_id" property="menuTypeId" jdbcType="VARCHAR" />
-        <result column="menu_order" property="menuOrder" jdbcType="INTEGER" />
-        <result column="menu_unit" property="menuUnit" jdbcType="VARCHAR" />
-        <result column="ordering_num" property="orderingNum" jdbcType="INTEGER" />
-        <result column="comment_score" property="commentScore" jdbcType="INTEGER" />
+<mapper namespace="com.keqiaokeji.tezizai.svc.mc.mapper.MenuTableInfoMapper">
+    <resultMap id="BaseResultMap" type="com.keqiaokeji.tezizai.svc.mc.domain.MenuTableInfo">
+        <id column="menu_table_id" property="menuTableId" jdbcType="VARCHAR" />
+        <result column="table_code" property="tableCode" jdbcType="VARCHAR" />
+        <result column="table_content" property="tableContent" jdbcType="VARCHAR" />
         <result column="status" property="status" jdbcType="VARCHAR" />
         <result column="corp_id" property="corpId" jdbcType="VARCHAR" />
         <result column="record_status" property="recordStatus" jdbcType="VARCHAR" />
@@ -21,8 +14,7 @@
         <result column="last_modify_time" property="lastModifyTime" jdbcType="BIGINT" />
     </resultMap>
     <sql id="Base_Column_List">
-        menu_id, menu_name, price_real, price_favorable, picture_id, menu_type_id, menu_order,
-    menu_unit, ordering_num, comment_score, status, corp_id, record_status, create_user_id,
+       menu_table_id, table_code, table_content, status, corp_id, record_status, create_user_id,
     create_time, last_modify_user_id, last_modify_time
     </sql>
 
@@ -31,18 +23,24 @@
             parameterType="com.keqiaokeji.tezizai.common.jqgrid.JQGridPage">
         select
         <include refid="Base_Column_List"/>
-        from mc_menu_info
+        from mc_menu_table_info
         <include refid="jqgrid_filter"/>
     </select>
 
 
     <select id="getListCountByJQgrid" parameterType="com.keqiaokeji.tezizai.common.jqgrid.JQGridPage"
             resultType="java.lang.Integer">
-        select count(*) from mc_menu_info
+        select count(*) from mc_menu_table_info
         <where>
             <include refid="jqgrid_filter_rules"/>
         </where>
     </select>
+
+
+
+
+
+
 
 
     <sql id="jqgrid_filter">

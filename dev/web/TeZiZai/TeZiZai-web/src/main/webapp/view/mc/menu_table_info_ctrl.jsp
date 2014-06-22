@@ -7,11 +7,6 @@
 <html lang="en">
 <head>
     <jsp:include page="/view/home/home_head.jsp"/>
-
-    <%--<link rel="stylesheet" href="<%=path%>/bootstrap/assets/css/jquery-ui-1.10.3.full.min.css"/>--%>
-    <%--<link rel="stylesheet" href="<%=path%>/bootstrap/assets/css/datepicker.css"/>--%>
-    <%--<link rel="stylesheet" href="<%=path%>/bootstrap/assets/css/ui.jqgrid.css"/>--%>
-
 </head>
 
 <body>
@@ -87,8 +82,8 @@
             mtype: "POST",//请求的类型：(“POST” or “GET”)	默认GET
             datatype: "json",//表格可以被接受的数据类型：xml，xmlstring，json，local，function
             jsonReader: {root: "dataRows", id: "menuTypeId"},//root:设置记录集的属性名称，id:设置主键的属性名称
-            editurl: app.baseUrlSvc + "/user/mc/editMenuTypeInfo.do?token=" + app.getTokenByCookie(),//定义对form编辑时的url（增删改的时候使用）
-            url: app.baseUrlSvc + "/user/mc/getMenuTypeInfoList.do?token=" + app.getTokenByCookie(),
+            editurl: app.baseUrlSvc + "/user/mc/editMenuTableInfo.do?token=" + app.getTokenByCookie(),//定义对form编辑时的url（增删改的时候使用）
+            url: app.baseUrlSvc + "/user/mc/getMenuTableInfoList.do?token=" + app.getTokenByCookie(),
             rowNum: 10,
             rowList: [10, 20, 30],
             pager: pager_selector,
@@ -97,7 +92,7 @@
             caption: "用户信息维护",
             viewrecords: true,
             height: 392,
-            colNames: ['操作', 'ID', '菜单类型名称', '菜单序号', '新增日期'],
+            colNames: ['操作', 'ID', '餐桌编号', '餐桌备注', '新增日期'],
             colModel: [
                 {name: 'myac', index: 'myac', width: 80, fixed: true, sortable: false, resize: false, search: false,
                     formatter: 'actions',
@@ -107,9 +102,9 @@
                         //editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
                     }
                 },
-                {name: 'menuTypeId', index: 'menu_type_id', hidden: true},
-                {name: 'menuTypeName', index: 'menu_type_name', width: 300, editable: true, editoptions: {size: "20", maxlength: "30"}},
-                {name: 'menuTypeOrder', index: 'menu_type_order', width: 100, editable: true, type: "integer", sortable: true, search: false, editoptions: {size: "20", maxlength: "30"}},
+                {name: 'menuTableId', index: 'menu_table_id', hidden: true},
+                {name: 'tableCode', index: 'table_code', width: 100, editable: true, editoptions: {size: "20", maxlength: "30"}},
+                {name: 'tableContent', index: 'table_content', width: 300, editable: true, type: "integer", sortable: true, search: false, editoptions: {size: "20", maxlength: "30"}},
                 {name: 'createTime', index: 'create_time', width: 110, editable: false, search: false, type: "date", sorttype: "date", formatter: formartCreateTime}
             ],
 

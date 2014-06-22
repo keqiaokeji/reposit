@@ -25,21 +25,30 @@ public class MenuTypeInfoController {
     MenuTypeInfoService menuTypeInfoService;
 
     @ResponseBody
-    @RequestMapping(value = "/admin/mc/getMenuTypeInfoList")
+    @RequestMapping(value = "/user/mc/getMenuTypeInfoList")
     public JQGridPage getMenuTypeInfoList(JQGridPage pageJQGrid) {
         return menuTypeInfoService.getListByJQgrid(pageJQGrid);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/user/mc/getMenuType")
+    @RequestMapping(value = "/user/mc/getMenuTypeList")
     public JsonResult getMenuType() {
         List<McMenuTypeInfo> list = menuTypeInfoService.getMenuTypeInfo();
         JsonResult result = new JsonResult(JsonResultContants.SUCCESS, "菜单类型获取成功", list);
         return result;
     }
 
+
     @ResponseBody
-    @RequestMapping(value = "/admin/mc/editMenuTypeInfo")
+    @RequestMapping(value = "/customer/mc/getMenuTypeList")
+    public JsonResult getMenuTypeListCustomer() {
+        List<McMenuTypeInfo> list = menuTypeInfoService.getMenuTypeInfo();
+        JsonResult result = new JsonResult(JsonResultContants.SUCCESS, "菜单类型获取成功", list);
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/user/mc/editMenuTypeInfo")
     public void editMenuTypeInfo(MenuTypeInfo menuTypeInfo) {
         if (menuTypeInfo.getOper().equals(JQGridContants.EDIT_OPER_ADD)) {
             menuTypeInfoService.add(menuTypeInfo);

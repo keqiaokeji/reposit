@@ -1,8 +1,10 @@
 App = function () {//构造函数
     this.tokenKey = "token";
     this.userInfoKey = "userInfoKey";
-    this.baseUrlSvc = "http://localhost/TeZiZai-svc";
-    this.baseUrlWeb = "http://localhost/TeZiZai-web";
+    this.baseUrlSvc = "http://192.168.1.100/TeZiZai-svc";
+    this.baseUrlWeb = "http://192.168.1.100/TeZiZai-web";
+//    this.baseUrlSvc = "http://localhost/TeZiZai-svc";
+//    this.baseUrlWeb = "http://localhost/TeZiZai-web";
     this.token = "";//记录当前用户的token
     this.userInfo;//记录挡墙用户的用户信息
 

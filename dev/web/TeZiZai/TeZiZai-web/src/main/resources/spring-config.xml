@@ -49,8 +49,8 @@
 
 
 
-    <bean class="com.keqiaokeji.tezizai.common.utils.Uploader">
-        <property name="savePath" value="${upload.dir}"/>
+    <bean class="com.keqiaokeji.tezizai.common.file.Uploader">
+        <property name="fileBasePath" value="${upload.img.base}"/>
     </bean>
 
 

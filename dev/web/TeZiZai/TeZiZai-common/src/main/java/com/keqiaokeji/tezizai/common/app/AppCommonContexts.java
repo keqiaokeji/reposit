@@ -13,13 +13,12 @@ import java.util.Map;
  * Time: 下午2:56
  * To change this template use File | Settings | File Templates.
  */
-public class AppCommonContexts extends CommonContexts{
+public class AppCommonContexts extends CommonContexts {
 
     /**
      * 该变量存在于当前线程中（每次请求服务器时创建一个线程，该变量创建，请求结束之后线程回收，该变量也被回收）
      */
     transient static ThreadLocal<Map<String, String>> threadLocal = new ThreadLocal<Map<String, String>>();
-
 
 
     /**
@@ -94,10 +93,14 @@ public class AppCommonContexts extends CommonContexts{
      * 根据键从当前线程的缓存中取值
      *
      * @param key 键
-     * @return 取出的值
+     * @return 取出的值或空字符串
      */
     public static String getThreadLocalMapValue(String key) {
-        return threadLocal.get().get(key);
+        if (threadLocal.get() == null) {
+            return "";
+        } else {
+            return threadLocal.get().get(key);
+        }
     }
 
 

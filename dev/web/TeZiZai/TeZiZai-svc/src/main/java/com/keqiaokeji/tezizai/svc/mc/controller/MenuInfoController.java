@@ -1,11 +1,15 @@
 package com.keqiaokeji.tezizai.svc.mc.controller;
 
+import com.keqiaokeji.tezizai.common.app.JsonResultContants;
+import com.keqiaokeji.tezizai.common.character.StringUtils;
+import com.keqiaokeji.tezizai.common.file.FileInfo;
 import com.keqiaokeji.tezizai.common.jqgrid.JQGridContants;
 import com.keqiaokeji.tezizai.common.jqgrid.JQGridPage;
 import com.keqiaokeji.tezizai.common.utils.JsonResult;
-import com.keqiaokeji.tezizai.common.utils.Uploader;
 import com.keqiaokeji.tezizai.svc.mc.domain.MenuInfo;
+import com.keqiaokeji.tezizai.svc.mc.service.ImageService;
 import com.keqiaokeji.tezizai.svc.mc.service.MenuInfoService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 
 
 /**
@@ -27,16 +29,24 @@ public class MenuInfoController {
     MenuInfoService menuInfoService;
 
     @Autowired
-    private Uploader uploader;
+    private ImageService imageService;
+
+    Logger logger = Logger.getLogger(MenuInfoController.class.getName());
 
     @ResponseBody
-    @RequestMapping(value = "/admin/mc/getMenuInfoList")
+    @RequestMapping(value = "/user/mc/getMenuInfoList")
     public JQGridPage getMenuInfoList(JQGridPage pageJQGrid) {
         return menuInfoService.getListByJQgrid(pageJQGrid);
     }
 
     @ResponseBody
-    @RequestMapping(value = "/admin/mc/editMenuInfo")
+    @RequestMapping(value = "/customer/mc/getMenuInfoList")
+    public JQGridPage getMenuInfoListCustomer(JQGridPage pageJQGrid) {
+        return menuInfoService.getListByJQgrid(pageJQGrid);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/user/mc/editMenuInfo")
     public void editMenuInfo(MenuInfo menuInfoInfo) {
         if (menuInfoInfo.getOper().equals(JQGridContants.EDIT_OPER_ADD)) {
             menuInfoService.add(menuInfoInfo);
@@ -51,27 +61,45 @@ public class MenuInfoController {
         }
     }
 
-
     @ResponseBody
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public JsonResult upload(@RequestParam(value = "file", required = false) MultipartFile file) {
-        JsonResult result = new JsonResult();
-        try {
-            String fileName = file.getOriginalFilename();
-            File targetFile = new File(uploader.getSavePath(), fileName);
-            if (!targetFile.exists()) {
-                targetFile.mkdirs();
+    @RequestMapping(value = "/user/mc/addMenuInfo", method = RequestMethod.POST)
+    public JsonResult addMenuInfo(@RequestParam(value = "image", required = false) MultipartFile image, MenuInfo menuInfoInfo) {
+        JsonResult result;
+        if (image != null) {
+            try {
+                FileInfo fileInfo = imageService.uploadImage(image);
+                menuInfoInfo.setPictureId(fileInfo.getFileId());
+            } catch (Exception e) {
+                result = new JsonResult(JsonResultContants.FAIL, "文件上传失败！");
+                logger.error(e);
             }
-            file.transferTo(targetFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-//            result.setSuccess(false);
-//            result.setMsg(e.getMessage());
         }
+        menuInfoService.add(menuInfoInfo);
+        result = new JsonResult(JsonResultContants.SUCCESS, "新增成功！");
         return result;
     }
 
-
+    @ResponseBody
+    @RequestMapping(value = "/user/mc/updateMenuInfo", method = RequestMethod.POST)
+    public JsonResult updateMenuInfo(@RequestParam(value = "image", required = false) MultipartFile image, MenuInfo menuInfoInfo) {
+        JsonResult result;
+        if (image != null) {
+            try {
+                String imageId = menuInfoInfo.getPictureId();
+                if (StringUtils.isEmpty(imageId)) {
+                    imageId = StringUtils.getUUID();
+                }
+                FileInfo fileInfo = imageService.uploadImage(imageId, image);
+                menuInfoInfo.setPictureId(fileInfo.getFileId());
+            } catch (Exception e) {
+                result = new JsonResult(JsonResultContants.FAIL, "文件上传失败！");
+                logger.error(e);
+            }
+        }
+        menuInfoService.add(menuInfoInfo);
+        result = new JsonResult(JsonResultContants.SUCCESS, "修改成功！");
+        return result;
+    }
 
 
 }
