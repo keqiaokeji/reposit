@@ -2,6 +2,7 @@
          pageEncoding="UTF-8" %>
 <%
     String path = request.getContextPath();
+    String menuTableId = request.getParameter("menuTableId");
 %>
 <!DOCTYPE HTML>
 
@@ -20,6 +21,7 @@
     <meta name="copyright" content="Copyright (c) 2007-2014 juooo"/>
 
     <link rel="stylesheet" type="text/css" href="resources/css/style-min.css?v1.2.32">
+    <link rel="stylesheet" type="text/css" href="resources/css/style-menu.css">
     <link rel="stylesheet" type="text/css" href="resources/css/alert.css?v1.6">
 
     <script src="resources/js/jquery-1.7.1.min.js"></script>
@@ -123,9 +125,8 @@
 </div>
 
 <div class="list_tab"><!--<div class="list_tab fixed"> -->
-    <a href="javascript:void(0)" class="tab1" id="popupDialog-city">全国</a>
-    <a href="javascript:void(0)" class="tab2" id="popupDialog-type">流行音乐</a>
-    <a href="javascript:void(0)" class="tab3" id="popupDialog-time">全部时间</a>
+    <a href="javascript:void(0)" class="tab2" id="popupDialog-type">菜单类型</a>
+    <a href="javascript:void(0)" class="tab3" id="popupDialog-time">菜单排序</a>
 </div>
 <div class="warp pt17">
 
@@ -158,6 +159,8 @@
         <%--</dl>--%>
 
         <%--<dl class='item cf' onclick=''>--%>
+        <%--<span class='hide'>15元</span>--%>
+
         <%--<h2>[荤菜]手撕包菜</h2>--%>
         <%--<dt>--%>
         <%--<a href='ticket.html'><img src='<%=path%>/phone/resources/img/20140219095900692.jpg'></a>--%>
@@ -177,31 +180,15 @@
         <%--<dd><i class='ico ico_cost'>数量：</i>--%>
         <%--<span class='cost'>1份</span></dd>--%>
         <%--<dd>--%>
-        <%--<span class='ico_tag'>取消-</span>--%>
-        <%--<span class='ico_tag yu'>选择+</span>--%>
-        <%--<span class='ico_tag yu'>查看评论</span>--%>
+        <%--<span class='button'>取消-</span>--%>
+        <%--<span class='button select_button'>选择+</span>--%>
+        <%--<span class='button select_button'>备注</span>--%>
         <%--</dd>--%>
         <%--</dl>--%>
 
     </div>
 
     <div class="loadMore" data_id="1">点击加载更多</div>
-
-    <div data-role="popup" id="popupDialog-screen-city" style="display:none;">
-        <div class="pop-list" id="pop_list_city">
-            <div class="title">
-                <h2>选择分类</h2>
-                <a href="javascript:;" id="c2" class="close">关闭</a>
-            </div>
-            <div class="content">
-                <ul class="panel_sb">
-                    <li class="sbon" onclick="setcity(0)">
-                        <div class="txt" onclick="setcity(0)">全部城市</div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
 
 
     <div data-role="popup" id="popupDialog-screen-type" style="display:none;">
@@ -212,20 +199,17 @@
             </div>
             <div class="content">
                 <ul class="panel_sb">
+                    <li class="sbon" onclick="settypes(0)">
+                        <div class="txt" onclick="settimes(0)">全部</div>
+                    </li>
                     <li class="" onclick="settypes(0)">
-                        <div class="txt" onclick="settypes(0)">全部</div>
+                        <div class="txt" onclick="settypes(0)">豫菜</div>
                     </li>
                     <li class="sbon" onclick="settypes(35)">
-                        <div class="txt">流行音乐</div>
+                        <div class="txt">湘菜</div>
                     </li>
                     <li class="" onclick="settypes(36)">
-                        <div class="txt">古典音乐</div>
-                    </li>
-                    <li class="" onclick="settypes(37)">
-                        <div class="txt">舞台剧</div>
-                    </li>
-                    <li class="" onclick="settypes(38)">
-                        <div class="txt">儿童亲子</div>
+                        <div class="txt">饮料</div>
                     </li>
                 </ul>
             </div>
@@ -236,25 +220,22 @@
     <div data-role="popup" id="popupDialog-screen-time" style="display:none;">
         <div class="pop-list" id="pop_list_times">
             <div class="title">
-                <h2>选择分类</h2>
+                <h2>选择排序字段</h2>
                 <a href="javascript:;" id="c4" class="close">关闭</a>
             </div>
             <div class="content">
                 <ul class="panel_sb">
                     <li class="sbon" onclick="settime(0)">
-                        <div class="txt" onclick="settimes(0)">全部</div>
+                        <div class="txt" onclick="settimes(0)">不排序</div>
                     </li>
                     <li class="" onclick="settimes(2)">
-                        <div class="txt">明天</div>
+                        <div class="txt">按名称</div>
                     </li>
                     <li class="" onclick="settimes(1)">
-                        <div class="txt">周末</div>
+                        <div class="txt">按类型</div>
                     </li>
                     <li class="" onclick="settimes(3)">
-                        <div class="txt">一周内</div>
-                    </li>
-                    <li class="" onclick="settimes(4)">
-                        <div class="txt">一个月内</div>
+                        <div class="txt">按价格</div>
                     </li>
                 </ul>
             </div>
@@ -269,13 +250,14 @@
     -->
 
     <div class="foot-menu">
-        <a href="User/login" class="myjuo"><i class="sp"></i>我的聚橙</a>
+        <a id="orderMenuList" href="#" class="myjuo"><i class="sp"></i>下单</a>
         <a href="Index/follow" class="atte"><i class="sp"></i>关注聚橙</a>
     </div>
     <div class="tel"><a href="tel_3A4001858666"><i class="fontIcon fa-phone"></i>客服:400-185-8666</a></div>
     <div class="juMenu">
         <div class="t">
-            <div class="ju_logo" onclick="check_footer(this)"></div>
+            <div class="menuBottomLogo" onclick="check_footer(this)"><span id="totalMenuNum"
+                                                                           class="totalMenuNum">0</span></div>
         </div>
         <div class="juSearch">
             <input class="text" onfocus="if(value=='请输入演出、艺人、场馆名称') {value=''}"
@@ -284,8 +266,8 @@
         </div>
         <div class="juMenu_list">
             <ul>
-                <li class="nav01"><a href="menu_list.jsp"><i class="AppFonts">&#xf00e9;</i>继续选菜</a></li>
-                <li class="nav02"><a href="menu_chose_list.jsp"><i class="ui-iconfont">
+                <li class="nav01"><a href="menu_list.jsp?menuTableId=<%=menuTableId%>"><i class="AppFonts">&#xf00e9;</i>继续选菜</a></li>
+                <li class="nav02"><a href="menu_chose_list.jsp?menuTableId=<%=menuTableId%>"><i class="ui-iconfont">
                     &#508;</i>我的订单</a>
             </ul>
             <ul>
@@ -336,7 +318,7 @@ function initMenuType() {
     $.ajax({
         type: "post",
         async: true,//异步，如果等于false 那么就是同步
-        url: app.baseUrlSvc + "/customer/mc/getMenuTypeList.do?token=" + app.getTokenByCookie(),
+        url: app.baseUrlSvc + "/customer/mc/getMenuTypeList.do?menuTableId=<%=menuTableId%>",
         dataType: "json",
         data: "",
         success: function (data) {
@@ -396,7 +378,7 @@ function loadMenuInfoMore(obj) {
 function loadMenuInfo(obj) {
     $.ajax({
         type: 'post',
-        url: app.baseUrlSvc + "/customer/mc/getMenuInfoList.do?token=" + app.getTokenByCookie(),
+        url: app.baseUrlSvc + "/customer/mc/getMenuListInfos.do?menuTableId=<%=menuTableId%>",
         data: "page=" + page + "&cid=" + cid + "&city_id=" + city_id + "&time=" + time,
         dataType: 'json',
         error: function () {
@@ -407,46 +389,57 @@ function loadMenuInfo(obj) {
             $(obj).unbind("click");
         },
         success: function (data) {
-            var html = "";
-            for (var i = 0; i < data.dataRows.length; i++) {
-                var menuInfo = data.dataRows[i];
+            if (data != null) {
+                if (data.statusCode == "SUCCESS" && !app.isEmpty(data.result)) {
+                    var menuLists = data.result[0];
+                    var html = "";
+                    for (var i = 0; i < menuLists.length; i++) {
+                        var menuInfo = menuLists[i];
+                        html = html + "<dl class='item cf' onclick=''>"
+                                + "<span id='menu_id_" + menuInfo.menuId + "' class='hide'>" + menuInfo.menuId + "</span>"
+                                + "           <h2>[" + formartMenuType(menuInfo.menuTypeId) + "]<span id='menu_name_" + menuInfo.menuId + "'>" + menuInfo.menuName + "</h2>"
+                                + "   <dt>                           "
+                                + "  <a href='ticket.html'><img src='<%=path%>/phone/resources/img/menu_picture1.jpg'></a>"
+                                + "  <div class='ico_zhu'>                                                                    "
+                                + "          <div class='ui-iconfont ico_caidai'>&#61472;</div>                               "
+                                + "  <span class='txt'>主<br>办</span>                                                         "
+                                + "  </div>                                                                                   "
+                                + "  </dt>                                                                                    "
+                                + "  <dd><i class='ico ico_time'>优惠价格：</i><span id='price_favorable_'" + menuInfo.menuId + " class='price_favorable'>" + menuInfo.priceFavorable + "</span>        "
+                                + "  <span class='sail_num'>销售总量：125份</span></dd>                                         "
+                                + "  <dd>                                                                                     "
+                                + "  <i class='ico ico_cost'>                                                                 "
+                                + "          <del>实际价格：</del>                                                             "
+                                + "  </i>                                                                                     "
+                                + "  <span class='price_real'><del><span id='price_real_" + menuInfo.menuId + "'>" + menuInfo.priceReal + "</span></del></span>                                            "
+                                + "  <span class='sail_num'>评价：******</span></dd>                                           "
+                                + "  <dd><i class='ico ico_cost'>数量：</i>                                                    "
+                                + "  <span id='menu_num_" + menuInfo.menuId + "' class='cost'>" + menuInfo.menuNum + "</span id='menu_unit_" + menuInfo.menuId + "'>" + menuInfo.menuUnit + "</dd>                                                       "
+                                + "  <dd>                                                                                     "
+                                + "  <span class='button' onclick='decreaseMenuInfo(\"" + menuInfo.menuId + "\")'>取消-</span>                                                       "
+                                + "  <span class='button select_button' onclick='addMenuInfo(\"" + menuInfo.menuId + "\")'>选择+</span>                                                    "
+                                + "  <span class='button'>备注</span>                                                  "
+                                + "  </dd>                                                                                    "
+                                + "  </dl>                                                                                    ";
 
-                html = html + "<dl class='item cf' onclick=''>"
-                        + "           <h2>[" + formartMenuType(menuInfo.menuTypeId) + "]" + menuInfo.menuName + "</h2>"
-                        + "   <dt>                           "
-                        + "  <a href='ticket.html'><img src='<%=path%>/phone/resources/img/20140219095900692.jpg'></a>"
-                        + "  <div class='ico_zhu'>                                                                    "
-                        + "          <div class='ui-iconfont ico_caidai'>&#61472;</div>                               "
-                        + "  <span class='txt'>主<br>办</span>                                                         "
-                        + "  </div>                                                                                   "
-                        + "  </dt>                                                                                    "
-                        + "  <dd><i class='ico ico_time'>优惠价格：</i><span class='price_favorable'>" + menuInfo.priceFavorable + "</span></dd>        "
-                        + "  <dd>                                                                                     "
-                        + "  <i class='ico ico_cost'>                                                                 "
-                        + "          <del>实际价格：</del>                                                             "
-                        + "  </i>                                                                                     "
-                        + "  <span class='price_real'><del>" + menuInfo.priceReal + "</del></span></dd>                                            "
-                        + "  <dd><i class='ico ico_cost'>数量：</i>                                                    "
-                        + "  <span class='cost'>1份</span></dd>                                                       "
-                        + "  <dd>                                                                                     "
-                        + "  <span class='ico_tag'>减少-</span>                                                       "
-                        + "  <span class='ico_tag yu'>增加+</span>                                                    "
-                        + "  </dd>                                                                                    "
-                        + "  </dl>                                                                                    ";
+                    }
+
+                    if (html != "") {
+                        $(".cate_main").append(html);
+                        $("img.c").lazyload({
+                            placeholder: "resources/img/bank.png",
+                            effect: "fadeIn"
+                        });
+                        page++;
+                    } else {
+                        $(obj).attr("data_id", 0);
+                        $(obj).html("已加载全部");
+                    }
+                }
 
             }
 
-            if (html != "") {
-                $(".cate_main").append(html);
-                $("img.c").lazyload({
-                    placeholder: "resources/img/bank.png",
-                    effect: "fadeIn"
-                });
-                page++;
-            } else {
-                $(obj).attr("data_id", 0);
-                $(obj).html("已加载全部");
-            }
+
         },
         complete: function () {
             $(".loadMore").bind("click", function () {
@@ -457,6 +450,81 @@ function loadMenuInfo(obj) {
             }
         }
     });
+}
+
+
+function addMenuInfo(menuId) {
+    var oldMenuNum = parseInt($("#menu_num_" + menuId).text());
+    var realPrice = $("#price_real_" + menuId).text();
+    var favorablePrice = $("#price_favorable_" + menuId).text();
+    if (app.isEmpty(favorablePrice)) {
+        favorablePrice = realPrice;
+    }
+
+    var paramData = {menuId: $("#menu_id_" + menuId).text(), menuName: $("menu_name_" + menuId).text(), priceReal: realPrice,
+        priceFavorable: favorablePrice, menuUnit: $("#menu_unit_" + menuId).text()};
+    $.ajax({
+        type: "get",
+        async: false,//异步，如果等于false 那么就是同步
+        url: app.baseUrlSvc + "/customer/mc/addMenuListInfo.do?menuTableId=<%=menuTableId%>",
+        dataType: "json",
+        data: paramData,
+        success: function (data) {
+            if (data != null) {
+                if (data.statusCode == "SUCCESS") {
+                    $("#menu_num_" + menuId).text(oldMenuNum + 1);
+                    updateTotoleMenuNum(1);
+                }
+            }
+        },
+        error: function (data) {
+            showWarnMsg("请求服务器出错！");
+        }
+    });
+}
+
+initOrderMenuListInfos();
+function initOrderMenuListInfos() {
+    $('#orderMenuList').on('click', function () {
+        var paramData = {};
+        $.ajax({
+            type: "post",
+            async: true,//异步，如果等于false 那么就是同步
+            url: app.baseUrlSvc + "/customer/mc/orderMenuListInfos.do?menuTableId=<%=menuTableId%>",
+            dataType: "json",
+            data: paramData,
+            success: function (data) {
+                if (data != null) {
+                    if (data.statusCode == "SUCCESS") {
+                        loginSuccess(data);
+                    }
+                    showWarnMsg(data.statusMsg);
+                    app.changeVerifyCode(codeKeyLoginId, codeImgLoginId);
+                }
+            },
+            error: function (data) {
+                showWarnMsg("请求服务器出错！");
+            }
+        });
+
+    });
+
+
+}
+
+
+function decreaseMenuInfo(menuId) {
+    var oldMenuNum = parseInt($("#menu_num_" + menuId).text());
+    if (oldMenuNum > 0) {
+        $("#menu_num_" + menuId).text(oldMenuNum - 1);
+        updateTotoleMenuNum(-1);
+    }
+}
+
+
+function updateTotoleMenuNum(num) {
+    var oldTotleNum = parseInt($("#totalMenuNum").text());
+    $("#totalMenuNum").text(oldTotleNum + num);
 }
 
 

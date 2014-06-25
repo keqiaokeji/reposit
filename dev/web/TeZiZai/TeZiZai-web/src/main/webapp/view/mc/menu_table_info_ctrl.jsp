@@ -102,7 +102,7 @@
                         //editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
                     }
                 },
-                {name: 'menuTableId', index: 'menu_table_id', hidden: true},
+                {name: 'menuTableId', index: 'menu_table_id', width: 100, editable: false},
                 {name: 'tableCode', index: 'table_code', width: 100, editable: true, editoptions: {size: "20", maxlength: "30"}},
                 {name: 'tableContent', index: 'table_content', width: 300, editable: true, type: "integer", sortable: true, search: false, editoptions: {size: "20", maxlength: "30"}},
                 {name: 'createTime', index: 'create_time', width: 110, editable: false, search: false, type: "date", sorttype: "date", formatter: formartCreateTime}

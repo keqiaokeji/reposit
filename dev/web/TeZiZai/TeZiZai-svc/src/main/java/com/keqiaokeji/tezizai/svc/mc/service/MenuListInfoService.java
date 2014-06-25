@@ -1,7 +1,9 @@
 package com.keqiaokeji.tezizai.svc.mc.service;
 
 import com.keqiaokeji.tezizai.common.cache.CacheCtrl;
+import com.keqiaokeji.tezizai.common.character.StringUtils;
 import com.keqiaokeji.tezizai.common.dbmapper.mc.domain.McMenuInfo;
+import com.keqiaokeji.tezizai.common.dbmapper.mc.domain.McMenuListInfo;
 import com.keqiaokeji.tezizai.common.dbmapper.mc.mapper.McMenuListInfoMapper;
 import com.keqiaokeji.tezizai.svc.mc.mapper.MenuListInfoMapper;
 import com.keqiaokeji.tezizai.svc.utils.AppContants;
@@ -31,17 +33,15 @@ public class MenuListInfoService {
     Logger logger = Logger.getLogger(MenuListInfoService.class.getName());
 
 
-
-
-
-//
-//    public void update(McMenuInfo menuInfo) {
-//        menuInfo.setLastModifyTime(new Date().getTime());
-//        menuInfo.setRecordStatus(AppContants.RECORD_STATUS_UPDATE);
-//        menuInfo.setLastModifyUserId(AppContexts.getUserId());
-//        mcMenuInfoMapper.updateByPrimaryKeySelective(menuInfo);
-//    }
-
+    public void add(McMenuListInfo mcMenuListInfo) {
+        mcMenuListInfo.setRecordStatus(AppContants.RECORD_STATUS_INSERT);
+        mcMenuListInfo.setMenuListInfoId(StringUtils.getUUID());
+        mcMenuListInfo.setCreateTime(new Date().getTime());
+        mcMenuListInfo.setLastModifyTime(new Date().getTime());
+        mcMenuListInfo.setCorpId(AppContexts.getCorpId());
+        mcMenuListInfo.setCreateUserId(AppContexts.getUserId());
+        mcMenuListInfoMapper.insert(mcMenuListInfo);
+    }
 
 
 

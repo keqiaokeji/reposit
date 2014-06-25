@@ -40,8 +40,8 @@ public class MenuInfoController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/customer/mc/getMenuInfoList")
-    public JQGridPage getMenuInfoListCustomer(JQGridPage pageJQGrid) {
+    @RequestMapping(value = "/customer/mc/getMenuInfoListByTableId")
+    public JQGridPage getMenuInfoListByTableId(JQGridPage pageJQGrid) {
         return menuInfoService.getListByJQgrid(pageJQGrid);
     }
 
