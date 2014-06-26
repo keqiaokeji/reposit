@@ -301,17 +301,6 @@
 
 <script>
 
-$(function () {
-    $(".loadMore").bind("click", function () {
-        loadMenuInfoMore(this);
-    });
-});
-
-//    $(document).ready(function(){
-//        var flag = $(this).attr('data_id');
-//            alert("33333"+flag);
-//    });
-
 
 var menuTypeList;//菜单类型列表
 initMenuType();
@@ -379,7 +368,7 @@ function loadMenuInfoMore(obj) {
 function loadMenuInfo(obj) {
     $.ajax({
         type: 'post',
-        url: app.baseUrlSvc + "/customer/mc/getMenuInfoList.do?menuTableId=<%=menuTableId%>",
+        url: app.baseUrlSvc + "/customer/mc/getMenuInfoListByTableId.do?menuTableId=<%=menuTableId%>",
         data: "page=" + page + "&cid=" + cid + "&city_id=" + city_id + "&time=" + time,
         dataType: 'json',
         error: function () {
@@ -391,37 +380,45 @@ function loadMenuInfo(obj) {
         },
         success: function (data) {
             var html = "";
-            for (var i = 0; i < data.dataRows.length; i++) {
-                var menuInfo = data.dataRows[i];
+            if (data != null) {
+                if (data.statusCode == "SUCCESS" && data.result.length>0) {
+                    var menuInfoList = data.result[0].dataRows;
+                    for (var i = 0; i < menuInfoList.length; i++) {
+                        var menuInfo = menuInfoList[i];
+                        html = html + "<dl class='item cf' onclick=''>"
+                                + "<span id='menu_id_" + menuInfo.menuId + "' class='hide'>" + menuInfo.menuId + "</span><span id='menu_type_id_" + menuInfo.menuId + "' class='hide'>" + menuInfo.menuTypeId + "</span>"
+                                + "           <h2>[<span id='menu_type_name_" + menuInfo.menuId + "'>" + formartMenuType(menuInfo.menuTypeId) + "</span>]<span id='menu_name_" + menuInfo.menuId + "'>" + menuInfo.menuName + "</span></h2>"
+                                + "   <dt>                           "
+                                + "  <a href='ticket.html'><img src='<%=path%>/phone/resources/img/menu_picture1.jpg'></a>"
+                                + "  <div class='ico_zhu'>                                                                    "
+                                + "          <div class='ui-iconfont ico_caidai'>&#61472;</div>                               "
+                                + "  <span class='txt'>主<br>办</span>                                                         "
+                                + "  </div>                                                                                   "
+                                + "  </dt>                                                                                    "
+                                + "  <dd><i class='ico ico_time'>优惠价格：</i><span id='price_favorable_'" + menuInfo.menuId + " class='price_favorable'>" + menuInfo.priceFavorable + "</span>        "
+                                + "  <span class='sail_num'>销售总量：125份</span></dd>                                         "
+                                + "  <dd>                                                                                     "
+                                + "  <i class='ico ico_cost'>                                                                 "
+                                + "          <del>实际价格：</del>                                                             "
+                                + "  </i>                                                                                     "
+                                + "  <span class='price_real'><del><span id='price_real_" + menuInfo.menuId + "'>" + menuInfo.priceReal + "</span></del></span>                                            "
+                                + "  <span class='sail_num'>评价：******</span></dd>                                           "
+                                + "  <dd><i class='ico ico_cost'>数量：</i>                                                    "
+                                + "  <span id='menu_num_" + menuInfo.menuId + "' class='cost'>0</span><span id='menu_unit_" + menuInfo.menuId + "'>" + menuInfo.menuUnit + "</span></dd>                                                       "
+                                + "  <dd>                                                                                     "
+                                + "  <span class='button' onclick='decreaseMenuInfo(\"" + menuInfo.menuId + "\")'>取消-</span>                                                       "
+                                + "  <span class='button select_button' onclick='addMenuInfo(\"" + menuInfo.menuId + "\")'>选择+</span>                                                    "
+                                + "  <span class='button'>备注</span>                                                  "
+                                + "  </dd>                                                                                    "
+                                + "  </dl>                                                                                    ";
 
-                html = html + "<dl class='item cf' onclick=''>"
-                        + "<span id='menu_id_" + menuInfo.menuId + "' class='hide'>" + menuInfo.menuId + "</span><span id='menu_type_id_" + menuInfo.menuId + "' class='hide'>" + menuInfo.menuTypeId + "</span>"
-                        + "           <h2>[<span id='menu_type_name_" + menuInfo.menuId + "'>" + formartMenuType(menuInfo.menuTypeId) + "</span>]<span id='menu_name_" + menuInfo.menuId + "'>" + menuInfo.menuName + "</span></h2>"
-                        + "   <dt>                           "
-                        + "  <a href='ticket.html'><img src='<%=path%>/phone/resources/img/menu_picture1.jpg'></a>"
-                        + "  <div class='ico_zhu'>                                                                    "
-                        + "          <div class='ui-iconfont ico_caidai'>&#61472;</div>                               "
-                        + "  <span class='txt'>主<br>办</span>                                                         "
-                        + "  </div>                                                                                   "
-                        + "  </dt>                                                                                    "
-                        + "  <dd><i class='ico ico_time'>优惠价格：</i><span id='price_favorable_'" + menuInfo.menuId + " class='price_favorable'>" + menuInfo.priceFavorable + "</span>        "
-                        + "  <span class='sail_num'>销售总量：125份</span></dd>                                         "
-                        + "  <dd>                                                                                     "
-                        + "  <i class='ico ico_cost'>                                                                 "
-                        + "          <del>实际价格：</del>                                                             "
-                        + "  </i>                                                                                     "
-                        + "  <span class='price_real'><del><span id='price_real_" + menuInfo.menuId + "'>" + menuInfo.priceReal + "</span></del></span>                                            "
-                        + "  <span class='sail_num'>评价：******</span></dd>                                           "
-                        + "  <dd><i class='ico ico_cost'>数量：</i>                                                    "
-                        + "  <span id='menu_num_" + menuInfo.menuId + "' class='cost'>0</span><span id='menu_unit_" + menuInfo.menuId + "'>" + menuInfo.menuUnit + "</span></dd>                                                       "
-                        + "  <dd>                                                                                     "
-                        + "  <span class='button' onclick='decreaseMenuInfo(\"" + menuInfo.menuId + "\")'>取消-</span>                                                       "
-                        + "  <span class='button select_button' onclick='addMenuInfo(\"" + menuInfo.menuId + "\")'>选择+</span>                                                    "
-                        + "  <span class='button'>备注</span>                                                  "
-                        + "  </dd>                                                                                    "
-                        + "  </dl>                                                                                    ";
+                    }
 
+
+                }
             }
+
+
 
             if (html != "") {
                 $(".cate_main").append(html);

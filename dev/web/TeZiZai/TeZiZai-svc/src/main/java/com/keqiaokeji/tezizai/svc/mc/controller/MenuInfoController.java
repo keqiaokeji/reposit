@@ -1,11 +1,16 @@
 package com.keqiaokeji.tezizai.svc.mc.controller;
 
 import com.keqiaokeji.tezizai.common.app.JsonResultContants;
+import com.keqiaokeji.tezizai.common.cache.CacheCtrl;
+import com.keqiaokeji.tezizai.common.cache.menu.MenuLocalCache;
 import com.keqiaokeji.tezizai.common.character.StringUtils;
+import com.keqiaokeji.tezizai.common.dbmapper.mc.domain.McMenuInfo;
+import com.keqiaokeji.tezizai.common.dbmapper.uc.domain.UcUserInfo;
 import com.keqiaokeji.tezizai.common.file.FileInfo;
 import com.keqiaokeji.tezizai.common.jqgrid.JQGridContants;
 import com.keqiaokeji.tezizai.common.jqgrid.JQGridPage;
 import com.keqiaokeji.tezizai.common.utils.JsonResult;
+import com.keqiaokeji.tezizai.common.utils.Page;
 import com.keqiaokeji.tezizai.svc.mc.domain.MenuInfo;
 import com.keqiaokeji.tezizai.svc.mc.service.ImageService;
 import com.keqiaokeji.tezizai.svc.mc.service.MenuInfoService;
@@ -31,6 +36,12 @@ public class MenuInfoController {
     @Autowired
     private ImageService imageService;
 
+    @Autowired
+    CacheCtrl cacheCtrl;
+
+    @Autowired
+    MenuLocalCache menuLocalCache;
+
     Logger logger = Logger.getLogger(MenuInfoController.class.getName());
 
     @ResponseBody
@@ -39,11 +50,6 @@ public class MenuInfoController {
         return menuInfoService.getListByJQgrid(pageJQGrid);
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/customer/mc/getMenuInfoListByTableId")
-    public JQGridPage getMenuInfoListByTableId(JQGridPage pageJQGrid) {
-        return menuInfoService.getListByJQgrid(pageJQGrid);
-    }
 
     @ResponseBody
     @RequestMapping(value = "/user/mc/editMenuInfo")
@@ -99,6 +105,18 @@ public class MenuInfoController {
         menuInfoService.add(menuInfoInfo);
         result = new JsonResult(JsonResultContants.SUCCESS, "修改成功！");
         return result;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/customer/mc/getMenuInfoListByTableId")
+    public JsonResult<Page<McMenuInfo>> getMenuInfoListByTableId(Page page, String menuTableId, String menuTypeId, String order) {
+        UcUserInfo ucUserInfo = menuLocalCache.getUcUserInfo(menuTableId);
+        if (ucUserInfo != null) {
+            return new JsonResult<Page<McMenuInfo>>(JsonResultContants.SUCCESS, "获取点餐列表成功！", menuInfoService.getMenuInfoListForCustomer(page, ucUserInfo.getCorpId(), menuTypeId, order));
+        } else {
+            return new JsonResult<Page<McMenuInfo>>(JsonResultContants.FAIL, "获取点餐列表失败！");
+        }
     }
 
 

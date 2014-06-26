@@ -20,6 +20,12 @@ public class JQGridRules {
      */
     private String data;
 
+    public JQGridRules(String field, String op, String data){
+        this.field = field;
+        this.op = op;
+        this.data = data;
+    }
+
 
 
     public String getField() {

@@ -40,10 +40,10 @@ public class JsonResult<T> {
         this.token = AppCommonContexts.getToken();
     }
 
-    public JsonResult(String statusCode, String statusMsg, T obj) {
+    public JsonResult(String statusCode, String statusMsg, Object obj) {
         this.statusCode = statusCode;
         this.statusMsg = statusMsg;
-        this.result.add(obj);
+        this.result.add((T)obj);
         this.token = AppCommonContexts.getToken();
     }
 

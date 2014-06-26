@@ -3,6 +3,7 @@ package com.keqiaokeji.tezizai.common.cache.menu;
 import com.keqiaokeji.tezizai.common.cache.CacheCtrl;
 import com.keqiaokeji.tezizai.common.character.StringUtils;
 import com.keqiaokeji.tezizai.common.dbmapper.mc.domain.McMenuListInfo;
+import com.keqiaokeji.tezizai.common.dbmapper.uc.domain.UcUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -77,8 +78,20 @@ public class MenuLocalCache {
     public List<McMenuListInfo> getMenuListInfos(String menuTableId) {
         MenuCacheInfo menuCacheInfo = menuListCache.get(menuTableId);
         if (menuCacheInfo != null) {
-            return menuListCache.get(menuTableId).getMcMenuListInfos();
+            return menuCacheInfo.getMcMenuListInfos();
         }
         return null;
+    }
+
+    public UcUserInfo getUcUserInfo(String menuTableId) {
+        MenuCacheInfo menuCacheInfo = menuListCache.get(menuTableId);
+        if (menuCacheInfo != null) {
+            return menuCacheInfo.getUcUserInfo();
+        }
+        return null;
+    }
+
+    public MenuCacheInfo getMenuCacheInfo(String menuTableId) {
+        return menuListCache.get(menuTableId);
     }
 }
