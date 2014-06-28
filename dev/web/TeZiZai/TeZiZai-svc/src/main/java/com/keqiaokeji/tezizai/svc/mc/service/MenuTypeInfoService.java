@@ -69,12 +69,11 @@ public class MenuTypeInfoService {
 
 
     public void add(McMenuTypeInfo menuTypeInfo) {
-        menuTypeInfo.setRecordStatus(AppContants.RECORD_STATUS_INSERT);
         menuTypeInfo.setMenuTypeId(StringUtils.getUUID());
         menuTypeInfo.setCreateTime(new Date().getTime());
         menuTypeInfo.setLastModifyTime(new Date().getTime());
         menuTypeInfo.setCorpId(AppContexts.getCorpId());
         menuTypeInfo.setCreateUserId(AppContexts.getUserId());
-        mcMenuTypeInfoMapper.insert(menuTypeInfo);
+        mcMenuTypeInfoMapper.insertSelective(menuTypeInfo);
     }
 }

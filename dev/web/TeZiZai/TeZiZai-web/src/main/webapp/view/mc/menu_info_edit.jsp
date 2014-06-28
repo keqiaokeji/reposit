@@ -180,7 +180,7 @@
                                                 <div class="col-sm-9">
                                             <span class="input-group">
                                                 <input class="col-xs-12 col-sm-10" type="text"
-                                                       id="form-field-sortNum" name="orderingNum"
+                                                       id="form-field-sortNum" name="menuOrder"
                                                        placeholder="排序使用"
                                                        value=""/>
                                             </span>

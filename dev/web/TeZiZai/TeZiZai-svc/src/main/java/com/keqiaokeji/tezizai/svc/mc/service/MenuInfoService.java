@@ -95,12 +95,11 @@ public class MenuInfoService {
         if (menuInfo.getPriceFavorable() == null) {
             menuInfo.setPriceFavorable(menuInfo.getPriceReal());
         }
-        menuInfo.setRecordStatus(AppContants.RECORD_STATUS_INSERT);
         menuInfo.setMenuId(StringUtils.getUUID());
         menuInfo.setCreateTime(new Date().getTime());
         menuInfo.setLastModifyTime(new Date().getTime());
         menuInfo.setCorpId(AppContexts.getCorpId());
         menuInfo.setCreateUserId(AppContexts.getUserId());
-        mcMenuInfoMapper.insert(menuInfo);
+        mcMenuInfoMapper.insertSelective(menuInfo);
     }
 }

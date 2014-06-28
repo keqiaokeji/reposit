@@ -57,10 +57,9 @@ public class CorpInfoService {
 
 
     public void add(UcCorpInfo corpInfo) {
-        corpInfo.setRecordStatus(AppContants.RECORD_STATUS_INSERT);
         corpInfo.setCorpId(StringUtils.getUUID());
         corpInfo.setCreateTime(new Date().getTime());
         corpInfo.setLastModifyTime(new Date().getTime());
-        ucCorpInfoMapper.insert(corpInfo);
+        ucCorpInfoMapper.insertSelective(corpInfo);
     }
 }

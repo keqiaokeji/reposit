@@ -172,14 +172,12 @@ public class UserInfoService {
 
     public void add(UcUserInfo userInfo) {
         userInfo.setPassword(DesEncrypt.encrypt(userInfo.getPassword(), AppContants.PASSWORD_DES));
-        userInfo.setStatus(AppContants.STATUS_NORMOR);
-        userInfo.setRecordStatus(AppContants.RECORD_STATUS_INSERT);
         userInfo.setUserId(StringUtils.getUUID());
         userInfo.setCreateTime(new Date().getTime());
         userInfo.setLastModifyTime(new Date().getTime());
         userInfo.setCorpId(AppContexts.getCorpId());
         userInfo.setCreateUserId(AppContexts.getUserId());
         userInfo.setRoles(AppContexts.getSubordinateRoles());
-        ucUserInfoMapper.insert(userInfo);
+        ucUserInfoMapper.insertSelective(userInfo);
     }
 }

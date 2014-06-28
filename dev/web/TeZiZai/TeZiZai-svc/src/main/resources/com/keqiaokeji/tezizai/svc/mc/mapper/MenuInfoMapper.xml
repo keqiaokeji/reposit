@@ -8,10 +8,11 @@
         <result column="price_favorable" property="priceFavorable" jdbcType="INTEGER"/>
         <result column="picture_id" property="pictureId" jdbcType="VARCHAR"/>
         <result column="menu_type_id" property="menuTypeId" jdbcType="VARCHAR"/>
-        <result column="menu_order" property="menuOrder" jdbcType="INTEGER"/>
+        <result column="menu_order" property="menuOrder" jdbcType="VARCHAR"/>
         <result column="menu_unit" property="menuUnit" jdbcType="VARCHAR"/>
-        <result column="ordering_num" property="orderingNum" jdbcType="INTEGER"/>
+        <result column="sail_num" property="sailNum" jdbcType="INTEGER"/>
         <result column="comment_score" property="commentScore" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="VARCHAR"/>
         <result column="corp_id" property="corpId" jdbcType="VARCHAR"/>
         <result column="record_status" property="recordStatus" jdbcType="VARCHAR"/>
@@ -22,7 +23,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         menu_id, menu_name, price_real, price_favorable, picture_id, menu_type_id, menu_order,
-    menu_unit, ordering_num, comment_score, status, corp_id, record_status, create_user_id,
+    menu_unit, sail_num, comment_score, content, status, corp_id, record_status, create_user_id,
     create_time, last_modify_user_id, last_modify_time
     </sql>
 

@@ -62,11 +62,10 @@ public class MenuTableInfoService {
 
 
     public void add(McMenuTableInfo menuTableInfo) {
-        menuTableInfo.setRecordStatus(AppContants.RECORD_STATUS_INSERT);
         menuTableInfo.setCreateTime(new Date().getTime());
         menuTableInfo.setLastModifyTime(new Date().getTime());
         menuTableInfo.setCorpId(AppContexts.getCorpId());
         menuTableInfo.setCreateUserId(AppContexts.getUserId());
-        mcMenuTableInfoMapper.insert(menuTableInfo);
+        mcMenuTableInfoMapper.insertSelective(menuTableInfo);
     }
 }

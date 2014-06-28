@@ -34,13 +34,15 @@ public class MenuListInfoService {
 
 
     public void add(McMenuListInfo mcMenuListInfo) {
-        mcMenuListInfo.setRecordStatus(AppContants.RECORD_STATUS_INSERT);
+        if (mcMenuListInfo.getPriceFavorable() == null) {
+            mcMenuListInfo.setPriceFavorable(mcMenuListInfo.getPriceReal());
+        }
         mcMenuListInfo.setMenuListInfoId(StringUtils.getUUID());
         mcMenuListInfo.setCreateTime(new Date().getTime());
         mcMenuListInfo.setLastModifyTime(new Date().getTime());
         mcMenuListInfo.setCorpId(AppContexts.getCorpId());
         mcMenuListInfo.setCreateUserId(AppContexts.getUserId());
-        mcMenuListInfoMapper.insert(mcMenuListInfo);
+        mcMenuListInfoMapper.insertSelective(mcMenuListInfo);
     }
 
 

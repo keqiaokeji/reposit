@@ -396,8 +396,8 @@ function loadMenuInfo(obj) {
                     for (var i = 0; i < menuLists.length; i++) {
                         var menuInfo = menuLists[i];
                         html = html + "<dl class='item cf' onclick=''>"
-                                + "<span id='menu_id_" + menuInfo.menuId + "' class='hide'>" + menuInfo.menuId + "</span>"
-                                + "           <h2>[" + formartMenuType(menuInfo.menuTypeId) + "]<span id='menu_name_" + menuInfo.menuId + "'>" + menuInfo.menuName + "</h2>"
+                                + "<span id='menu_id_" + menuInfo.menuId + "' class='hide'>" + menuInfo.menuId + "</span><span id='menu_type_id_" + menuInfo.menuId + "' class='hide'>" + menuInfo.menuTypeId + "</span>"
+                                + "           <h2>[<span id='menu_type_name_" + menuInfo.menuId + "'>" + formartMenuType(menuInfo.menuTypeId) + "</span>]<span id='menu_name_" + menuInfo.menuId + "'>" + menuInfo.menuName + "</span></h2>"
                                 + "   <dt>                           "
                                 + "  <a href='ticket.html'><img src='<%=path%>/phone/resources/img/menu_picture1.jpg'></a>"
                                 + "  <div class='ico_zhu'>                                                                    "
@@ -406,15 +406,15 @@ function loadMenuInfo(obj) {
                                 + "  </div>                                                                                   "
                                 + "  </dt>                                                                                    "
                                 + "  <dd><i class='ico ico_time'>优惠价格：</i><span id='price_favorable_'" + menuInfo.menuId + " class='price_favorable'>" + menuInfo.priceFavorable + "</span>        "
-                                + "  <span class='sail_num'>销售总量：125份</span></dd>                                         "
+                                + "  <span class='price_real_title'><del>实际价格：</del><del><span id='price_real_" + menuInfo.menuId + "' class='price_real'>" + menuInfo.priceReal + "</span> </span></dd>                                         "
                                 + "  <dd>                                                                                     "
                                 + "  <i class='ico ico_cost'>                                                                 "
-                                + "          <del>实际价格：</del>                                                             "
+                                + "          菜单状态：                                                            "
                                 + "  </i>                                                                                     "
-                                + "  <span class='price_real'><del><span id='price_real_" + menuInfo.menuId + "'>" + menuInfo.priceReal + "</span></del></span>                                            "
+                                + "  <span id='menu_status_" + menuInfo.menuId + "' class='menu_status'>" + getMenuStatus(menuInfo.status) + "</span>                                            "
                                 + "  <span class='sail_num'>评价：******</span></dd>                                           "
                                 + "  <dd><i class='ico ico_cost'>数量：</i>                                                    "
-                                + "  <span id='menu_num_" + menuInfo.menuId + "' class='cost'>" + menuInfo.menuNum + "</span id='menu_unit_" + menuInfo.menuId + "'>" + menuInfo.menuUnit + "</dd>                                                       "
+                                + "  <span id='menu_num_" + menuInfo.menuId + "' class='cost'>0</span><span id='menu_unit_" + menuInfo.menuId + "'>" + menuInfo.menuUnit + "</span></dd>                                                       "
                                 + "  <dd>                                                                                     "
                                 + "  <span class='button' onclick='decreaseMenuInfo(\"" + menuInfo.menuId + "\")'>取消-</span>                                                       "
                                 + "  <span class='button select_button' onclick='addMenuInfo(\"" + menuInfo.menuId + "\")'>选择+</span>                                                    "
@@ -452,6 +452,18 @@ function loadMenuInfo(obj) {
     });
 }
 
+
+function getMenuStatus(status){
+    var menuStatus = "未下单";
+    if(status =="UNCONFIRM"){
+        menuStatus = "未下单";
+    } else if(status =="CONFIRM"){
+        menuStatus = "已下单";
+    }else if(status =="DELETE"){
+        menuStatus = "已取消";
+    }
+    return menuStatus;
+}
 
 function addMenuInfo(menuId) {
     var oldMenuNum = parseInt($("#menu_num_" + menuId).text());
