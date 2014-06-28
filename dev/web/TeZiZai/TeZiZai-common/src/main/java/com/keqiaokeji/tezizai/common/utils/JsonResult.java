@@ -18,7 +18,7 @@ public class JsonResult<T> {
 
     private String content;
 
-    private List<T> result = new ArrayList<T>();
+    private List<T> dataRows = new ArrayList<T>();
 
     private String token;
 
@@ -40,10 +40,17 @@ public class JsonResult<T> {
         this.token = AppCommonContexts.getToken();
     }
 
+    public JsonResult(String statusCode, String statusMsg, List<T> obj) {
+        this.statusCode = statusCode;
+        this.statusMsg = statusMsg;
+        this.dataRows = obj;
+        this.token = AppCommonContexts.getToken();
+    }
+
     public JsonResult(String statusCode, String statusMsg, Object obj) {
         this.statusCode = statusCode;
         this.statusMsg = statusMsg;
-        this.result.add((T)obj);
+        this.dataRows.add((T) obj);
         this.token = AppCommonContexts.getToken();
     }
 
@@ -52,7 +59,7 @@ public class JsonResult<T> {
      * @param obj
      */
     public void addResult(T obj) {
-        result.add(obj);
+        dataRows.add(obj);
     }
 
     /**
@@ -60,20 +67,20 @@ public class JsonResult<T> {
      * @return
      */
     public T getResultFirst() {
-        if (result.size() > 0) {
-            return result.get(0);
+        if (dataRows.size() > 0) {
+            return dataRows.get(0);
         } else {
             return null;
         }
     }
 
 
-    public List<T> getResult() {
-        return result;
+    public List<T> getDataRows() {
+        return dataRows;
     }
 
-    public void setResult(List<T> result) {
-        this.result = result;
+    public void setDataRows(List<T> dataRows) {
+        this.dataRows = dataRows;
     }
 
     public void setContentToJsonString(Object object) {

@@ -34,31 +34,43 @@ public class MenuListInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/customer/mc/addMenuListInfo", method = RequestMethod.POST)
-    public JsonResult addMenuListInfo(String menuTableId, McMenuListInfo mcMenuListInfo) {
-        JsonResult<List<McMenuListInfo>> result = null;
+    public JsonResult<McMenuListInfo> addMenuListInfo(String menuTableId, McMenuListInfo mcMenuListInfo) {
+        JsonResult<McMenuListInfo> result = null;
         List<McMenuListInfo> menuLists = menuLocalCache.addMenuListInfo(menuTableId, mcMenuListInfo);
-        result = new JsonResult<List<McMenuListInfo>>(JsonResultContants.SUCCESS, "新增成功！", menuLists);
+        result = new JsonResult<McMenuListInfo>(JsonResultContants.SUCCESS, "新增成功！", menuLists);
         return result;
     }
 
     @ResponseBody
+    @RequestMapping(value = "/customer/mc/decreaseMenuInfo", method = RequestMethod.POST)
+    public JsonResult<McMenuListInfo> decreaseMenuInfo(String menuTableId, String menuId) {
+        JsonResult<McMenuListInfo> result = null;
+        List<McMenuListInfo> menuLists = menuLocalCache.decreaseMenuInfo(menuTableId, menuId);
+        result = new JsonResult<McMenuListInfo>(JsonResultContants.SUCCESS, "新增成功！", menuLists);
+        return result;
+    }
+
+
+
+
+    @ResponseBody
     @RequestMapping(value = "/customer/mc/getMenuListInfos", method = RequestMethod.POST)
-    public JsonResult<List<McMenuListInfo>> getMenuListInfos(String menuTableId) {
-        List<McMenuListInfo> menuLists = menuLocalCache.getMenuListInfos(menuTableId);
-        return new JsonResult<List<McMenuListInfo>>(JsonResultContants.SUCCESS, "获取菜单信息成功！", menuLists);
+    public JsonResult<McMenuListInfo> getMenuListInfos(String menuTableId, String status) {
+        List<McMenuListInfo> menuLists = menuLocalCache.getMenuListInfos(menuTableId, status);
+        return new JsonResult<McMenuListInfo>(JsonResultContants.SUCCESS, "获取菜单信息成功！", menuLists);
     }
 
     @ResponseBody
     @RequestMapping(value = "/customer/mc/orderMenuListInfos", method = RequestMethod.POST)
-    public JsonResult<List<McMenuListInfo>> orderMenuListInfos(String menuTableId) {
-        List<McMenuListInfo> menuLists = menuLocalCache.getMenuListInfos(menuTableId);
+    public JsonResult<McMenuListInfo> orderMenuListInfos(String menuTableId) {
+        List<McMenuListInfo> menuLists = menuLocalCache.getMenuListInfos(menuTableId, "");
         for (McMenuListInfo menuListInfo:menuLists){
             if(menuListInfo.getStatus().equalsIgnoreCase(MenuConstants.MENU_LIST_STATUS_UNCONFIRM)){
                 menuListInfo.setStatus(MenuConstants.MENU_LIST_STATUS_CONFIRM);
                 menuListInfoService.add(menuListInfo);
             }
         }
-        return new JsonResult<List<McMenuListInfo>>(JsonResultContants.SUCCESS, "获取菜单信息成功！", menuLists);
+        return new JsonResult<McMenuListInfo>(JsonResultContants.SUCCESS, "获取菜单信息成功！", menuLists);
     }
 
 

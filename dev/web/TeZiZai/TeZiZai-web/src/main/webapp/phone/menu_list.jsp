@@ -220,7 +220,7 @@
 
 <script>
 
-
+var menuTableId = "<%=menuTableId%>";
 var menuTypeIdValue = "";
 var menuOrderValue = " ";//默认值为一个空格的字符串，代码默认排序
 var pageNoValue = 1;
@@ -233,7 +233,7 @@ function initMenuType() {
     $.ajax({
         type: "post",
         async: true,//异步，如果等于false 那么就是同步
-        url: app.baseUrlSvc + "/customer/mc/getMenuTypeList.do?menuTableId=<%=menuTableId%>",
+        url: app.baseUrlSvc + "/customer/mc/getMenuTypeList.do?menuTableId=" + menuTableId,
         dataType: "json",
         data: "",
         success: function (data) {
@@ -252,8 +252,8 @@ function initMenuType() {
 }
 
 function getMenutypeSuccess(data) {
-    if (data.result.length > 0) {
-        menuTypeList = data.result[0];
+    if (data.dataRows.length > 0) {
+        menuTypeList = data.dataRows;
         loadMenuInfo();
         initMenuTypeSelect();
     } else {
@@ -261,17 +261,35 @@ function getMenutypeSuccess(data) {
     }
 }
 
+//获得已点菜单信息
+function initMenuListInfos() {
+    $.ajax({
+        type: "post",
+        async: false,//异步，如果等于false 那么就是同步
+        url: app.baseUrlSvc + "/customer/mc/getMenuListInfos.do?menuTableId=" + menuTableId,
+        dataType: "json",
+        data: "",
+        success: function (data) {
+            if (data.statusCode == "SUCCESS" && !app.isEmpty(data.dataRows)) {
+                app.setMenuListInfos(menuTableId, data.dataRows);
+            }
+        },
+        error: function (data) {
+            showWarnMsg("请求服务器出错！");
+        }
+    });
+}
 
-function formartMenuType(menuTypeId) {
-    var type = "未知";
-    for (var i = 0; i < menuTypeList.length; i++) {
-        var menuType = menuTypeList[i];
-        if (menuTypeId == menuType.menuTypeId || menuTypeId == menuType.menuTypeName) {
-            type = menuType.menuTypeName;
-            break;
+//修改已点数量
+function updateMenuListinfos() {
+    var menuListInfos = app.getMenuListInfos(menuTableId);
+    if (!app.isEmpty(menuListInfos)) {
+        $("#totalMenuNum").text(menuListInfos.length);
+        for (var i = 0; i < menuListInfos.length; i++) {
+            var menuListInfo = menuListInfos[i];
+            $("#menu_num_" + menuListInfo.menuId).text(menuListInfo.menuNum);
         }
     }
-    return type;
 }
 
 
@@ -307,7 +325,6 @@ function selectMenuOrder(menuName, menuOrder) {
     loadMenuInfo();
 }
 
-
 function loadMenuInfoMore() {
     var flag = $("#loadMoreBtn").attr('data_id');
     if (flag == 1) {
@@ -320,6 +337,7 @@ function loadMenuInfo() {
         pageNo: pageNoValue, rows: rowsValue};
     $.ajax({
         type: 'post',
+        async: true,
         url: app.baseUrlSvc + "/customer/mc/getMenuInfoListByTableId.do?menuTableId=<%=menuTableId%>",
         data: paramData,
         dataType: 'json',
@@ -333,7 +351,10 @@ function loadMenuInfo() {
         success: function (data) {
             appendMenuInfo(data);
         },
-        complete: function () {}
+        complete: function () {
+            initMenuListInfos();
+            updateMenuListinfos();
+        }
     });
 }
 
@@ -341,8 +362,8 @@ function loadMenuInfo() {
 function appendMenuInfo(data) {
     var html = "";
     if (data != null) {
-        if (data.statusCode == "SUCCESS" && data.result.length > 0) {
-            menuInfoList = data.result[0].dataRows;
+        if (data.statusCode == "SUCCESS" && data.dataRows.length > 0) {
+            menuInfoList = data.dataRows[0].dataRows;
             if (menuInfoList != null && appendMenuInfo.length > 0) {
                 for (var i = 0; i < menuInfoList.length; i++) {
                     var menuInfo = menuInfoList[i];
@@ -389,7 +410,7 @@ function appendMenuInfo(data) {
         $("#loadMoreBtn").attr("data_id", 0);
         $("#loadMoreBtn").html("已加载完毕");
         $("#loadMoreBtn").unbind("click");
-    } else{
+    } else {
         $("#loadMoreBtn").attr("data_id", 1);
         $("#loadMoreBtn").html("点击加载更多");
         $("#loadMoreBtn").bind("click", function () {
@@ -400,16 +421,30 @@ function appendMenuInfo(data) {
 }
 
 
-function addMenuInfo(menuId) {
-    var oldMenuNum = parseInt($("#menu_num_" + menuId).text());
-    var realPrice = $("#price_real_" + menuId).text();
-    var favorablePrice = $("#price_favorable_" + menuId).text();
+function formartMenuType(menuTypeId) {
+    var type = "未知";
+    for (var i = 0; i < menuTypeList.length; i++) {
+        var menuType = menuTypeList[i];
+        if (menuTypeId == menuType.menuTypeId || menuTypeId == menuType.menuTypeName) {
+            type = menuType.menuTypeName;
+            break;
+        }
+    }
+    return type;
+}
+
+
+function addMenuInfo(menuIdValue) {
+    var oldMenuNum = parseInt($("#menu_num_" + menuIdValue).text());
+    var realPrice = $("#price_real_" + menuIdValue).text();
+    var favorablePrice = $("#price_favorable_" + menuIdValue).text();
     if (app.isEmpty(favorablePrice)) {
         favorablePrice = realPrice;
     }
 
-    var paramData = {menuId: $("#menu_id_" + menuId).text(), menuName: $("menu_name_" + menuId).text(), priceReal: realPrice,
-        priceFavorable: favorablePrice, menuUnit: $("#menu_unit_" + menuId).text()};
+    var paramData = {menuId: $("#menu_id_" + menuIdValue).text(), menuName: $("#menu_name_" + menuIdValue).text(), priceReal: realPrice,
+        menuTypeId: $("#menu_type_id_" + menuIdValue).text(), menuTypeName: $("#menu_type_name_" + menuIdValue).text(),
+        priceFavorable: favorablePrice, menuUnit: $("#menu_unit_" + menuIdValue).text()};
     $.ajax({
         type: "post",
         async: false,//异步，如果等于false 那么就是同步
@@ -419,8 +454,8 @@ function addMenuInfo(menuId) {
         success: function (data) {
             if (data != null) {
                 if (data.statusCode == "SUCCESS") {
-                    $("#menu_num_" + menuId).text(oldMenuNum + 1);
-                    updateTotoleMenuNum(1);
+                    app.setMenuListInfos(menuTableId, data.dataRows)
+                    updateMenuListinfos();
                 }
             }
         },
@@ -431,18 +466,34 @@ function addMenuInfo(menuId) {
 }
 
 
-function decreaseMenuInfo(menuId) {
-    var oldMenuNum = parseInt($("#menu_num_" + menuId).text());
-    if (oldMenuNum > 0) {
-        $("#menu_num_" + menuId).text(oldMenuNum - 1);
-        updateTotoleMenuNum(-1);
-    }
-}
+function decreaseMenuInfo(menuIdValue) {
+    var oldMenuNum = parseInt($("#menu_num_" + menuIdValue).text());
+    var paramData = {menuId: $("#menu_id_" + menuIdValue).text()};
+    $.ajax({
+        type: "post",
+        async: false,//异步，如果等于false 那么就是同步
+        url: app.baseUrlSvc + "/customer/mc/decreaseMenuInfo.do?menuTableId=<%=menuTableId%>",
+        dataType: "json",
+        data: paramData,
+        success: function (data) {
+            if (data != null) {
+                if (data.statusCode == "SUCCESS") {
+                    app.setMenuListInfos(menuTableId, data.dataRows)
+                    updateMenuListinfos();
+                }
+            }
+        },
+        error: function (data) {
+            showWarnMsg("请求服务器出错！");
+        },
+        complete: function () {
+            if (oldMenuNum == 1) {//如果数量是1，减去1之后，服务端不会再返回该菜单信息了，所以需要手动设定数量
+                $("#menu_num_" + menuIdValue).text(0);
+            }
+        }
+    });
 
 
-function updateTotoleMenuNum(num) {
-    var oldTotleNum = parseInt($("#totalMenuNum").text());
-    $("#totalMenuNum").text(oldTotleNum + num);
 }
 
 

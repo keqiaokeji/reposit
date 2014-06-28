@@ -32,7 +32,7 @@ public class MenuTypeInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/user/mc/getMenuTypeList")
-    public JsonResult getMenuType() {
+    public JsonResult<McMenuTypeInfo> getMenuType() {
         List<McMenuTypeInfo> list = menuTypeInfoService.getMenuTypeInfo();
         JsonResult result = new JsonResult(JsonResultContants.SUCCESS, "菜单类型获取成功", list);
         return result;
@@ -41,7 +41,7 @@ public class MenuTypeInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/customer/mc/getMenuTypeList")
-    public JsonResult getMenuTypeListCustomer() {
+    public JsonResult<McMenuTypeInfo> getMenuTypeListCustomer() {
         List<McMenuTypeInfo> list = menuTypeInfoService.getMenuTypeInfo();
         JsonResult result = new JsonResult(JsonResultContants.SUCCESS, "菜单类型获取成功", list);
         return result;

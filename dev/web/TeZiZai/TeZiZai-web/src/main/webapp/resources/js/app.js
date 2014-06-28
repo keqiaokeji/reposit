@@ -7,6 +7,7 @@ App = function () {//构造函数
 //    this.baseUrlWeb = "http://localhost/TeZiZai-web";
     this.token = "";//记录当前用户的token
     this.userInfo;//记录挡墙用户的用户信息
+    this.menuListInfos;
 
 
     this.SUCCESS = "SUCCESS";
@@ -54,6 +55,25 @@ App.prototype = { //定义方法
         return this.userInfo;
     },
 
+    setMenuListInfos: function (menuTableId, menuListInfos) {
+        this.menuListInfos = menuListInfos;
+        var menuListInfosJson = JSON.stringify(menuListInfos);
+        var Days = 1;
+        var exp = new Date();
+        exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+        document.cookie = menuTableId + "=" + encodeURI(menuListInfosJson) + ";expires=" + exp.toGMTString();
+    },
+
+    getMenuListInfos: function (menuTableId) {
+        if (!this.isEmpty(this.menuListInfos)) {
+            var arr = document.cookie.match(new RegExp("(^| )" + menuTableId + "=([^;]*)(;|$)"));
+            if (arr != null) {
+                this.menuListInfos = JSON.parse(decodeURI(arr[2]));
+            }
+        }
+        return this.menuListInfos;
+    },
+
     isEmpty: function (value) {
         if (value == null || value == undefined || value == "undefined" || value.length < 1) {
             return true;
@@ -61,7 +81,6 @@ App.prototype = { //定义方法
             return false;
         }
     },
-
 
     /**
      * 更换验证码

@@ -1750,18 +1750,18 @@
 			
 			
 				$("#bootbox-regular").on(ace.click_event, function() {
-					bootbox.prompt("What is your name?", function(result) {
-						if (result === null) {
+					bootbox.prompt("What is your name?", function(dataRows) {
+						if (dataRows === null) {
 							//Example.show("Prompt dismissed");
 						} else {
-							//Example.show("Hi <b>"+result+"</b>");
+							//Example.show("Hi <b>"+dataRows+"</b>");
 						}
 					});
 				});
 					
 				$("#bootbox-confirm").on(ace.click_event, function() {
-					bootbox.confirm("Are you sure?", function(result) {
-						if(result) {
+					bootbox.confirm("Are you sure?", function(dataRows) {
+						if(dataRows) {
 							//
 						}
 					});

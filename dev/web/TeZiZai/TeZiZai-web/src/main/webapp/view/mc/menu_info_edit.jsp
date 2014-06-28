@@ -291,8 +291,8 @@
                 data: "",
                 success: function (data) {
                     if (data != null && data.statusCode == app.SUCCESS) {
-                        if (data.result.length > 0) {
-                            menuTypeList = data.result[0];
+                        if (data.dataRows.length > 0) {
+                            menuTypeList = data.dataRows;
                             for (var i = 0; i < menuTypeList.length; i++) {
                                 var menuType = menuTypeList[i];
                                 $("#form-field-select-menuType").append("<option value='" + menuType.menuTypeId + "'>" + menuType.menuTypeName + "</option>");

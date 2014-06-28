@@ -7,6 +7,7 @@ import com.keqiaokeji.tezizai.common.dbmapper.uc.domain.UcUserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -75,12 +76,43 @@ public class MenuLocalCache {
         return menuLists;
     }
 
-    public List<McMenuListInfo> getMenuListInfos(String menuTableId) {
-        MenuCacheInfo menuCacheInfo = menuListCache.get(menuTableId);
-        if (menuCacheInfo != null) {
-            return menuCacheInfo.getMcMenuListInfos();
+    public List<McMenuListInfo> decreaseMenuInfo(String menuTableId, String menuId) {
+        List<McMenuListInfo> menuLists = null;
+        if (StringUtils.isNotEmpty(menuTableId)) {
+            MenuCacheInfo menuCacheInfo = menuListCache.get(menuTableId);
+            if (menuCacheInfo != null) {
+                menuLists = menuCacheInfo.getMcMenuListInfos();
+                for (McMenuListInfo menuList : menuLists) {
+                    if (menuList.getMenuId().equals(menuId) && menuList.getStatus().equalsIgnoreCase(MenuConstants.MENU_LIST_STATUS_UNCONFIRM)) {//如果已经存在,且未下单
+                        int num = menuList.getMenuNum() == null ? 0 : menuList.getMenuNum();
+                        if (num > 1) {//如果份数大于1则减少1份，否则直接移除
+                            menuList.setMenuNum(num - 1);
+                        } else {
+                            menuLists.remove(menuList);
+                        }
+                        break;
+                    }
+                }
+            }
         }
-        return null;
+        return menuLists;
+    }
+
+    public List<McMenuListInfo> getMenuListInfos(String menuTableId, String status) {
+        List<McMenuListInfo> menuListInfos = new ArrayList<McMenuListInfo>();
+        MenuCacheInfo menuCacheInfo = menuListCache.get(menuTableId);
+        if (menuCacheInfo != null && menuCacheInfo.getMcMenuListInfos() != null) {
+            if (StringUtils.isNotBlank(status)) {
+                for (McMenuListInfo menuListInfo : menuCacheInfo.getMcMenuListInfos()) {
+                    if (menuListInfo.getStatus().equalsIgnoreCase(status)) {
+                        menuListInfos.add(menuListInfo);
+                    }
+                }
+            } else {
+                menuListInfos = menuCacheInfo.getMcMenuListInfos();
+            }
+        }
+        return menuListInfos;
     }
 
     public UcUserInfo getUcUserInfo(String menuTableId) {

@@ -108,8 +108,8 @@ jQuery(function ($) {
 
 
     function getMenutypeSuccess(data) {
-        if (data.result.length > 0) {
-            menuTypeList = data.result[0];
+        if (data.dataRows.length > 0) {
+            menuTypeList = data.dataRows;
             var menuTypeContent = "";
             for (var i = 0; i < menuTypeList.length; i++) {
                 var menuType = menuTypeList[i];
