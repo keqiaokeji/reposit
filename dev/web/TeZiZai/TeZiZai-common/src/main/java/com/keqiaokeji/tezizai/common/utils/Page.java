@@ -32,7 +32,7 @@ public class Page<T> {
     /**
      * 分页起始记录位置
      */
-    private int pageFirst;
+    private int pageFirst = 0;
 
 
     /**
@@ -50,8 +50,26 @@ public class Page<T> {
     }
 
     public void setPageNo(int pageNo) {
-        this.pageFirst = pageNo * rows;
+        if (pageNo > 0) {
+            this.pageFirst = (pageNo - 1) * rows;
+        }
         this.pageNo = pageNo;
+    }
+
+    public void setRecordsCount(int recordsCount) {
+        if (recordsCount > 0) {
+            totalPage = recordsCount / rows + 1;
+        }
+        this.recordsCount = recordsCount;
+    }
+
+    public void setRows(int rows) {
+        if (rows > 0) {
+            if (pageNo > 0) {
+                this.pageFirst = (pageNo - 1) * rows;
+            }
+            this.rows = rows;
+        }
     }
 
     public int getTotalPage() {
@@ -66,19 +84,8 @@ public class Page<T> {
         return recordsCount;
     }
 
-    public void setRecordsCount(int recordsCount) {
-        if (recordsCount > 0) {
-            totalPage = recordsCount / rows + 1;
-        }
-        this.recordsCount = recordsCount;
-    }
-
     public int getRows() {
         return rows;
-    }
-
-    public void setRows(int rows) {
-        this.rows = rows;
     }
 
     public int getPageFirst() {

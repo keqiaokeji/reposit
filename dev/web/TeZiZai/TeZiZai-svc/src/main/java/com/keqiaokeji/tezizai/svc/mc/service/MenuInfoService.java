@@ -55,12 +55,12 @@ public class MenuInfoService {
 
         String sqlWhere = " where corp_id = '" + corpId + "' ";
         if (StringUtils.isNotEmpty(menuTypeId)) {
-            sqlWhere += " menu_type_id ='" + menuTypeId + "' ";
+            sqlWhere += " and menu_type_id ='" + menuTypeId + "' ";
         }
 
         String sqlOption = "";
-        if (StringUtils.isNotEmpty(order)) {
-            sqlOption += order;
+        if (StringUtils.isNotBlank(order)) {
+            sqlOption += " order by " + order;
         }
         sqlOption += " limit " + page.getRows() + " offset " + page.getPageFirst();
         DbSqlUtils sqlUtils = new DbSqlUtils();
