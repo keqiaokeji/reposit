@@ -61,6 +61,8 @@ public class MenuInfoService {
         String sqlOption = "";
         if (StringUtils.isNotBlank(order)) {
             sqlOption += " order by " + order;
+        }else{
+            sqlOption += " order by menu_order desc ";
         }
         sqlOption += " limit " + page.getRows() + " offset " + page.getPageFirst();
         DbSqlUtils sqlUtils = new DbSqlUtils();

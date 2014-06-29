@@ -1,7 +1,6 @@
 package com.keqiaokeji.tezizai.svc.mc.controller;
 
 import com.keqiaokeji.tezizai.common.app.JsonResultContants;
-import com.keqiaokeji.tezizai.common.cache.menu.MenuConstants;
 import com.keqiaokeji.tezizai.common.cache.menu.MenuLocalCache;
 import com.keqiaokeji.tezizai.common.dbmapper.mc.domain.McMenuListInfo;
 import com.keqiaokeji.tezizai.common.utils.JsonResult;
@@ -51,8 +50,6 @@ public class MenuListInfoController {
     }
 
 
-
-
     @ResponseBody
     @RequestMapping(value = "/customer/mc/getMenuListInfos", method = RequestMethod.POST)
     public JsonResult<McMenuListInfo> getMenuListInfos(String menuTableId, String status) {
@@ -64,15 +61,9 @@ public class MenuListInfoController {
     @RequestMapping(value = "/customer/mc/orderMenuListInfos", method = RequestMethod.POST)
     public JsonResult<McMenuListInfo> orderMenuListInfos(String menuTableId) {
         List<McMenuListInfo> menuLists = menuLocalCache.getMenuListInfos(menuTableId, "");
-        for (McMenuListInfo menuListInfo:menuLists){
-            if(menuListInfo.getStatus().equalsIgnoreCase(MenuConstants.MENU_LIST_STATUS_UNCONFIRM)){
-                menuListInfo.setStatus(MenuConstants.MENU_LIST_STATUS_CONFIRM);
-                menuListInfoService.add(menuListInfo);
-            }
-        }
+        menuListInfoService.addMenuListInfos(menuLists);
         return new JsonResult<McMenuListInfo>(JsonResultContants.SUCCESS, "获取菜单信息成功！", menuLists);
     }
-
 
 
 }

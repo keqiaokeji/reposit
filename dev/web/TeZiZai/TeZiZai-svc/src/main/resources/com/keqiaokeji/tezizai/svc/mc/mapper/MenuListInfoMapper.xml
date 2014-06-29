@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.keqiaokeji.tezizai.svc.mc.mapper.MenuListInfoMapper">
+    <resultMap id="BaseResultMap" type="com.keqiaokeji.tezizai.svc.mc.domain.MenuListInfo">
+        <id column="menu_list_info_id" property="menuListInfoId" jdbcType="VARCHAR"/>
+        <result column="menu_table_id" property="menuTableId" jdbcType="VARCHAR"/>
+        <result column="menu_id" property="menuId" jdbcType="VARCHAR"/>
+        <result column="menu_name" property="menuName" jdbcType="VARCHAR"/>
+        <result column="menu_type_id" property="menuTypeId" jdbcType="VARCHAR"/>
+        <result column="menu_type_name" property="menuTypeName" jdbcType="VARCHAR"/>
+        <result column="price_real" property="priceReal" jdbcType="INTEGER"/>
+        <result column="price_favorable" property="priceFavorable" jdbcType="INTEGER"/>
+        <result column="picture_id" property="pictureId" jdbcType="VARCHAR"/>
+        <result column="menu_unit" property="menuUnit" jdbcType="VARCHAR"/>
+        <result column="menu_num" property="menuNum" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="corp_id" property="corpId" jdbcType="VARCHAR"/>
+        <result column="record_status" property="recordStatus" jdbcType="VARCHAR"/>
+        <result column="create_user_id" property="createUserId" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="BIGINT"/>
+        <result column="last_modify_user_id" property="lastModifyUserId" jdbcType="VARCHAR"/>
+        <result column="last_modify_time" property="lastModifyTime" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        menu_list_info_id, menu_table_id, menu_id, menu_name, menu_type_id, menu_type_name,
+    price_real, price_favorable, picture_id, menu_unit, menu_num, status, corp_id, record_status,
+    create_user_id, create_time, last_modify_user_id, last_modify_time
+    </sql>
+
+
+    <insert id="addMenuListInfos" useGeneratedKeys="true" parameterType="java.util.List">
+        <selectKey resultType="long" keyProperty="id" order="AFTER">
+            SELECT
+            LAST_INSERT_ID()
+        </selectKey>
+        insert into mc_menu_list_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="menuListInfoId != null">
+                menu_list_info_id,
+            </if>
+            <if test="menuTableId != null">
+                menu_table_id,
+            </if>
+            <if test="menuId != null">
+                menu_id,
+            </if>
+            <if test="menuName != null">
+                menu_name,
+            </if>
+            <if test="menuTypeId != null">
+                menu_type_id,
+            </if>
+            <if test="menuTypeName != null">
+                menu_type_name,
+            </if>
+            <if test="priceReal != null">
+                price_real,
+            </if>
+            <if test="priceFavorable != null">
+                price_favorable,
+            </if>
+            <if test="pictureId != null">
+                picture_id,
+            </if>
+            <if test="menuUnit != null">
+                menu_unit,
+            </if>
+            <if test="menuNum != null">
+                menu_num,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="corpId != null">
+                corp_id,
+            </if>
+            <if test="recordStatus != null">
+                record_status,
+            </if>
+            <if test="createUserId != null">
+                create_user_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="lastModifyUserId != null">
+                last_modify_user_id,
+            </if>
+            <if test="lastModifyTime != null">
+                last_modify_time,
+            </if>
+        </trim>
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            <if test="menuListInfoId != null">
+                #{item.menuListInfoId,jdbcType=VARCHAR},
+            </if>
+            <if test="menuTableId != null">
+                #{menuTableId,jdbcType=VARCHAR},
+            </if>
+            <if test="menuId != null">
+                #{menuId,jdbcType=VARCHAR},
+            </if>
+            <if test="menuName != null">
+                #{menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="menuTypeId != null">
+                #{menuTypeId,jdbcType=VARCHAR},
+            </if>
+            <if test="menuTypeName != null">
+                #{menuTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="priceReal != null">
+                #{priceReal,jdbcType=INTEGER},
+            </if>
+            <if test="priceFavorable != null">
+                #{priceFavorable,jdbcType=INTEGER},
+            </if>
+            <if test="pictureId != null">
+                #{pictureId,jdbcType=VARCHAR},
+            </if>
+            <if test="menuUnit != null">
+                #{menuUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="menuNum != null">
+                #{menuNum,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="corpId != null">
+                #{corpId,jdbcType=VARCHAR},
+            </if>
+            <if test="recordStatus != null">
+                #{recordStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="lastModifyUserId != null">
+                #{lastModifyUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="lastModifyTime != null">
+                #{lastModifyTime,jdbcType=BIGINT},
+            </if>
+            )
+
+        </foreach>
+    </insert>
+
+</mapper>

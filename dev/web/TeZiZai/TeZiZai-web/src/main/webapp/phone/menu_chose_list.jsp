@@ -117,7 +117,7 @@
     -->
 
     <div class="foot-menu">
-        <a href="User/login" class="myjuo"><i class="sp"></i>我的聚橙</a>
+        <a href="javascript:void(0)" id="orderMenuList" class="myjuo"><i class="sp"></i>下单</a>
         <a href="Index/follow" class="atte"><i class="sp"></i>关注聚橙</a>
     </div>
     <div class="tel"><a href="tel_3A4001858666"><i class="fontIcon fa-phone"></i>客服:400-185-8666</a></div>
@@ -125,11 +125,6 @@
         <div class="t">
             <div class="menuBottomLogo" onclick="check_footer(this)"><span id="totalMenuNum"
                                                                            class="totalMenuNum">0</span></div>
-        </div>
-        <div class="juSearch">
-            <input class="text" onfocus="if(value=='请输入演出、艺人、场馆名称') {value=''}"
-                   onblur="if (value=='') {value='请输入演出、艺人、场馆名称'}" value="请输入演出、艺人、场馆名称" type="text">
-            <a href="javascript:;" class="btn"><i class="icon_txt s_btnIco"></i></a>
         </div>
         <div class="juMenu_list">
             <ul>
@@ -152,183 +147,214 @@
 
 <script>
 
-    var menuTableId = "<%=menuTableId%>";
-    var menuStatus = "";
+var menuTableId = "<%=menuTableId%>";
+var menuStatus = "";
 
+loadMenuListInfos();
+
+
+$("#loadMoreBtn").bind("click", function () {
+    $(".cate_main").empty();//清空现有的菜单内容
     loadMenuListInfos();
+});
+
+$('#orderMenuList').on('click', function () {
+    orderMenuListInfos();
+});
+
+function updateMenuStatus(status) {
+    menuStatus = status;
+    $(".cate_main").empty();//清空现有的菜单内容
+    loadMenuListInfos();
+}
+
+//获得已点菜单信息
+function loadMenuListInfos() {
+    var paramData = {status: menuStatus};
+    var menuListInfos;
+    $.ajax({
+        type: "post",
+        async: true,//异步，如果等于false 那么就是同步
+        url: app.baseUrlSvc + "/customer/mc/getMenuListInfos.do?menuTableId=" + menuTableId,
+        dataType: "json",
+        data: paramData,
+        beforeSend: function () {
+            $(".ajaxLoad").show(100);
+        },
+        success: function (data) {
+            if (data.statusCode == "SUCCESS" && !app.isEmpty(data.dataRows)) {
+                menuListInfos = data.dataRows;
+                if (app.isEmpty(menuStatus)) {//根据分类筛选的时候，不需要重置缓存(因为此时获得的数据不完整)
+                    app.setMenuListInfos(menuTableId, data.dataRows);
+                }
+            }
+        },
+        error: function (data) {
+            showWarnMsg("请求服务器出错！");
+        },
+        complete: function () {
+            if (!app.isEmpty(menuListInfos)) {
+                appendMenuInfo(menuListInfos);
+                $("#totalMenuNum").text(menuListInfos.length);
+            }
+            $(".ajaxLoad").hide(300);
+        }
+    });
+}
+
+//修改已点数量
+function updateMenuListinfos() {
+    var menuListInfos = app.getMenuListInfos(menuTableId);
+    if (!app.isEmpty(menuListInfos)) {
+        $("#totalMenuNum").text(menuListInfos.length);
+        for (var i = 0; i < menuListInfos.length; i++) {
+            var menuListInfo = menuListInfos[i];
+            $("#menu_num_" + menuListInfo.menuId).text(menuListInfo.menuNum);
+            $("#menu_status_" + menuListInfo.menuId).text(getMenuStatus(menuListInfo.status));
+        }
+    }
+}
 
 
-    $("#loadMoreBtn").bind("click", function () {
-        $(".cate_main").empty();//清空现有的菜单内容
-        loadMenuListInfos();
+function appendMenuInfo(data) {
+    var html = "";
+    if (!app.isEmpty(data)) {
+        for (var i = 0; i < data.length; i++) {
+            var menuListInfo = data[i];
+            html = html + "<dl class='item cf' onclick=''>"
+                    + "<span id='menu_id_" + menuListInfo.menuId + "' class='hide'>" + menuListInfo.menuId + "</span><span id='menu_type_id_" + menuListInfo.menuId + "' class='hide'>" + menuListInfo.menuTypeId + "</span>"
+                    + "           <h2>[<span id='menu_type_name_" + menuListInfo.menuId + "'>" + menuListInfo.menuTypeName + "</span>]<span id='menu_name_" + menuListInfo.menuId + "'>" + menuListInfo.menuName + "</span></h2>"
+                    + "   <dt>                           "
+                    + "  <a href='ticket.html'><img src='<%=path%>/phone/resources/img/menu_picture1.jpg'></a>"
+                    + "  <div class='ico_zhu'>                                                                    "
+                    + "          <div class='ui-iconfont ico_caidai'>&#61472;</div>                               "
+                    + "  <span class='txt'>主<br>办</span>                                                         "
+                    + "  </div>                                                                                   "
+                    + "  </dt>                                                                                    "
+                    + "  <dd><i class='ico ico_time'>优惠价格：</i><span id='price_favorable_'" + menuListInfo.menuId + " class='price_favorable'>" + menuListInfo.priceFavorable + "</span>        "
+                    + "  <span class='price_real_title'><del>实际价格：</del><span><del><span id='price_real_" + menuListInfo.menuId + "' class='price_real'>" + menuListInfo.priceReal + "</span></dd>                                         "
+                    + "  <dd>                                                                                     "
+                    + "  <i class='ico ico_cost'>                                                                 "
+                    + "          菜单状态：                                                            "
+                    + "  </i>                                                                                     "
+                    + "  <span id='menu_status_" + menuListInfo.menuId + "' class='menu_status'>" + getMenuStatus(menuListInfo.status) + "</span>   "
+                    + "  <span class='sail_num'>评价：******</span></dd>                                           "
+                    + "  <dd><i class='ico ico_cost'>数量：</i>                                                    "
+                    + "  <span id='menu_num_" + menuListInfo.menuId + "' class='cost'>" + menuListInfo.menuNum + "</span><span id='menu_unit_" + menuListInfo.menuId + "'>" + menuListInfo.menuUnit + "</span></dd>                                                       "
+                    + "  <dd>                                                                                     "
+                    + "  <span class='button' onclick='decreaseMenuInfo(\"" + menuListInfo.menuId + "\")'>取消-</span>                                                       "
+                    + "  <span class='button select_button' onclick='addMenuInfo(\"" + menuListInfo.menuId + "\")'>选择+</span>                                                    "
+                    + "  <span class='button'>备注</span>                                                  "
+                    + "  </dd>                                                                                    "
+                    + "  </dl>                                                                                    ";
+
+        }
+    }
+
+    if (html != "") {
+        $(".cate_main").append(html);
+        $("img.c").lazyload({
+            placeholder: "resources/img/bank.png",
+            effect: "fadeIn"
+        });
+    }
+
+}
+
+function getMenuStatus(status) {
+    var menuStatus = "未下单";
+    if (status == "UNCONFIRM") {
+        menuStatus = "未下单";
+    } else if (status == "CONFIRM") {
+        menuStatus = "已下单";
+    } else if (status == "DELETE") {
+        menuStatus = "已取消";
+    }
+    return menuStatus;
+}
+
+function addMenuInfo(menuIdValue) {
+    var oldMenuNum = parseInt($("#menu_num_" + menuIdValue).text());
+    var realPrice = $("#price_real_" + menuIdValue).text();
+    var favorablePrice = $("#price_favorable_" + menuIdValue).text();
+    if (app.isEmpty(favorablePrice)) {
+        favorablePrice = realPrice;
+    }
+
+    var paramData = {menuId: $("#menu_id_" + menuIdValue).text(), menuName: $("#menu_name_" + menuIdValue).text(), priceReal: realPrice,
+        menuTypeId: $("#menu_type_id_" + menuIdValue).text(), menuTypeName: $("#menu_type_name_" + menuIdValue).text(),
+        priceFavorable: favorablePrice, menuUnit: $("#menu_unit_" + menuIdValue).text()};
+    $.ajax({
+        type: "post",
+        async: false,//异步，如果等于false 那么就是同步
+        url: app.baseUrlSvc + "/customer/mc/addMenuListInfo.do?menuTableId=" + menuTableId,
+        dataType: "json",
+        data: paramData,
+        success: function (data) {
+            if (data != null) {
+                if (data.statusCode == "SUCCESS") {
+                    app.setMenuListInfos(menuTableId, data.dataRows)
+                    updateMenuListinfos();
+                }
+            }
+        },
+        error: function (data) {
+            showWarnMsg("请求服务器出错！");
+        }
+    });
+}
+
+
+function decreaseMenuInfo(menuIdValue) {
+    var oldMenuNum = parseInt($("#menu_num_" + menuIdValue).text());
+    var paramData = {menuId: $("#menu_id_" + menuIdValue).text()};
+    $.ajax({
+        type: "post",
+        async: false,//异步，如果等于false 那么就是同步
+        url: app.baseUrlSvc + "/customer/mc/decreaseMenuInfo.do?menuTableId=" + menuTableId,
+        dataType: "json",
+        data: paramData,
+        success: function (data) {
+            if (data != null) {
+                if (data.statusCode == "SUCCESS") {
+                    app.setMenuListInfos(menuTableId, data.dataRows)
+                    updateMenuListinfos();
+                }
+            }
+        },
+        error: function (data) {
+            showWarnMsg("请求服务器出错！");
+        },
+        complete: function () {
+            if (oldMenuNum == 1) {//如果数量是1，减去1之后，服务端不会再返回该菜单信息了，所以需要手动设定数量
+                $("#menu_num_" + menuIdValue).text(0);
+            }
+        }
     });
 
-    function updateMenuStatus(status) {
-        menuStatus = status;
-        $(".cate_main").empty();//清空现有的菜单内容
-        loadMenuListInfos();
-    }
+}
 
-    //获得已点菜单信息
-    function loadMenuListInfos() {
-        var paramData = {status: menuStatus};
-        var menuListInfos;
-        $.ajax({
-            type: "post",
-            async: false,//异步，如果等于false 那么就是同步
-            url: app.baseUrlSvc + "/customer/mc/getMenuListInfos.do?menuTableId=" + menuTableId,
-            dataType: "json",
-            data: paramData,
-            success: function (data) {
-                if (data.statusCode == "SUCCESS" && !app.isEmpty(data.dataRows)) {
-                    menuListInfos = data.dataRows;
-                    if (app.isEmpty(menuStatus)) {//根据分类筛选的时候，不需要重置缓存
-                        app.setMenuListInfos(menuTableId, data.dataRows);
-                    }
-                }
-            },
-            error: function (data) {
-                showWarnMsg("请求服务器出错！");
-            },
-            complete: function () {
-                if (!app.isEmpty(menuListInfos)) {
-                    appendMenuInfo(menuListInfos);
-                    $("#totalMenuNum").text(menuListInfos.length);
+
+function orderMenuListInfos() {
+    var paramData = {};
+    $.ajax({
+        type: "post",
+        async: true,//异步，如果等于false 那么就是同步
+        url: app.baseUrlSvc + "/customer/mc/orderMenuListInfos.do?menuTableId=" + menuTableId,
+        dataType: "json",
+        data: paramData,
+        success: function (data) {
+            if (data != null) {
+                if (data.statusCode == "SUCCESS") {
+                    updateMenuListinfos();
                 }
             }
-        });
-    }
-
-    //修改已点数量
-    function updateMenuListinfos() {
-        var menuListInfos = app.getMenuListInfos(menuTableId);
-        if (!app.isEmpty(menuListInfos)) {
-            $("#totalMenuNum").text(menuListInfos.length);
-            for (var i = 0; i < menuListInfos.length; i++) {
-                var menuListInfo = menuListInfos[i];
-                $("#menu_num_" + menuListInfo.menuId).text(menuListInfo.menuNum);
-            }
+        },
+        error: function (data) {
+            alert("下单时请求服务器出错！");
         }
-    }
-
-
-    function appendMenuInfo(data) {
-        var html = "";
-        if (!app.isEmpty(data)) {
-            for (var i = 0; i < data.length; i++) {
-                var menuListInfo = data[i];
-                html = html + "<dl class='item cf' onclick=''>"
-                        + "<span id='menu_id_" + menuListInfo.menuId + "' class='hide'>" + menuListInfo.menuId + "</span><span id='menu_type_id_" + menuListInfo.menuId + "' class='hide'>" + menuListInfo.menuTypeId + "</span>"
-                        + "           <h2>[<span id='menu_type_name_" + menuListInfo.menuId + "'>" + menuListInfo.menuTypeName + "</span>]<span id='menu_name_" + menuListInfo.menuId + "'>" + menuListInfo.menuName + "</span></h2>"
-                        + "   <dt>                           "
-                        + "  <a href='ticket.html'><img src='<%=path%>/phone/resources/img/menu_picture1.jpg'></a>"
-                        + "  <div class='ico_zhu'>                                                                    "
-                        + "          <div class='ui-iconfont ico_caidai'>&#61472;</div>                               "
-                        + "  <span class='txt'>主<br>办</span>                                                         "
-                        + "  </div>                                                                                   "
-                        + "  </dt>                                                                                    "
-                        + "  <dd><i class='ico ico_time'>优惠价格：</i><span id='price_favorable_'" + menuListInfo.menuId + " class='price_favorable'>" + menuListInfo.priceFavorable + "</span>        "
-                        + "  <span class='price_real_title'><del>实际价格：</del><span><del><span id='price_real_" + menuListInfo.menuId + "' class='price_real'>" + menuListInfo.priceReal + "</span></dd>                                         "
-                        + "  <dd>                                                                                     "
-                        + "  <i class='ico ico_cost'>                                                                 "
-                        + "          菜单状态：                                                            "
-                        + "  </i>                                                                                     "
-                        + "  <span id='menu_status_" + menuListInfo.menuId + "' class='menu_status'>" + getMenuStatus(menuListInfo.status) + "</span>   "
-                        + "  <span class='sail_num'>评价：******</span></dd>                                           "
-                        + "  <dd><i class='ico ico_cost'>数量：</i>                                                    "
-                        + "  <span id='menu_num_" + menuListInfo.menuId + "' class='cost'>" + menuListInfo.menuNum + "</span><span id='menu_unit_" + menuListInfo.menuId + "'>" + menuListInfo.menuUnit + "</span></dd>                                                       "
-                        + "  <dd>                                                                                     "
-                        + "  <span class='button' onclick='decreaseMenuInfo(\"" + menuListInfo.menuId + "\")'>取消-</span>                                                       "
-                        + "  <span class='button select_button' onclick='addMenuInfo(\"" + menuListInfo.menuId + "\")'>选择+</span>                                                    "
-                        + "  <span class='button'>备注</span>                                                  "
-                        + "  </dd>                                                                                    "
-                        + "  </dl>                                                                                    ";
-
-            }
-        }
-
-        if (html != "") {
-            $(".cate_main").append(html);
-            $("img.c").lazyload({
-                placeholder: "resources/img/bank.png",
-                effect: "fadeIn"
-            });
-        }
-
-    }
-
-    function getMenuStatus(status) {
-        var menuStatus = "未下单";
-        if (status == "UNCONFIRM") {
-            menuStatus = "未下单";
-        } else if (status == "CONFIRM") {
-            menuStatus = "已下单";
-        } else if (status == "DELETE") {
-            menuStatus = "已取消";
-        }
-        return menuStatus;
-    }
-
-    function addMenuInfo(menuIdValue) {
-        var oldMenuNum = parseInt($("#menu_num_" + menuIdValue).text());
-        var realPrice = $("#price_real_" + menuIdValue).text();
-        var favorablePrice = $("#price_favorable_" + menuIdValue).text();
-        if (app.isEmpty(favorablePrice)) {
-            favorablePrice = realPrice;
-        }
-
-        var paramData = {menuId: $("#menu_id_" + menuIdValue).text(), menuName: $("#menu_name_" + menuIdValue).text(), priceReal: realPrice,
-            menuTypeId: $("#menu_type_id_" + menuIdValue).text(), menuTypeName: $("#menu_type_name_" + menuIdValue).text(),
-            priceFavorable: favorablePrice, menuUnit: $("#menu_unit_" + menuIdValue).text()};
-        $.ajax({
-            type: "post",
-            async: false,//异步，如果等于false 那么就是同步
-            url: app.baseUrlSvc + "/customer/mc/addMenuListInfo.do?menuTableId=<%=menuTableId%>",
-            dataType: "json",
-            data: paramData,
-            success: function (data) {
-                if (data != null) {
-                    if (data.statusCode == "SUCCESS") {
-                        app.setMenuListInfos(menuTableId, data.dataRows)
-                        updateMenuListinfos();
-                    }
-                }
-            },
-            error: function (data) {
-                showWarnMsg("请求服务器出错！");
-            }
-        });
-    }
-
-
-    function decreaseMenuInfo(menuIdValue) {
-        var oldMenuNum = parseInt($("#menu_num_" + menuIdValue).text());
-        var paramData = {menuId: $("#menu_id_" + menuIdValue).text()};
-        $.ajax({
-            type: "post",
-            async: false,//异步，如果等于false 那么就是同步
-            url: app.baseUrlSvc + "/customer/mc/decreaseMenuInfo.do?menuTableId=<%=menuTableId%>",
-            dataType: "json",
-            data: paramData,
-            success: function (data) {
-                if (data != null) {
-                    if (data.statusCode == "SUCCESS") {
-                        app.setMenuListInfos(menuTableId, data.dataRows)
-                        updateMenuListinfos();
-                    }
-                }
-            },
-            error: function (data) {
-                showWarnMsg("请求服务器出错！");
-            },
-            complete: function () {
-                if (oldMenuNum == 1) {//如果数量是1，减去1之后，服务端不会再返回该菜单信息了，所以需要手动设定数量
-                    $("#menu_num_" + menuIdValue).text(0);
-                }
-            }
-        });
-
-    }
+    });
+}
 
 
 </script>
